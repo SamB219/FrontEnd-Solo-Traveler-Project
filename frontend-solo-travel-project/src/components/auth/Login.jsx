@@ -11,19 +11,43 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { baseURL } from "../../environment";
 
 const defaultTheme = createTheme();
 
-export default function SignInSide() {
+export default function SignInSide({ updateToken }) {
   const navigate = useNavigate();
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    let body = JSON.stringify({
       email: data.get("email"),
       password: data.get("password"),
     });
-    navigate("/dash");
+
+    const url = `${baseURL}/user/login`;
+
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        body: body,
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+      });
+      const data = await res.json();
+
+      if (data.message === "Successful!") {
+        console.log(data);
+        updateToken(data.token);
+        navigate("/dash");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   const handleSignup = (event) => {
