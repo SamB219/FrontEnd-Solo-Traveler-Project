@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -12,30 +10,12 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -43,6 +23,12 @@ export default function SignInSide() {
       email: data.get("email"),
       password: data.get("password"),
     });
+    navigate("/dash");
+  };
+
+  const handleSignup = (event) => {
+    event.preventDefault();
+    navigate("/signup");
   };
 
   return (
@@ -86,7 +72,8 @@ export default function SignInSide() {
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
+              /* SET WIDTH OF SIGN IN WITH MX */
+              sx={{ mt: 1, mx: 12 }}
             >
               <TextField
                 margin="normal"
@@ -108,30 +95,39 @@ export default function SignInSide() {
                 id="password"
                 autoComplete="current-password"
               />
-              {/*  <FormControlLabel
+              {/*  
+              DOES THIS WORK???
+
+              <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
+
+              BELOW: FORGOT PASSWORD LINK CURRENTLY GOES NOWHERE
               /> */}
+              <Grid container justifyContent="flex-end">
+                <Grid item xs={4}>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+              </Grid>
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Login
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+              OR
+              <Button
+                onClick={handleSignup}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Signup
+              </Button>
             </Box>
           </Box>
         </Grid>
