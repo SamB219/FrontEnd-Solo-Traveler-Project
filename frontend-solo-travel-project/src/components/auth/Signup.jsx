@@ -12,18 +12,49 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { baseURL } from "../../environment";
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
-  const handleSubmit = (event) => {
+export default function SignUp({ updateToken }) {
+  const navigate = useNavigate();
+  async function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+
+    const firstName = data.get("firstName");
+    const lastName = data.get("lastName");
+    const email = data.get("email");
+    const password = data.get("password");
+
+    let bodyObj = JSON.stringify({
+      firstName,
+      lastName,
+      email,
+      password,
     });
-  };
+
+    const url = `${baseURL}/user/signup`;
+    let headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const requestOption = {
+      headers,
+      body: bodyObj,
+      method: "POST",
+    };
+
+    try {
+      const response = await fetch(url, requestOption);
+      const data = await response.json();
+      updateToken(data.token);
+      console.log(data);
+      navigate("/dash");
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>

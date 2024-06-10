@@ -17,6 +17,7 @@ import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import Posts from "./Posts";
 //import Button from "@mui/material/Button";
 
 import Filter from "./Filter";
@@ -160,7 +161,7 @@ export default function Dashboard() {
           <Container maxWidth="false" sx={{ mt: 3, mb: 4 }}>
             <Grid item xs={12}>
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                POSTS COMPONENT HERE
+                <Posts />
               </Paper>
             </Grid>
           </Container>
