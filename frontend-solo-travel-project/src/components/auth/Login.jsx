@@ -22,6 +22,7 @@ export default function SignInSide({ updateToken }) {
     const data = new FormData(event.currentTarget);
 
     let body = JSON.stringify({
+      //MUI METHOD FOR RETRIEVING FORM DATA
       email: data.get("email"),
       password: data.get("password"),
     });
@@ -65,8 +66,7 @@ export default function SignInSide({ updateToken }) {
           sm={4}
           md={7}
           sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundImage: "url(https://picsum.photos/seed/picsum/1600/1700)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"

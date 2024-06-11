@@ -23,6 +23,7 @@ export default function SignUp({ updateToken }) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
+    //MUI METHOD FOR RETRIEVING FORM DATA
     const firstName = data.get("firstName");
     const lastName = data.get("lastName");
     const email = data.get("email");
@@ -48,9 +49,12 @@ export default function SignUp({ updateToken }) {
     try {
       const response = await fetch(url, requestOption);
       const data = await response.json();
-      updateToken(data.token);
-      console.log(data);
-      navigate("/dash");
+      if (data.message === "Success!") {
+        updateToken(data.token);
+        navigate("/dash");
+      } else {
+        alert(data.message);
+      }
     } catch (err) {
       console.error(err.message);
     }
