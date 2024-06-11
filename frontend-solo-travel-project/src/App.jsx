@@ -30,7 +30,7 @@ function App() {
           path="/signup"
           element={<Signup updateToken={updateLocalToken} />}
         />
-        <Route path="/dash" element={<Dashboard />} />
+        <Route path="/dash" element={<Dashboard token={sessionToken} />} />
       </Routes>
     </div>
   );

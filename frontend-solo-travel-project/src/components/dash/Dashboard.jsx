@@ -17,13 +17,16 @@ import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import Posts from "./Posts";
+import AddPost from "../posts/AddPost";
+import LogoutIcon from "@mui/icons-material/Logout";
 //import Button from "@mui/material/Button";
 
 import Filter from "./Filter";
 import { navListItems } from "./navItems";
 //Leaflet Import
 import SimpleMap from "../maps/SimpleMap";
+import { Button } from "@mui/material";
+import PostIndex from "../posts/PostIndex";
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
@@ -74,7 +77,7 @@ const Drawer = styled(MuiDrawer, {
 //Currently does nothing because theme is default
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -115,6 +118,9 @@ export default function Dashboard() {
               <Badge badgeContent={0} color="secondary">
                 <NotificationsIcon />
               </Badge>
+            </IconButton>
+            <IconButton color="inherit">
+              <LogoutIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -160,8 +166,11 @@ export default function Dashboard() {
           {/* POST DISPLAY GRID */}
           <Container maxWidth="false" sx={{ mt: 3, mb: 4 }}>
             <Grid item xs={12}>
+              <Paper sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
+                <AddPost token={props.token} />
+              </Paper>
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                <Posts />
+                <PostIndex token={props.token} />
               </Paper>
             </Grid>
           </Container>
