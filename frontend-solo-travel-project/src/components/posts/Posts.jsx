@@ -15,6 +15,14 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
+
+// Format Date Function
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+  return new Date(dateString).toLocaleDateString(undefined, options); // can add a timezone if we want later... will need to `npm install date-fns date-fns-tz`
+
+}
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -58,7 +66,7 @@ export default function PostCard(props) {
           </IconButton>
         }
         title={props.post.title}
-        subheader="INPUT DATE"
+        subheader={formatDate(props.post.date)}
       />
       <CardMedia
         component="img"
