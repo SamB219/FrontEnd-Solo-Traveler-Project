@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -11,25 +12,25 @@ import InboxIcon from "@mui/icons-material/Inbox";
 
 export const navListItems = (
   <>
-    <ListItemButton>
+    <ListItemButton component={Link} to="/dash">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton component={Link} to="/profile">
       <ListItemIcon>
         <AccountCircleIcon />
       </ListItemIcon>
       <ListItemText primary="Profile" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton component={Link} to="/inbox">
       <ListItemIcon>
         <InboxIcon />
       </ListItemIcon>
       <ListItemText primary="Inbox" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton component={Link} to="/myposts">
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
