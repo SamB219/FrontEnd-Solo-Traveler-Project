@@ -19,13 +19,15 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AddPost from "../posts/AddPost";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
+
 //import Button from "@mui/material/Button";
 
 import Filter from "./Filter";
 import { navListItems } from "./navItems";
 //Leaflet Import
 import SimpleMap from "../maps/SimpleMap";
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material";
 import PostIndex from "../posts/PostIndex";
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
@@ -83,6 +85,14 @@ export default function Dashboard(props) {
     setOpen(!open);
   };
 
+  // Logout Function
+  const navigate = useNavigate(); 
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); 
+    navigate("/"); 
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
@@ -119,8 +129,8 @@ export default function Dashboard(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit">
-              <LogoutIcon />
+            <IconButton color="inherit" onClick={handleLogout}>
+              <LogoutIcon/>
             </IconButton>
           </Toolbar>
         </AppBar>
