@@ -39,7 +39,7 @@ export const navListItems = (
       </ListItemIcon>
       <ListItemText primary="Inbox" />
     </ListItemButton>
-    <ListItemButton component={Link} to="/likes">
+    <ListItemButton component={Link} to="/:postId/likes">
       <ListItemIcon>
         <FavoriteIcon />
       </ListItemIcon>

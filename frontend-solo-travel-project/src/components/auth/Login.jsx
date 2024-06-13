@@ -137,18 +137,19 @@ export default function SignInSide({ updateToken }) {
               >
                 Login
               </Button>
-              <Grid container>
-                <Grid item xs={4} justifyContent="flex-end">
+              <Grid container justifyContent="space-between">
+                <Grid item>
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
-                <Grid justifyContent="flex-start">
+                <Grid item>
                   <Link href="/signup" variant="body2">
-                  Don't have an account? Create one!
+                    Don't have an account? Create one!
                   </Link>
                 </Grid>
               </Grid>
+
               {/* OR */}
               {/* <Button
                 onClick={handleSignup}
