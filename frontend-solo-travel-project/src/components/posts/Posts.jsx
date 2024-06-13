@@ -14,14 +14,17 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-
+import { useState } from "react";
+import LikeFunction from "../likes/LikeFunction";
 
 // Format Date Function
 function formatDate(dateString) {
-  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
   return new Date(dateString).toLocaleDateString(undefined, options); // can add a timezone if we want later... will need to `npm install date-fns date-fns-tz`
 
 }
+
+
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -81,7 +84,8 @@ export default function PostCard(props) {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+          {/* <FavoriteIcon onClick={LikeFunction}/> */}
+          <LikeFunction />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />

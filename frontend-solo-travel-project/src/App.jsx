@@ -9,6 +9,8 @@ function App() {
   //State for user token and user name
   const [sessionToken, setSessionToken] = useState("");
 
+
+
   //Function for updating token in local storage
   const updateLocalToken = (newToken) => {
     localStorage.setItem("token", newToken);
@@ -30,7 +32,8 @@ function App() {
           path="/signup"
           element={<Signup updateToken={updateLocalToken} />}
         />
-        <Route path="/dash" element={<Dashboard token={sessionToken} />} />
+        <Route path="/dash" element={<Dashboard 
+        token={sessionToken}/>} />
       </Routes>
     </div>
   );

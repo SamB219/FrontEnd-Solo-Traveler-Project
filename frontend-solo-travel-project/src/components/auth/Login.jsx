@@ -129,13 +129,6 @@ export default function SignInSide({ updateToken }) {
 
               BELOW: FORGOT PASSWORD LINK CURRENTLY GOES NOWHERE
               /> */}
-              <Grid container justifyContent="flex-end">
-                <Grid item xs={4}>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-              </Grid>
               <Button
                 type="submit"
                 fullWidth
@@ -144,15 +137,27 @@ export default function SignInSide({ updateToken }) {
               >
                 Login
               </Button>
-              OR
-              <Button
+              <Grid container>
+                <Grid item xs={4} justifyContent="flex-end">
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid justifyContent="flex-start">
+                  <Link href="/signup" variant="body2">
+                  Don't have an account? Create one!
+                  </Link>
+                </Grid>
+              </Grid>
+              {/* OR */}
+              {/* <Button
                 onClick={handleSignup}
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
                 Signup
-              </Button>
+              </Button> */}
             </Box>
           </Box>
         </Grid>
