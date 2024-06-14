@@ -45,7 +45,7 @@ function PostIndex(props) {
       <Grid container spacing={2}>
         {posts.map((post) => (
           <Grid item key={key++}>
-            <Posts post={post} token={props.token} />
+            <Posts post={post} userId={props.userId} token={props.token} />
           </Grid>
         ))}
       </Grid>
