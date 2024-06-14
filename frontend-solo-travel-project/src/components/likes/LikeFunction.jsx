@@ -1,77 +1,84 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { baseURL } from '../../environment/index';
+import { useEffect } from 'react';
+import { baseURL } from '../../environment';
 
 const LikeFunction = ({ postId, userId, token }) => {
+
+    const [likeCount, setLikeCount] = useState(0); 
     const likedStyle = { color: 'red' };
     const unLikedStyle = { color: 'gray' };
-
     const [liked, setLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(0);
 
-    useEffect(() => {
-        // Fetch the initial like status and count from the server
-        const fetchLikeStatus = async () => {
-            const url = `${baseURL}/post/status`; // Adjust the endpoint as needed
+    // setLiked(!liked);
 
-            const options = {
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                    Authorization: token,
-                }),
-                body: JSON.stringify({ postId, userId }),
-            };
-
-            try {
-                const res = await fetch(url, options);
-                if (res.ok) {
-                    const data = await res.json();
-                    console.log('Like status fetched:', data);
-                    setLiked(data.liked);
-                    setLikeCount(data.likeCount);
-                } else {
-                    console.error('Failed to fetch like status');
-                }
-            } catch (err) {
-                console.error('Error fetching like status:', err.message);
-            }
-        };
-
-        fetchLikeStatus();
-    }, [postId, userId, token]);
-
-    const toggleLike = async () => {
-        const url = `${baseURL}/post/${postId}/like`;
-        const method = liked ? 'DELETE' : 'POST';
+    const fetchLikeStatus = async () => {
+        const url = `${baseURL}/post/status`;
 
         const options = {
-            method,
+            method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 Authorization: token,
             }),
-            body: JSON.stringify({ userId }),
+            body: JSON.stringify({ postId, userId }),
         };
 
         try {
             const res = await fetch(url, options);
-            const data = await res.json();
-            console.log('Toggle like response:', data);
-
             if (res.ok) {
-                setLiked(!liked);
-                setLikeCount(likeCount + (liked ? -1 : 1));
+                const data = await res.json();
+                console.log('Like status fetched:', data);
             } else {
-                console.error('Error toggling like:', data.message);
+                console.error('Failed to fetch like status');
             }
         } catch (err) {
-            console.error('Error toggling like:', err.message);
+            console.error('Error fetching like status:', err.message);
+        }
+    };
+
+    // Fetch the initial like status and count from the serve
+    useEffect(() => {
+        fetchLikeStatus();
+    }, [/* postId, userId, */ token]);
+
+
+
+    async function likePost() {
+
+        setLiked(!liked);
+
+      
+        console.log(likeCount);
+        let newLike = likeCount + 1
+        setLikeCount(newLike);
+
+
+        const url = `${baseURL}/post/${postId}/like` ;
+
+        const options = {
+            method: 'PATCH',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                Authorization: token,
+            }),
+            body: JSON.stringify({ 
+                likes: likeCount,
+            }),
+        };
+        
+        try {
+            const res = await fetch(url, options);
+            const data = await res.json();
+            console.log(data)
+        
+        } catch (err) {
+            console.error('Error liking:', err.message);
         }
     };
 
     return (
-        <button onClick={toggleLike} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+        <button onClick={likePost} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
             <FavoriteIcon sx={liked ? likedStyle : unLikedStyle} />
             <span>{likeCount}</span>
         </button>
