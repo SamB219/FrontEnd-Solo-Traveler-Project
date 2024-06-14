@@ -10,7 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+// import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -38,6 +38,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function PostCard(props) {
+  const { post, userId, token } = props;
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -85,7 +86,7 @@ export default function PostCard(props) {
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           {/* <FavoriteIcon onClick={LikeFunction}/> */}
-          <LikeFunction />
+          <LikeFunction postId={post._id} userId={userId} token={token}/>
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 /* import Typography from "@mui/material/Typography"; */
@@ -8,6 +8,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Container, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { baseURL } from "../../environment";
+import FileUpload from "../upload/FileUpload";
+import Tags from "./tags/Tags";
 
 const style = {
   position: "absolute",
@@ -25,6 +27,7 @@ const style = {
 
 export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -121,6 +124,13 @@ export default function BasicModal(props) {
             id="description"
             autoComplete="current-password"
           />
+          <Tags selected={selected} setSelected={setSelected} />
+          <Box
+            sx={{ display: "flex", justifyContent: "center", paddingBottom: 3 }}
+          >
+            <FileUpload />
+          </Box>
+
           <Button
             variant="contained"
             sx={{ mt: 0, mb: 0 }}
