@@ -23,7 +23,7 @@ export default function SignInSide({ updateToken }) {
 
     let body = JSON.stringify({
       //MUI METHOD FOR RETRIEVING FORM DATA
-      email: data.get("email"),
+      identifier: data.get("identifier"),// switched from email to identifier for email and username
       password: data.get("password"),
     });
 
@@ -98,10 +98,10 @@ export default function SignInSide({ updateToken }) {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="identifier"
+                label="Email or Username"
+                name="identifier"
+                autoComplete="identifier"
                 autoFocus
               />
               <TextField
@@ -138,7 +138,7 @@ export default function SignInSide({ updateToken }) {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/shell/signup" variant="body2">
+                  <Link href="/signup" variant="body2">
                     Don't have an account? Create one!
                   </Link>
                 </Grid>
