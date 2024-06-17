@@ -42,18 +42,13 @@ export default function SignInSide({ updateToken }) {
       if (data.message === "Successful!") {
         console.log(data);
         updateToken(data.token);
-        navigate("/dash");
+        navigate("/shell/dash");
       } else {
         alert(data.message);
       }
     } catch (error) {
       console.error(error.message);
     }
-  };
-
-  const handleSignup = (event) => {
-    event.preventDefault();
-    navigate("/signup");
   };
 
   return (
@@ -66,8 +61,7 @@ export default function SignInSide({ updateToken }) {
           sm={4}
           md={7}
           sx={{
-            backgroundImage:
-              "url(https://picsum.photos/seed/picsum/1600/1700)",
+            backgroundImage: "url(https://picsum.photos/seed/picsum/1600/1700)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -144,7 +138,7 @@ export default function SignInSide({ updateToken }) {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/signup" variant="body2">
+                  <Link href="/shell/signup" variant="body2">
                     Don't have an account? Create one!
                   </Link>
                 </Grid>
