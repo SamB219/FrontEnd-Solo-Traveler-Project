@@ -122,7 +122,7 @@ function Shell() {
             <ThemeProvider theme={defaultTheme}>
             <Box sx={{ display: "flex " }}>
             <CssBaseline />
-            {sessionToken != "" &&
+            {sessionToken !=="" &&
                 <>
                     <AppBar position="absolute" open={open}>
                         <Toolbar

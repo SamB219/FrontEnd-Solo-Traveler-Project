@@ -23,7 +23,7 @@ function useProfile() {
         });
         const data = await res.json();
         
-        if (res.status == 200) {
+        if (res.status === 200) {
             setFirstName(data.firstName);
             setLastName(data.lastName);
             setAge(data.age);
