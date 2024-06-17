@@ -51,7 +51,7 @@ export default function SignUp({ updateToken }) {
       const data = await response.json();
       if (data.message === "Success!") {
         updateToken(data.token);
-        navigate("/dash");
+        navigate("/shell/dash");
       } else {
         alert(data.message);
       }

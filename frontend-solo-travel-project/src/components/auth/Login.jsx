@@ -138,7 +138,7 @@ export default function SignInSide({ updateToken }) {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/shell/signup" variant="body2">
+                  <Link href="/signup" variant="body2">
                     Don't have an account? Create one!
                   </Link>
                 </Grid>

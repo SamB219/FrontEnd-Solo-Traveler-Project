@@ -10,6 +10,9 @@ import { IconButton } from "@mui/material";
 import { baseURL } from "../../environment";
 import FileUpload from "../upload/FileUpload";
 import Tags from "./tags/Tags";
+import { OpenStreetMapProvider } from "leaflet-geosearch";
+
+const provider = new OpenStreetMapProvider();
 
 const style = {
   position: "absolute",
@@ -40,6 +43,7 @@ export default function BasicModal(props) {
     const data = new FormData(e.currentTarget);
     const title = data.get("title");
     const description = data.get("description");
+    const location = data.get("location");
     const tags = selected;
 
     let bodyObj = JSON.stringify({
@@ -62,8 +66,10 @@ export default function BasicModal(props) {
     try {
       const response = await fetch(url, requestOption);
       const data = await response.json();
+      const locationResults = await provider.search({ query: location });
       handleClose();
       console.log(data);
+      console.log(locationResults);
       refreshPage();
     } catch (err) {
       console.error(err.message);
@@ -126,6 +132,14 @@ export default function BasicModal(props) {
             id="description"
             multiline
             rows={4}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="location"
+            label="Location"
+            id="location"
           />
           <Tags selected={selected} setSelected={setSelected} />
           <Box
