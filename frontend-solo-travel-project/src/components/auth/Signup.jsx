@@ -26,12 +26,14 @@ export default function SignUp({ updateToken }) {
     //MUI METHOD FOR RETRIEVING FORM DATA
     const firstName = data.get("firstName");
     const lastName = data.get("lastName");
+    const userName = data.get("userName");
     const email = data.get("email");
     const password = data.get("password");
 
     let bodyObj = JSON.stringify({
       firstName,
       lastName,
+      userName,
       email,
       password,
     });
@@ -104,6 +106,16 @@ export default function SignUp({ updateToken }) {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="userName"
+                  label="Username"
+                  name="userName"
+                  // autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
