@@ -12,20 +12,24 @@ function PostIndex(props) {
     const url = `${baseURL}/post/all`; //ENDPOINT HERE
 
     const options = {
-      method: "GET",
-      headers: new Headers({
-        Authorization: props.token,
-      }),
+        method: "GET",
+        headers: new Headers({
+            Authorization: props.token,
+        }),
     };
 
     try {
-      const res = await fetch(url, options);
-      const data = await res.json();
-      setPosts(data.result);
+        const res = await fetch(url, options);
+        if (!res.ok) {
+            throw new Error('Failed to fetch posts');
+        }
+        const data = await res.json();
+        setPosts(data.result);
     } catch (err) {
-      console.error(err.message);
+        console.error(err.message);
     }
-  };
+};
+
 
   //EXECUTES FETCH ON PAGE RELOAD
   useEffect(() => {
