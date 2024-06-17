@@ -5,8 +5,8 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
-import { Container, IconButton } from "@mui/material";
-import Grid from "@mui/material/Grid";
+import { IconButton } from "@mui/material";
+
 import { baseURL } from "../../environment";
 import FileUpload from "../upload/FileUpload";
 import Tags from "./tags/Tags";
@@ -40,10 +40,12 @@ export default function BasicModal(props) {
     const data = new FormData(e.currentTarget);
     const title = data.get("title");
     const description = data.get("description");
+    const tags = selected;
 
     let bodyObj = JSON.stringify({
       title,
       description,
+      tags,
     });
 
     const url = `${baseURL}/post/new`;
@@ -122,7 +124,8 @@ export default function BasicModal(props) {
             name="description"
             label="Description"
             id="description"
-            autoComplete="current-password"
+            multiline
+            rows={4}
           />
           <Tags selected={selected} setSelected={setSelected} />
           <Box

@@ -14,10 +14,18 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import LikeFunction from "../likes/LikeFunction";
+import Chip from "@mui/material/Chip";
+import Box from "@mui/material/Box";
 
 // Format Date Function
 function formatDate(dateString) {
-  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
   return new Date(dateString).toLocaleDateString(undefined, options); // can add a timezone if we want later... will need to `npm install date-fns date-fns-tz`
 }
 
@@ -33,7 +41,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function PostCard(props) {
-  const { post, userId, token} = props;
+  const { post, userId, token } = props;
   const [expanded, setExpanded] = React.useState(false);
   const [likeCount, setLikeCount] = React.useState(0);
   const [liked, setLiked] = React.useState(false);
@@ -54,6 +62,7 @@ export default function PostCard(props) {
       sx={{
         maxWidth: 345,
         minWidth: 345,
+        minHeight: 500,
         backgroundColor: "#F5F5F5",
       }}
       variant="outlined"
@@ -80,8 +89,20 @@ export default function PostCard(props) {
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {props.post.description}
+          {props.post.tags.map((tag) => (
+            <Chip
+              label={tag}
+              variant={"outlined"}
+              color={"primary"}
+              sx={{ margin: 0.5, fontSize: 12 }}
+            />
+          ))}
         </Typography>
+        <Box sx={{ p: 1 }}>
+          <Typography variant="body" color="text.secondary">
+            {props.post.description}
+          </Typography>
+        </Box>
       </CardContent>
       <CardActions disableSpacing>
         <LikeFunction postId={post._id} userId={userId} token={token} />
@@ -99,21 +120,9 @@ export default function PostCard(props) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>DETAILS</Typography>
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis
-            numquam eius assumenda expedita temporibus dolorem eveniet, culpa
-            ab, velit modi, blanditiis soluta ipsam ullam ratione nemo.
-            Dignissimos iure aliquam fugiat!
+          <Typography variant="body" color="text.secondary">
+            Don't look down here
           </Typography>
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi natus
-            enim eius alias ut, vitae, explicabo mollitia veniam aspernatur
-            distinctio officia. Nobis, tempora. Eveniet rem vitae, impedit ipsam
-            quos aliquid?
-          </Typography>
-          <Typography>END DETAILS</Typography>
         </CardContent>
       </Collapse>
     </Card>
