@@ -1,6 +1,5 @@
-
 import { Route, Routes } from "react-router-dom";
-import React from "react"
+import React from "react";
 import "./App.css";
 import Login from "./components/auth/Login";
 import Dashboard from "./components/dash/Dashboard";
@@ -38,162 +37,136 @@ import PostIndex from "./components/posts/PostIndex";
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
 const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(["width", "margin"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(["width", "margin"], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
+  }),
 }));
 
 const Drawer = styled(MuiDrawer, {
-    shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
-    "& .MuiDrawer-paper": {
-        position: "relative",
-        whiteSpace: "nowrap",
-        width: drawerWidth,
-        transition: theme.transitions.create("width", {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        boxSizing: "border-box",
-        ...(!open && {
-            overflowX: "hidden",
-            transition: theme.transitions.create("width", {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            width: theme.spacing(7),
-            [theme.breakpoints.up("sm")]: {
-                width: theme.spacing(9),
-            },
-        }),
-    },
+  "& .MuiDrawer-paper": {
+    position: "relative",
+    whiteSpace: "nowrap",
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    boxSizing: "border-box",
+    ...(!open && {
+      overflowX: "hidden",
+      transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      width: theme.spacing(7),
+      [theme.breakpoints.up("sm")]: {
+        width: theme.spacing(9),
+      },
+    }),
+  },
 }));
 
 const defaultTheme = createTheme();
 
-function Shell() {
+function Shell(props) {
+  const [open, setOpen] = React.useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
-    const [open, setOpen] = React.useState(true);
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
+  // Logout Function
+  const navigate = useNavigate();
 
-    // Logout Function
-    const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    props.setSessionToken("");
+    navigate("/");
+  };
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        setSessionToken('')
-        navigate("/");
-    };
-
-    //State for user token and user name
-    const [sessionToken, setSessionToken] = useState("");
-
-
-
-    //Function for updating token in local storage
-    const updateLocalToken = (newToken) => {
-        localStorage.setItem("token", newToken);
-        setSessionToken(newToken);
-    };
-
-    //Effect that keeps the token when the page re-renders
-    useEffect(() => {
-        if (localStorage.getItem("token")) {
-            setSessionToken(localStorage.getItem("token"));
-        }
-    }, []);
-
-    return (
-        <div className="App">
-            <ThemeProvider theme={defaultTheme}>
-            <Box sx={{ display: "flex " }}>
-            <CssBaseline />
-            {sessionToken !=="" &&
-                <>
-                    <AppBar position="absolute" open={open}>
-                        <Toolbar
-                            sx={{
-                                pr: "24px", // keep right padding when drawer closed
-                            }}
-                        >
-                            <IconButton
-                                edge="start"
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={toggleDrawer}
-                                sx={{
-                                    marginRight: "36px",
-                                    ...(open && { display: "none" }),
-                                }}
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Typography
-                                component="h1"
-                                variant="h6"
-                                color="inherit"
-                                noWrap
-                                sx={{ flexGrow: 1 }}
-                            >
-                                Dashboard
-                            </Typography>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={0} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton color="inherit" onClick={handleLogout}>
-                                <LogoutIcon />
-                            </IconButton>
-                        </Toolbar>
-                    </AppBar>
-                    <Drawer variant="permanent" open={open}>
-                        <Toolbar
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "flex-end",
-                                px: [1],
-                            }}
-                        >
-                            <IconButton onClick={toggleDrawer}>
-                                <ChevronLeftIcon />
-                            </IconButton>
-                        </Toolbar>
-                        <Divider />
-                        <List component="nav">{navListItems}</List>
-                    </Drawer>
-                </>
-            }
-            <Routes>
-                <Route path="/" element={<Login updateToken={updateLocalToken} />} />
-                <Route
-                    path="/signup"
-                    element={<Signup updateToken={updateLocalToken} />}
-                    />
-                <Route path="/dash" element={<Dashboard
-                    token={sessionToken} />} />
-                <Route path="/profile" element={<Profile
-                    token={sessionToken} />} />
-            </Routes>
-            </Box>
-            </ThemeProvider>
-        </div>
-    );
+  return (
+    <div className="App">
+      <ThemeProvider theme={defaultTheme}>
+        <Box sx={{ display: "flex " }}>
+          <CssBaseline />
+          {props.sessionToken !== "" && (
+            <>
+              <AppBar position="absolute" open={open}>
+                <Toolbar
+                  sx={{
+                    pr: "24px", // keep right padding when drawer closed
+                  }}
+                >
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={toggleDrawer}
+                    sx={{
+                      marginRight: "36px",
+                      ...(open && { display: "none" }),
+                    }}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                  <Typography
+                    component="h1"
+                    variant="h6"
+                    color="inherit"
+                    noWrap
+                    sx={{ flexGrow: 1 }}
+                  >
+                    Dashboard
+                  </Typography>
+                  <IconButton color="inherit">
+                    <Badge badgeContent={0} color="secondary">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                  <IconButton color="inherit" onClick={handleLogout}>
+                    <LogoutIcon />
+                  </IconButton>
+                </Toolbar>
+              </AppBar>
+              <Drawer variant="permanent" open={open}>
+                <Toolbar
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    px: [1],
+                  }}
+                >
+                  <IconButton onClick={toggleDrawer}>
+                    <ChevronLeftIcon />
+                  </IconButton>
+                </Toolbar>
+                <Divider />
+                <List component="nav">{navListItems}</List>
+              </Drawer>
+            </>
+          )}
+          <Routes>
+            <Route path="/dash" element={<Dashboard token={props.token} />} />
+            <Route path="/profile" element={<Profile token={props.token} />} />
+          </Routes>
+        </Box>
+      </ThemeProvider>
+    </div>
+  );
 }
 
 export default Shell;
