@@ -59,7 +59,7 @@ export default function SignInSide({ updateToken }) {
         updateToken(data.token);
         navigate("/shell/dash");
       } else {
-        alert(data.message);
+        alert('Incorrect Username or Password');
       }
     } catch (error) {
       console.error(error.message);
@@ -137,7 +137,7 @@ export default function SignInSide({ updateToken }) {
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
                   ),

@@ -49,6 +49,13 @@ export default function SignUp({ updateToken }) {
     const userName = data.get("userName");
     const email = data.get("email");
     const password = data.get("password");
+    const confirmPassword = data.get("confirm-password")
+
+    if (password !== confirmPassword) {
+      console.log('Passwords do not match')
+      alert('Passwords do not match!')
+      return;
+    }
 
     let bodyObj = JSON.stringify({
       firstName,
@@ -166,7 +173,7 @@ export default function SignUp({ updateToken }) {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -191,7 +198,7 @@ export default function SignUp({ updateToken }) {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                          {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
                     ),
