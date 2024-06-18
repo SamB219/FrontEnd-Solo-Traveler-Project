@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import React from "react";
 import "./App.css";
 import Login from "./components/auth/Login";
@@ -33,6 +33,7 @@ import { navListItems } from "./components/dash/navItems";
 import SimpleMap from "./components/maps/SimpleMap";
 // import { Button } from "@mui/material";
 import PostIndex from "./components/posts/PostIndex";
+import { baseURL } from "./environment";
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
@@ -82,27 +83,58 @@ const Drawer = styled(MuiDrawer, {
 
 const defaultTheme = createTheme();
 
-function Shell(props) {
+function Shell() {
   const [open, setOpen] = React.useState(true);
+  const [sessionToken, setSessionToken] = useState("");
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   // Logout Function
   const navigate = useNavigate();
+  const location = useLocation();
 
+  
+  
   const handleLogout = () => {
     localStorage.removeItem("token");
-    props.setSessionToken("");
+    setSessionToken("");
     navigate("/");
   };
+
+
+  //Function for updating token in local storage
+  const updateLocalToken = (newToken) => {
+    localStorage.setItem("token", newToken);
+    setSessionToken(newToken);
+};
+//Effect that keeps the token when the page re-renders
+useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setSessionToken(token);
+    } else {
+      setSessionToken("");
+    }
+}, []); 
+
+  const getHeaderText = () => {
+    const pathSegments = location.pathname.split("/").filter((segment) => segment !== "");
+    if (pathSegments.length > 0) {
+      return pathSegments[pathSegments.length - 1].charAt(0).toUpperCase() + pathSegments[pathSegments.length - 1].slice(1);
+    }
+    return "";
+  };
+
+  const shellCheck = location.pathname === `${baseURL}/login` || location.pathname === `${baseURL}/signup`;
+
 
   return (
     <div className="App">
       <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: "flex " }}>
           <CssBaseline />
-          {props.sessionToken !== "" && (
+          {!shellCheck && sessionToken && (
             <>
               <AppBar position="absolute" open={open}>
                 <Toolbar
@@ -129,7 +161,7 @@ function Shell(props) {
                     noWrap
                     sx={{ flexGrow: 1 }}
                   >
-                    Dashboard
+                    {getHeaderText()}
                   </Typography>
                   <IconButton color="inherit">
                     <Badge badgeContent={0} color="secondary">
@@ -160,9 +192,16 @@ function Shell(props) {
             </>
           )}
           <Routes>
-            <Route path="/dash" element={<Dashboard token={props.token} />} />
-            <Route path="/profile" element={<Profile token={props.token} />} />
-          </Routes>
+                <Route path="/" element={<Login updateToken={updateLocalToken} />} />
+                <Route
+                    path="/signup"
+                    element={<Signup updateToken={updateLocalToken} />}
+                />
+                <Route path="/dashboard" element={<Dashboard
+                    token={sessionToken} />} />
+                <Route path="/profile" element={<Profile
+                    token={sessionToken} />} />
+            </Routes>
         </Box>
       </ThemeProvider>
     </div>

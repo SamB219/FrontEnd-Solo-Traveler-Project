@@ -12,13 +12,13 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export const navListItems = (
   <>
-    <ListItemButton component={Link} to="/shell/dash">
+    <ListItemButton component={Link} to="/dashboard">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
-    <ListItemButton component={Link} to="/shell/profile">
+    <ListItemButton component={Link} to="/profile">
       <ListItemIcon>
         <AccountCircleIcon />
       </ListItemIcon>

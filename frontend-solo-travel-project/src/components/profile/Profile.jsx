@@ -24,6 +24,7 @@ function Profile(props) {
 
     const handleUpdateProfile = () => {
         updateProfile(changedAge, changedBio, changedCountry, changedTravelPreferences, changedInterests)
+        window.location.reload();
     }
 
     useEffect(() => {

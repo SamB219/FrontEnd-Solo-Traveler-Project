@@ -57,7 +57,7 @@ export default function SignInSide({ updateToken }) {
       if (data.message === "Successful!") {
         console.log(data);
         updateToken(data.token);
-        navigate("/shell/dash");
+        navigate("/dashboard");
       } else {
         alert('Incorrect Username or Password');
       }
