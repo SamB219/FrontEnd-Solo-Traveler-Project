@@ -107,6 +107,9 @@ function Shell() {
   const updateLocalToken = (newToken) => {
     localStorage.setItem("token", newToken);
     setSessionToken(newToken);
+    if (location.pathname === `${baseURL}` || location.pathname === `${baseURL}/signup`) {
+      setSessionToken("");
+    }
 };
 //Effect that keeps the token when the page re-renders
 useEffect(() => {
@@ -118,7 +121,7 @@ useEffect(() => {
     }
 }, []); 
 
-  const getHeaderText = () => {
+  const getHeaderText = () => { // Segments the URL and grabs the last word and assigns it to a variable we can use as a header
     const pathSegments = location.pathname.split("/").filter((segment) => segment !== "");
     if (pathSegments.length > 0) {
       return pathSegments[pathSegments.length - 1].charAt(0).toUpperCase() + pathSegments[pathSegments.length - 1].slice(1);
@@ -126,7 +129,9 @@ useEffect(() => {
     return "";
   };
 
-  const shellCheck = location.pathname === `${baseURL}/login` || location.pathname === `${baseURL}/signup`;
+  const shellCheck = location.pathname === `${baseURL}` || location.pathname === `${baseURL}/signup`;
+  // Not currently working, tried to work around the shell not displaying when user uses the back arrow. 
+  // Need to make it to where user cannot go to login or signup if they have a session token
 
 
   return (
