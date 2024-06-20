@@ -75,10 +75,8 @@ export default function PostCard({ post, userId, token }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={props.post.title}
-        subheader={formatDate(props.post.eventDate)}
         title={post.title}
-        subheader={formatDate(post.date)}
+        subheader={formatDate(post.eventDate)}
       />
       <CardMedia
         component="img"
@@ -99,7 +97,7 @@ export default function PostCard({ post, userId, token }) {
           ))}
         </Typography>
         <Box sx={{ p: 1 }}>
-          <Typography variant="body" color="text.secondary">
+          <Typography variant="body2" color="text.secondary">
             {post.description}
           </Typography>
         </Box>
@@ -120,7 +118,7 @@ export default function PostCard({ post, userId, token }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant="body" color="text.secondary">
+          <Typography variant="body2" color="text.secondary">
             Don't look down here
           </Typography>
         </CardContent>
