@@ -19,7 +19,7 @@ import { baseURL } from "../../environment";
 
 const defaultTheme = createTheme();
 
-export default function SignInSide({ updateToken }) {
+export default function SignInSide({ updateToken, setUserId }) {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -37,8 +37,7 @@ export default function SignInSide({ updateToken }) {
     const data = new FormData(event.currentTarget);
 
     let body = JSON.stringify({
-      //MUI METHOD FOR RETRIEVING FORM DATA
-      identifier: data.get("identifier"),// switched from email to identifier for email and username
+      identifier: data.get("identifier"),
       password: data.get("password"),
     });
 
@@ -57,6 +56,7 @@ export default function SignInSide({ updateToken }) {
       if (data.message === "Successful!") {
         console.log(data);
         updateToken(data.token);
+        setUserId(data.userId); // added user id
         navigate("/dashboard");
       } else {
         alert('Incorrect Username or Password');
@@ -106,7 +106,6 @@ export default function SignInSide({ updateToken }) {
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              /* SET WIDTH OF SIGN IN WITH MX */
               sx={{ mt: 1, mx: 12 }}
             >
               <TextField
@@ -143,15 +142,6 @@ export default function SignInSide({ updateToken }) {
                   ),
                 }}
               />
-              {/*  
-              DOES THIS WORK???
-
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-
-              BELOW: FORGOT PASSWORD LINK CURRENTLY GOES NOWHERE
-              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -172,16 +162,6 @@ export default function SignInSide({ updateToken }) {
                   </Link>
                 </Grid>
               </Grid>
-
-              {/* OR */}
-              {/* <Button
-                onClick={handleSignup}
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Signup
-              </Button> */}
             </Box>
           </Box>
         </Grid>

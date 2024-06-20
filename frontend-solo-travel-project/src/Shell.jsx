@@ -86,6 +86,7 @@ const defaultTheme = createTheme();
 function Shell() {
   const [open, setOpen] = React.useState(true);
   const [sessionToken, setSessionToken] = useState("");
+  const [userId, setUserId] = useState(""); // Add state for userId
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -94,32 +95,43 @@ function Shell() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  
-  
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId"); // Remove userId from local storage
     setSessionToken("");
+    setUserId(""); // Clear userId state
     navigate("/");
   };
 
-
-  //Function for updating token in local storage
+  //Function for updating token and userId in local storage
   const updateLocalToken = (newToken) => {
     localStorage.setItem("token", newToken);
     setSessionToken(newToken);
     if (location.pathname === `${baseURL}` || location.pathname === `${baseURL}/signup`) {
       setSessionToken("");
     }
-};
-//Effect that keeps the token when the page re-renders
-useEffect(() => {
+  };
+
+  const updateLocalUserId = (newUserId) => {
+    localStorage.setItem("userId", newUserId);
+    setUserId(newUserId);
+  };
+
+  //Effect that keeps the token and userId when the page re-renders
+  useEffect(() => {
     const token = localStorage.getItem("token");
+    const storedUserId = localStorage.getItem("userId");
     if (token) {
       setSessionToken(token);
     } else {
       setSessionToken("");
     }
-}, []); 
+    if (storedUserId) {
+      setUserId(storedUserId);
+    } else {
+      setUserId("");
+    }
+  }, []);
 
   const getHeaderText = () => { // Segments the URL and grabs the last word and assigns it to a variable we can use as a header
     const pathSegments = location.pathname.split("/").filter((segment) => segment !== "");
@@ -197,16 +209,14 @@ useEffect(() => {
             </>
           )}
           <Routes>
-                <Route path="/" element={<Login updateToken={updateLocalToken} />} />
-                <Route
-                    path="/signup"
-                    element={<Signup updateToken={updateLocalToken} />}
-                />
-                <Route path="/dashboard" element={<Dashboard
-                    token={sessionToken} />} />
-                <Route path="/profile" element={<Profile
-                    token={sessionToken} />} />
-            </Routes>
+            <Route path="/" element={<Login updateToken={updateLocalToken} setUserId={updateLocalUserId} />} />
+            <Route
+              path="/signup"
+              element={<Signup updateToken={updateLocalToken} setUserId={updateLocalUserId} />}
+            />
+            <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
+            <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
+          </Routes>
         </Box>
       </ThemeProvider>
     </div>

@@ -7,16 +7,16 @@ import Signup from "./components/auth/Signup";
 import { useEffect, useState } from "react";
 
 function App() {
-  //State for user token and user name
+  // // State for user token and user name
   // const [sessionToken, setSessionToken] = useState("");
 
-  //Function for updating token in local storage
+  // // Function for updating token in local storage
   // const updateLocalToken = (newToken) => {
   //   localStorage.setItem("token", newToken);
   //   setSessionToken(newToken);
   // };
 
-  //Effect that keeps the token when the page re-renders
+  // // Effect that keeps the token when the page re-renders
   // useEffect(() => {
   //   if (localStorage.getItem("token")) {
   //     setSessionToken(localStorage.getItem("token"));

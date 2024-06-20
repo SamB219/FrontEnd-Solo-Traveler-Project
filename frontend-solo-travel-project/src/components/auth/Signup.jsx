@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
-export default function SignUp({ updateToken }) {
+export default function SignUp({ updateToken, setUserId }) {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -80,6 +80,7 @@ export default function SignUp({ updateToken }) {
       const data = await response.json();
       if (data.message === "Success!") {
         updateToken(data.token);
+        setUserId(data.userId); // added user id
         navigate("/dashboard");
       } else {
         alert(data.message);
@@ -142,7 +143,6 @@ export default function SignUp({ updateToken }) {
                   id="userName"
                   label="Username"
                   name="userName"
-                  // autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
