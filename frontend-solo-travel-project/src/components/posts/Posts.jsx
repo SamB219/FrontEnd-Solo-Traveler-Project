@@ -75,6 +75,8 @@ export default function PostCard({ post, userId, token }) {
             <MoreVertIcon />
           </IconButton>
         }
+        title={props.post.title}
+        subheader={formatDate(props.post.eventDate)}
         title={post.title}
         subheader={formatDate(post.date)}
       />
