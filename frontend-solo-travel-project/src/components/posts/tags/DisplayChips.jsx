@@ -35,4 +35,4 @@ export default function DisplayChips(props) {
     </>
   );
 }
-/* variant ? likedStyle : unLikedStyle */
+
