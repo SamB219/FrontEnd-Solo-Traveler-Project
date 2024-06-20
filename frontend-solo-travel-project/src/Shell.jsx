@@ -86,7 +86,7 @@ const defaultTheme = createTheme();
 function Shell() {
   const [open, setOpen] = React.useState(true);
   const [sessionToken, setSessionToken] = useState("");
-  const [userId, setUserId] = useState(""); // Add state for userId
+  const [userId, setUserId] = useState(""); 
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -97,9 +97,9 @@ function Shell() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("userId"); // Remove userId from local storage
+    localStorage.removeItem("userId"); 
     setSessionToken("");
-    setUserId(""); // Clear userId state
+    setUserId(""); 
     navigate("/");
   };
 

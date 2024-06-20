@@ -13,7 +13,7 @@ function Profile(props) {
     // If props or props.token is null, set to empty string
     const token = (props && props.token) ?? "";
 
-    const { firstName, lastName, age, bio, country, travelPreferences, interests,
+    const { firstName, lastName, age, bio, country, travelPreferences, interests, 
         getProfile, updateProfile } = useProfile()
 
     const [changedAge, setChangedAge] = useState(age)
