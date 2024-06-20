@@ -79,7 +79,7 @@ export default function PostCard(props) {
           </IconButton>
         }
         title={props.post.title}
-        subheader={formatDate(props.post.date)}
+        subheader={formatDate(props.post.eventDate)}
       />
       <CardMedia
         component="img"

@@ -5,20 +5,19 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
+import dayjs from "dayjs";
 import { IconButton } from "@mui/material";
-
 import { baseURL } from "../../environment";
 import FileUpload from "../upload/FileUpload";
 import Tags from "./tags/Tags";
-import { OpenStreetMapProvider } from "leaflet-geosearch";
-
-const provider = new OpenStreetMapProvider();
+import LocationSearch from "./LocationSearch";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
+  height: 550,
   width: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -31,6 +30,9 @@ const style = {
 export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState();
+  const [date, setDate] = useState();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -40,16 +42,20 @@ export default function BasicModal(props) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log("pinged submit");
     const data = new FormData(e.currentTarget);
     const title = data.get("title");
     const description = data.get("description");
-    const location = data.get("location");
     const tags = selected;
+    const location = selectedLocation;
+    const eventDate = date;
 
     let bodyObj = JSON.stringify({
       title,
       description,
       tags,
+      location,
+      eventDate,
     });
 
     const url = `${baseURL}/post/new`;
@@ -66,10 +72,7 @@ export default function BasicModal(props) {
     try {
       const response = await fetch(url, requestOption);
       const data = await response.json();
-      const locationResults = await provider.search({ query: location });
       handleClose();
-      console.log(data);
-      console.log(locationResults);
       refreshPage();
     } catch (err) {
       console.error(err.message);
@@ -91,71 +94,75 @@ export default function BasicModal(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box
-          sx={style}
-          component="form"
-          noValidate
-          onSubmit={handleSubmit}
-          /*  onSubmit={handleSubmit} */
-          /* SET WIDTH WITH MX */
-        >
+        <Box>
           <Box
-            sx={{
-              p: 1,
-              display: "flex",
-              justifyContent: "flex-end",
-              position: "absolute",
-              top: 5,
-              right: 5,
-            }}
+            sx={style}
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            /*  onSubmit={handleSubmit} */
+            /* SET WIDTH WITH MX */
           >
-            <IconButton onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="title"
-            label="Event Title"
-            name="title"
-            autoComplete="title"
-            autoFocus
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="description"
-            label="Description"
-            id="description"
-            multiline
-            rows={4}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="location"
-            label="Location"
-            id="location"
-          />
-          <Tags selected={selected} setSelected={setSelected} />
-          <Box
-            sx={{ display: "flex", justifyContent: "center", paddingBottom: 3 }}
-          >
-            <FileUpload />
-          </Box>
+            <Box
+              sx={{
+                p: 1,
+                display: "flex",
+                justifyContent: "flex-end",
+                position: "absolute",
+                top: 5,
+                right: 5,
+              }}
+            >
+              <IconButton onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="title"
+              label="Event Title"
+              name="title"
+              autoComplete="title"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="description"
+              label="Description"
+              id="description"
+              multiline
+              rows={4}
+            />
+            <Tags selected={selected} setSelected={setSelected} />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                paddingBottom: 3,
+              }}
+            >
+              <FileUpload />
+            </Box>
 
-          <Button
-            variant="contained"
-            sx={{ mt: 0, mb: 0 }}
-            size="large"
-            type="submit"
-          >
-            Create
-          </Button>
+            <Button
+              variant="contained"
+              sx={{ mt: 0, mb: 0 }}
+              size="large"
+              type="submit"
+            >
+              Create
+            </Button>
+          </Box>
+          <LocationSearch
+            selectedLocation={selectedLocation}
+            setSelectedLocation={setSelectedLocation}
+            date={date}
+            setDate={setDate}
+          />
         </Box>
       </Modal>
     </div>
