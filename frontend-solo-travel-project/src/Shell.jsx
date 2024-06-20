@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import React from "react";
 import "./App.css";
 import Login from "./components/auth/Login";
@@ -33,6 +33,7 @@ import { navListItems } from "./components/dash/navItems";
 import SimpleMap from "./components/maps/SimpleMap";
 // import { Button } from "@mui/material";
 import PostIndex from "./components/posts/PostIndex";
+import { baseURL } from "./environment";
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
@@ -82,27 +83,75 @@ const Drawer = styled(MuiDrawer, {
 
 const defaultTheme = createTheme();
 
-function Shell(props) {
+function Shell() {
   const [open, setOpen] = React.useState(true);
+  const [sessionToken, setSessionToken] = useState("");
+  const [userId, setUserId] = useState(""); // Add state for userId
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   // Logout Function
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    props.setSessionToken("");
+    localStorage.removeItem("userId"); // Remove userId from local storage
+    setSessionToken("");
+    setUserId(""); // Clear userId state
     navigate("/");
   };
+
+  //Function for updating token and userId in local storage
+  const updateLocalToken = (newToken) => {
+    localStorage.setItem("token", newToken);
+    setSessionToken(newToken);
+    if (location.pathname === `${baseURL}` || location.pathname === `${baseURL}/signup`) {
+      setSessionToken("");
+    }
+  };
+
+  const updateLocalUserId = (newUserId) => {
+    localStorage.setItem("userId", newUserId);
+    setUserId(newUserId);
+  };
+
+  //Effect that keeps the token and userId when the page re-renders
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const storedUserId = localStorage.getItem("userId");
+    if (token) {
+      setSessionToken(token);
+    } else {
+      setSessionToken("");
+    }
+    if (storedUserId) {
+      setUserId(storedUserId);
+    } else {
+      setUserId("");
+    }
+  }, []);
+
+  const getHeaderText = () => { // Segments the URL and grabs the last word and assigns it to a variable we can use as a header
+    const pathSegments = location.pathname.split("/").filter((segment) => segment !== "");
+    if (pathSegments.length > 0) {
+      return pathSegments[pathSegments.length - 1].charAt(0).toUpperCase() + pathSegments[pathSegments.length - 1].slice(1);
+    }
+    return "";
+  };
+
+  const shellCheck = location.pathname === `${baseURL}` || location.pathname === `${baseURL}/signup`;
+  // Not currently working, tried to work around the shell not displaying when user uses the back arrow. 
+  // Need to make it to where user cannot go to login or signup if they have a session token
+
 
   return (
     <div className="App">
       <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: "flex " }}>
           <CssBaseline />
-          {props.sessionToken !== "" && (
+          {!shellCheck && sessionToken && (
             <>
               <AppBar position="absolute" open={open}>
                 <Toolbar
@@ -129,7 +178,7 @@ function Shell(props) {
                     noWrap
                     sx={{ flexGrow: 1 }}
                   >
-                    Dashboard
+                    {getHeaderText()}
                   </Typography>
                   <IconButton color="inherit">
                     <Badge badgeContent={0} color="secondary">
@@ -160,8 +209,13 @@ function Shell(props) {
             </>
           )}
           <Routes>
-            <Route path="/dash" element={<Dashboard token={props.token} />} />
-            <Route path="/profile" element={<Profile token={props.token} />} />
+            <Route path="/" element={<Login updateToken={updateLocalToken} setUserId={updateLocalUserId} />} />
+            <Route
+              path="/signup"
+              element={<Signup updateToken={updateLocalToken} setUserId={updateLocalUserId} />}
+            />
+            <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
+            <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
           </Routes>
         </Box>
       </ThemeProvider>

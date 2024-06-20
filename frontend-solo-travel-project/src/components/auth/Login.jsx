@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,21 +9,35 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import IconButton from '@mui/material/IconButton'
+import InputAdornment from "@mui/material/InputAdornment";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../environment";
 
 const defaultTheme = createTheme();
 
-export default function SignInSide({ updateToken }) {
+export default function SignInSide({ updateToken, setUserId }) {
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
     let body = JSON.stringify({
-      //MUI METHOD FOR RETRIEVING FORM DATA
-      identifier: data.get("identifier"),// switched from email to identifier for email and username
+      identifier: data.get("identifier"),
       password: data.get("password"),
     });
 
@@ -42,9 +56,10 @@ export default function SignInSide({ updateToken }) {
       if (data.message === "Successful!") {
         console.log(data);
         updateToken(data.token);
-        navigate("/shell/dash");
+        setUserId(data.userId); // added user id
+        navigate("/dashboard");
       } else {
-        alert(data.message);
+        alert('Incorrect Username or Password');
       }
     } catch (error) {
       console.error(error.message);
@@ -91,7 +106,6 @@ export default function SignInSide({ updateToken }) {
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              /* SET WIDTH OF SIGN IN WITH MX */
               sx={{ mt: 1, mx: 12 }}
             >
               <TextField
@@ -110,19 +124,24 @@ export default function SignInSide({ updateToken }) {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
-              {/*  
-              DOES THIS WORK???
-
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-
-              BELOW: FORGOT PASSWORD LINK CURRENTLY GOES NOWHERE
-              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -143,16 +162,6 @@ export default function SignInSide({ updateToken }) {
                   </Link>
                 </Grid>
               </Grid>
-
-              {/* OR */}
-              {/* <Button
-                onClick={handleSignup}
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Signup
-              </Button> */}
             </Box>
           </Box>
         </Grid>
