@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
-export default function SignUp({ updateToken }) {
+export default function SignUp({ updateToken, setUserId }) {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -49,6 +49,13 @@ export default function SignUp({ updateToken }) {
     const userName = data.get("userName");
     const email = data.get("email");
     const password = data.get("password");
+    const confirmPassword = data.get("confirm-password")
+
+    if (password !== confirmPassword) {
+      console.log('Passwords do not match')
+      alert('Passwords do not match!')
+      return;
+    }
 
     let bodyObj = JSON.stringify({
       firstName,
@@ -73,7 +80,8 @@ export default function SignUp({ updateToken }) {
       const data = await response.json();
       if (data.message === "Success!") {
         updateToken(data.token);
-        navigate("/shell/dash");
+        setUserId(data.userId); // added user id
+        navigate("/dashboard");
       } else {
         alert(data.message);
       }
@@ -135,7 +143,6 @@ export default function SignUp({ updateToken }) {
                   id="userName"
                   label="Username"
                   name="userName"
-                  // autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -166,7 +173,7 @@ export default function SignUp({ updateToken }) {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -191,7 +198,7 @@ export default function SignUp({ updateToken }) {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                          {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
                     ),

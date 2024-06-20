@@ -53,7 +53,7 @@ export default function Dashboard(props) {
               <AddPost token={props.token} />
             </Paper>
             <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-              <PostIndex token={props.token} />
+              <PostIndex token={props.token} userId={props.userId}/>
             </Paper>
           </Grid>
         </Container>

@@ -40,11 +40,9 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function PostCard(props) {
-  const { post, userId, token } = props;
+export default function PostCard({ post, userId, token }) {
   const [expanded, setExpanded] = React.useState(false);
-  const [likeCount, setLikeCount] = React.useState(0);
-  const [liked, setLiked] = React.useState(false);
+  const [likeCount, setLikeCount] = React.useState(post.likes ? post.likes.length : 0);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -53,7 +51,6 @@ export default function PostCard(props) {
   React.useEffect(() => {
     if (post && post.likes) {
       setLikeCount(post.likes.length);
-      setLiked(post.likes.includes(userId));
     }
   }, [post, userId]);
 
@@ -78,8 +75,8 @@ export default function PostCard(props) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={props.post.title}
-        subheader={formatDate(props.post.date)}
+        title={post.title}
+        subheader={formatDate(post.date)}
       />
       <CardMedia
         component="img"
@@ -89,8 +86,9 @@ export default function PostCard(props) {
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {props.post.tags.map((tag) => (
+          {post.tags.map((tag) => (
             <Chip
+              key={tag} // Added key prop for list rendering
               label={tag}
               variant={"outlined"}
               color={"primary"}
@@ -100,12 +98,12 @@ export default function PostCard(props) {
         </Typography>
         <Box sx={{ p: 1 }}>
           <Typography variant="body" color="text.secondary">
-            {props.post.description}
+            {post.description}
           </Typography>
         </Box>
       </CardContent>
       <CardActions disableSpacing>
-        <LikeFunction postId={post._id} userId={userId} token={token} />
+        <LikeFunction postId={post._id} userId={userId} token={token} updateLikeCount={setLikeCount} likeCount={likeCount} />
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
