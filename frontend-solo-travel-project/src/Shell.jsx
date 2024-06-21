@@ -34,6 +34,7 @@ import SimpleMap from "./components/maps/SimpleMap";
 // import { Button } from "@mui/material";
 import PostIndex from "./components/posts/PostIndex";
 import { baseURL } from "./environment";
+import MyLikes from "./components/likes/MyLikes";
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
@@ -216,6 +217,7 @@ function Shell() {
             />
             <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
             <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
+            <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
           </Routes>
         </Box>
       </ThemeProvider>
