@@ -152,7 +152,7 @@ export default function SignInSide({ updateToken, setUserId }) {
               </Button>
               <Grid container justifyContent="space-between">
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="/password-reset" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>

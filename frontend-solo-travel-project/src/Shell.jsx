@@ -35,6 +35,7 @@ import SimpleMap from "./components/maps/SimpleMap";
 import PostIndex from "./components/posts/PostIndex";
 import { baseURL } from "./environment";
 import MyLikes from "./components/likes/MyLikes";
+import PasswordReset from "./components/passwordReset/PasswordReset";
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
@@ -215,6 +216,7 @@ function Shell() {
               path="/signup"
               element={<Signup updateToken={updateLocalToken} setUserId={updateLocalUserId} />}
             />
+            <Route path="/password-reset" element={<PasswordReset />} />
             <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
             <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
             <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
