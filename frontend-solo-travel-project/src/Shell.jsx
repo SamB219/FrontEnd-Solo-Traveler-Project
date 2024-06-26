@@ -143,17 +143,12 @@ function Shell() {
     return "";
   };
 
-  const shellCheck = location.pathname === `${baseURL}` || location.pathname === `${baseURL}/signup`;
-  // Not currently working, tried to work around the shell not displaying when user uses the back arrow. 
-  // Need to make it to where user cannot go to login or signup if they have a session token
-
-
   return (
     <div className="App">
       <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: "flex " }}>
           <CssBaseline />
-          {!shellCheck && sessionToken && (
+          { sessionToken && (
             <>
               <AppBar position="absolute" open={open}>
                 <Toolbar
