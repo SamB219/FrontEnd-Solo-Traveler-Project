@@ -9,6 +9,9 @@ import Grid from "@mui/material/Grid";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
+import CloseIcon from "@mui/icons-material/Close";
+import { IconButton } from "@mui/material";
+
 //Date-Time picker imports
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
@@ -16,12 +19,17 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 //Leaflet imports
 import { OpenStreetMapProvider } from "leaflet-geosearch";
+import ImageUpload from "./images/ImageUpload";
 
 function LocationSearch({
   selectedLocation,
   setSelectedLocation,
   date,
   setDate,
+  selectedImage,
+  setImage64,
+  setImage,
+  setOpen1,
 }) {
   const provider = new OpenStreetMapProvider();
   const [locations, setLocations] = useState([]);
@@ -65,6 +73,11 @@ function LocationSearch({
   };
   const handleClose = () => {
     setOpenModal(false);
+    setOpen1(false);
+  };
+
+  const handleNext = () => {
+    setOpenModal(false);
   };
   const styles = {
     position: "absolute",
@@ -76,6 +89,7 @@ function LocationSearch({
     bgcolor: "background.paper",
     maxHeight: 396,
     maxWidth: 400,
+
     overflow: "auto",
   };
 
@@ -84,8 +98,8 @@ function LocationSearch({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    height: 550,
-    width: 400,
+    height: 564,
+    width: 900,
     bgcolor: "background.paper",
     /*  border: "1px solid #000", */
     boxShadow: 24,
@@ -105,83 +119,140 @@ function LocationSearch({
       >
         <ClickAwayListener onClickAway={handleClickAway}>
           <Box
-            component="form"
+            /*  component="form"
             noValidate
-            onSubmit={handleLocation}
+            onSubmit={handleLocation} */
             sx={boxStyle}
           >
+            <Box
+              sx={{
+                p: 1,
+                display: "flex",
+                justifyContent: "flex-end",
+                position: "absolute",
+                top: 5,
+                right: 10,
+              }}
+            >
+              <IconButton onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
             <Box sx={{ marginBottom: 3, fontFamily: "verdana" }}>
               <Typography variant="h5">Plan your Event</Typography>
             </Box>
 
             <Divider />
-
-            <Box>
-              <Typography
-                sx={{ marginBottom: 1, marginTop: 3, fontFamily: "verdana" }}
-              >
-                Where to?
-              </Typography>
-              <TextField
-                required
-                fullWidth
-                name="location"
-                label="Location"
-                id="location"
-              />
-            </Box>
-
-            {open ? (
-              <Grid container spacing={2} sx={styles}>
-                {locations.map((location) => (
-                  <Grid item key={key++}>
-                    <Button
-                      variant="outlined"
-                      onClick={() => handleSelect(location)}
+            <Grid container columns={2}>
+              <Grid item>
+                <Box component="form" noValidate onSubmit={handleLocation}>
+                  <Box>
+                    <Typography
+                      sx={{
+                        marginBottom: 1,
+                        marginTop: 3,
+                        fontFamily: "verdana",
+                      }}
                     >
-                      {location[0]}
-                    </Button>
-                  </Grid>
-                ))}
-              </Grid>
-            ) : null}
+                      Where to?
+                    </Typography>
+                    <TextField
+                      required
+                      fullWidth
+                      name="location"
+                      label="Location"
+                      id="location"
+                      sx={{ width: 375 }}
+                    />
+                  </Box>
 
-            <Button
-              type="submit"
-              onClick={handleClick}
-              sx={{ marginBottom: 1, marginTop: 0.5 }}
-            >
-              Search
-            </Button>
-            {selectedLocation ? (
-              <Paper
-                sx={{
-                  p: 2,
-                }}
-                elevation={5}
-              >
-                {selectedLocation}
-              </Paper>
-            ) : null}
-            <Box>
-              <Typography
-                sx={{ marginBottom: 1, marginTop: 2, fontFamily: "verdana" }}
-              >
-                What time?
-              </Typography>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker
-                  required
-                  value={date}
-                  onChange={(newDate) => setDate(newDate)}
+                  {open ? (
+                    <Grid container spacing={2} sx={styles}>
+                      {locations.map((location) => (
+                        <Grid item key={key++}>
+                          <Button
+                            variant="outlined"
+                            onClick={() => handleSelect(location)}
+                          >
+                            {location[0]}
+                          </Button>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  ) : null}
+
+                  <Button
+                    type="submit"
+                    onClick={handleClick}
+                    sx={{ marginBottom: 1, marginTop: 0.5 }}
+                  >
+                    Search
+                  </Button>
+                  {selectedLocation ? (
+                    <Paper
+                      sx={{
+                        p: 2,
+                        width: 375,
+                        maxHeight: 120,
+                      }}
+                      elevation={5}
+                    >
+                      {selectedLocation}
+                    </Paper>
+                  ) : (
+                    <Paper
+                      sx={{
+                        p: 2,
+                        width: 375,
+                        height: 90,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      elevation={5}
+                    >
+                      Select your Location
+                    </Paper>
+                  )}
+                  <Box>
+                    <Typography
+                      sx={{
+                        marginBottom: 1,
+                        marginTop: 2,
+                        fontFamily: "verdana",
+                      }}
+                    >
+                      What time?
+                    </Typography>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateTimePicker
+                        required
+                        value={date}
+                        onChange={(newDate) => setDate(newDate)}
+                      />
+                    </LocalizationProvider>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item sx={{ height: 450, width: 460 }}>
+                <ImageUpload
+                  selectedImage={selectedImage}
+                  setImage={setImage}
+                  setImage64={setImage64}
                 />
-              </LocalizationProvider>
-            </Box>
+              </Grid>
+            </Grid>
             <Button
-              variant={date && selectedLocation ? "contained" : "outlined"}
+              variant={
+                date && selectedLocation && selectedImage
+                  ? "contained"
+                  : "outlined"
+              }
               sx={{ mt: 0, mb: 0, top: 495, position: "absolute" }}
               size="large"
-              onClick={date && selectedLocation ? handleClose : null}
+              onClick={
+                date && selectedLocation && selectedImage ? handleNext : null
+              }
             >
               Next
             </Button>

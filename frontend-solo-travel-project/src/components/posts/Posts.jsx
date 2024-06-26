@@ -42,7 +42,9 @@ const ExpandMore = styled((props) => {
 
 export default function PostCard({ post, userId, token }) {
   const [expanded, setExpanded] = React.useState(false);
-  const [likeCount, setLikeCount] = React.useState(post.likes ? post.likes.length : 0);
+  const [likeCount, setLikeCount] = React.useState(
+    post.likes ? post.likes.length : 0
+  );
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -57,6 +59,8 @@ export default function PostCard({ post, userId, token }) {
   return (
     <Card
       sx={{
+        /* display: "flex",
+        flexDirection: "column", */
         maxWidth: 345,
         minWidth: 345,
         minHeight: 500,
@@ -81,10 +85,10 @@ export default function PostCard({ post, userId, token }) {
       <CardMedia
         component="img"
         height="194"
-        image="https://picsum.photos/seed/picsum/1400/1500"
+        image={post.imgUrl}
         alt="Paella dish"
       />
-      <CardContent>
+      <CardContent sx={{ height: 170 }}>
         <Typography variant="body2" color="text.secondary">
           {post.tags.map((tag) => (
             <Chip
@@ -102,8 +106,15 @@ export default function PostCard({ post, userId, token }) {
           </Typography>
         </Box>
       </CardContent>
+
       <CardActions disableSpacing>
-        <LikeFunction postId={post._id} userId={userId} token={token} updateLikeCount={setLikeCount} likeCount={likeCount} />
+        <LikeFunction
+          postId={post._id}
+          userId={userId}
+          token={token}
+          updateLikeCount={setLikeCount}
+          likeCount={likeCount}
+        />
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
