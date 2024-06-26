@@ -13,7 +13,7 @@ function Profile(props) {
     // If props or props.token is null, set to empty string
     const token = (props && props.token) ?? "";
 
-    const { firstName, lastName, age, bio, country, travelPreferences, interests, 
+    const { firstName, lastName, age, bio, country, travelPreferences, interests,
         getProfile, updateProfile } = useProfile()
 
     const [changedAge, setChangedAge] = useState(age)
@@ -21,10 +21,15 @@ function Profile(props) {
     const [changedCountry, setChangedCountry] = useState(country)
     const [changedTravelPreferences, setChangedTravelPreferences] = useState(travelPreferences)
     const [changedInterests, setChangedInterests] = useState(interests)
+    const [isEditMode, setIsEditMode] = useState(false);
 
     const handleUpdateProfile = () => {
         updateProfile(changedAge, changedBio, changedCountry, changedTravelPreferences, changedInterests)
         window.location.reload();
+    }
+
+    const handleEditClick = () => {
+        setIsEditMode(!isEditMode);
     }
 
     useEffect(() => {
@@ -53,110 +58,129 @@ function Profile(props) {
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                             <Typography component="h1" variant="h5">
-                                First name:
+                                First name: {firstName}
                             </Typography>
-                            <TextField
-                                margin="normal"
-                                fullWidth
-                                readOnly
-                                id="firstName"
-                                value={firstName}
-                                name="First Name"
-                            />
+                            {isEditMode && (
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    id="firstName"
+                                    defaultValue={firstName}
+                                    name="First Name"
+                                    readOnly
+                                />
+                            )}
+                            <Typography component="h1" variant="h5" {...!isEditMode && {sx:{ mt: 5, mb: 5}}}>
+                                Last name: {lastName}
+                            </Typography>
+                            {isEditMode && (
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    id="lastName"
+                                    defaultValue={lastName}
+                                    name="Last Name"
+                                    readOnly
+                                />
+                            )}
                             <Typography component="h1" variant="h5">
-                                Last name:
+                                Age: {age}
                             </Typography>
-                            <TextField
-                                margin="normal"
-                                fullWidth
-                                readOnly
-                                id="lastName"
-                                value={lastName}
-                                name="Last Name"
-
-                            />
-                            <Typography component="h1" variant="h5">
-                                Age:
-                            </Typography>
-                            <TextField
-                                margin="normal"
-                                fullWidth
-                                id="age"
-                                name="Age"
-                                value={changedAge}
-                                onChange={(e) => { setChangedAge(e.target.value) }}
-                            />
+                            {isEditMode && (
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    id="age"
+                                    name="Age"
+                                    defaultValue={changedAge}
+                                    onChange={(e) => { setChangedAge(e.target.value) }}
+                                />
+                            )}
                         </Paper>
                         <Toolbar />
                         <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                             <Typography component="h1" variant="h5">
-                                Biography:
+                                Biography: {bio}
                             </Typography>
-                            <TextField
-                                margin="normal"
-                                fullWidth
-                                id="bio"
-                                label="Tell us something about yourself"
-                                name="Bio"
-                                defaultValue={changedBio}
-                                onChange={(e) => { setChangedBio(e.target.value) }}
-
-                            />
+                            {isEditMode && (
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    id="bio"
+                                    label="Tell us something about yourself"
+                                    name="Bio"
+                                    defaultValue={changedBio}
+                                    onChange={(e) => { setChangedBio(e.target.value) }}
+                                />
+                            )}
+                        </Paper>
+                        <Toolbar />
+                        <Paper sx={{ p: 2, display: "flex", flexDirection: "column", mb: 8}}>
+                            <Typography component="h1" variant="h5">
+                                Country: {country}
+                            </Typography>
+                            {isEditMode && (
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    id="country"
+                                    label="What country do you live in?"
+                                    name="country"
+                                    defaultValue={changedCountry}
+                                    onChange={(e) => { setChangedCountry(e.target.value) }}
+                                />
+                            )}
+                        </Paper>
+                        <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                            <Typography component="h1" variant="h5">
+                                Travel Preferences: {travelPreferences}
+                            </Typography>
+                            {isEditMode && (
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    id="travelPreferences"
+                                    label="What are your preferences while traveling?"
+                                    name="travelPreferences"
+                                    defaultValue={changedTravelPreferences}
+                                    onChange={(e) => { setChangedTravelPreferences(e.target.value) }}
+                                />
+                            )}
                         </Paper>
                         <Toolbar />
                         <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                             <Typography component="h1" variant="h5">
-                                Country:
+                                Interests: {interests}
                             </Typography>
-                            <TextField
-                                margin="normal"
-                                fullWidth
-                                id="country"
-                                label="What country do you live in?"
-                                name="country"
-                                defaultValue={changedCountry}
-                                onChange={(e) => { setChangedCountry(e.target.value) }}
-
-                            />
+                            {isEditMode && (
+                                <TextField
+                                    margin="normal"
+                                    fullWidth
+                                    id="interests"
+                                    label="What are some things you are interested in?"
+                                    name="interests"
+                                    defaultValue={changedInterests}
+                                    onChange={(e) => { setChangedInterests(e.target.value) }}
+                                />
+                            )}
                         </Paper>
-                        <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                            <Typography component="h1" variant="h5">
-                                Travel Preferences:
-                            </Typography>
-                            <TextField
-                                margin="normal"
+                        {isEditMode ? (
+                            <Button type="submit"
                                 fullWidth
-                                id="travelPreferences"
-                                label="What are you preferences while traveling?"
-                                name="travelPreferences"
-                                defaultValue={changedTravelPreferences}
-                                onChange={(e) => { setChangedTravelPreferences(e.target.value) }}
-
-                            />
-                        </Paper>
-                        <Toolbar />
-                        <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                            <Typography component="h1" variant="h5">
-                                Interests:
-                            </Typography>
-                            <TextField
-                                margin="normal"
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                                onClick={handleUpdateProfile}>
+                                Save
+                            </Button>
+                        ) : (
+                            <Button type="button"
                                 fullWidth
-                                id="interests"
-                                label="What are some things you are interested in?"
-                                name="interests"
-                                defaultValue={changedInterests}
-                                onChange={(e) => { setChangedInterests(e.target.value) }}
-
-                            />
-                        </Paper>
-                        <Button type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                            onClick={handleUpdateProfile}>
-                            Update
-                        </Button>
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                                onClick={handleEditClick}>
+                                Edit Profile
+                            </Button>
+                        )}
                     </Grid>
                 </Container>
             </Box>
