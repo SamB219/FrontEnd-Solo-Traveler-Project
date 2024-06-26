@@ -5,12 +5,15 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
-import dayjs from "dayjs";
+
 import { IconButton } from "@mui/material";
 import { baseURL } from "../../environment";
-import FileUpload from "../upload/FileUpload";
+
 import Tags from "./tags/Tags";
 import LocationSearch from "./LocationSearch";
+
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 
 const style = {
   position: "absolute",
@@ -20,7 +23,6 @@ const style = {
   height: 550,
   width: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
   mt: 1,
@@ -28,13 +30,15 @@ const style = {
 };
 
 export default function BasicModal(props) {
-  const [open, setOpen] = React.useState(false);
+  const [open1, setOpen1] = useState(false);
   const [selected, setSelected] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState();
+  const [selectedImage, setImage] = useState();
+  const [selectedImageBase64, setImage64] = useState();
   const [date, setDate] = useState();
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => setOpen1(true);
+  const handleClose = () => setOpen1(false);
 
   function refreshPage() {
     window.location.reload();
@@ -49,6 +53,7 @@ export default function BasicModal(props) {
     const tags = selected;
     const location = selectedLocation;
     const eventDate = date;
+    const image = selectedImageBase64;
 
     let bodyObj = JSON.stringify({
       title,
@@ -56,6 +61,7 @@ export default function BasicModal(props) {
       tags,
       location,
       eventDate,
+      image,
     });
 
     const url = `${baseURL}/post/new`;
@@ -90,7 +96,7 @@ export default function BasicModal(props) {
       </Button>
 
       <Modal
-        open={open}
+        open={open1}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -117,6 +123,13 @@ export default function BasicModal(props) {
                 <CloseIcon />
               </IconButton>
             </Box>
+
+            <Box sx={{ marginBottom: 2.5, fontFamily: "verdana" }}>
+              <Typography variant="h5">Add Some Details</Typography>
+            </Box>
+
+            <Divider />
+
             <TextField
               margin="normal"
               required
@@ -126,6 +139,7 @@ export default function BasicModal(props) {
               name="title"
               autoComplete="title"
               autoFocus
+              sx={{ marginTop: 3 }}
             />
             <TextField
               margin="normal"
@@ -138,19 +152,9 @@ export default function BasicModal(props) {
               rows={4}
             />
             <Tags selected={selected} setSelected={setSelected} />
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                paddingBottom: 3,
-              }}
-            >
-              <FileUpload />
-            </Box>
-
             <Button
               variant="contained"
-              sx={{ mt: 0, mb: 0 }}
+              sx={{ mt: 0, mb: 0, position: "absolute", bottom: 20 }}
               size="large"
               type="submit"
             >
@@ -162,7 +166,12 @@ export default function BasicModal(props) {
             setSelectedLocation={setSelectedLocation}
             date={date}
             setDate={setDate}
+            selectedImage={selectedImage}
+            setImage64={setImage64}
+            setImage={setImage}
+            setOpen1={setOpen1}
           />
+          {/*    <ImageUpload /> */}
         </Box>
       </Modal>
     </div>
