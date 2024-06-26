@@ -35,6 +35,7 @@ import SimpleMap from "./components/maps/SimpleMap";
 import PostIndex from "./components/posts/PostIndex";
 import { baseURL } from "./environment";
 import MyLikes from "./components/likes/MyLikes";
+import PasswordReset from "./components/passwordReset/PasswordReset";
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
@@ -142,17 +143,12 @@ function Shell() {
     return "";
   };
 
-  const shellCheck = location.pathname === `${baseURL}` || location.pathname === `${baseURL}/signup`;
-  // Not currently working, tried to work around the shell not displaying when user uses the back arrow. 
-  // Need to make it to where user cannot go to login or signup if they have a session token
-
-
   return (
     <div className="App">
       <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: "flex " }}>
           <CssBaseline />
-          {!shellCheck && sessionToken && (
+          { sessionToken && (
             <>
               <AppBar position="absolute" open={open}>
                 <Toolbar
@@ -215,6 +211,7 @@ function Shell() {
               path="/signup"
               element={<Signup updateToken={updateLocalToken} setUserId={updateLocalUserId} />}
             />
+            <Route path="/password-reset" element={<PasswordReset />} />
             <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
             <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
             <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
