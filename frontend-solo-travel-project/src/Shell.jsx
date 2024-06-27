@@ -41,7 +41,12 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 // import { Button } from "@mui/material";
 import { baseURL } from "./environment";
+
+import MyLikes from "./components/likes/MyLikes";
+import PasswordReset from "./components/passwordReset/PasswordReset";
+import NotificationModal from "./components/notifications/NotificationModal";
 import Inbox from "@mui/icons-material/Inbox";
+
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
@@ -93,10 +98,16 @@ const defaultTheme = createTheme();
 
 function Shell() {
   const [open, setOpen] = React.useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionToken, setSessionToken] = useState("");
   const [userId, setUserId] = useState(""); 
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+
+  // Toggle notification modal
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
   };
 
   // Logout Function
@@ -183,7 +194,7 @@ function Shell() {
                   >
                     {getHeaderText()}
                   </Typography>
-                  <IconButton color="inherit">
+                  <IconButton color="inherit" onClick={toggleModal}>
                     <Badge badgeContent={0} color="secondary">
                       <NotificationsIcon />
                     </Badge>
@@ -226,6 +237,7 @@ function Shell() {
           </Routes>
         </Box>
       </ThemeProvider>
+      <NotificationModal isOpen={isModalOpen} onClose={toggleModal} />
     </div>
   );
 }
