@@ -7,7 +7,7 @@ export default function ColorChips(props) {
   const tags = [
     "Outdoors",
     "Indoors",
-    "Cofee",
+    "Coffee",
     "Museum",
     "Art",
     "Sightseeing",
