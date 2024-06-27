@@ -6,6 +6,8 @@ import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import React, { useState, useEffect } from 'react'
 import useProfile from '../hooks/useProfile';
+import "react-chat-elements/dist/main.css";
+import { MessageBox } from "react-chat-elements";
 
 function Profile(props) {
 
@@ -15,7 +17,7 @@ function Profile(props) {
 
     const { firstName, lastName, age, bio, country, travelPreferences, interests,
         getProfile, updateProfile } = useProfile()
-
+    // TODO make first and last name change as well
     const [changedAge, setChangedAge] = useState(age)
     const [changedBio, setChangedBio] = useState(bio)
     const [changedCountry, setChangedCountry] = useState(country)
@@ -70,7 +72,7 @@ function Profile(props) {
                                     readOnly
                                 />
                             )}
-                            <Typography component="h1" variant="h5" {...!isEditMode && {sx:{ mt: 5, mb: 5}}}>
+                            <Typography component="h1" variant="h5" {...!isEditMode && { sx: { mt: 5, mb: 5 } }}>
                                 Last name: {lastName}
                             </Typography>
                             {isEditMode && (
@@ -115,7 +117,7 @@ function Profile(props) {
                             )}
                         </Paper>
                         <Toolbar />
-                        <Paper sx={{ p: 2, display: "flex", flexDirection: "column", mb: 8}}>
+                        <Paper sx={{ p: 2, display: "flex", flexDirection: "column", mb: 8 }}>
                             <Typography component="h1" variant="h5">
                                 Country: {country}
                             </Typography>

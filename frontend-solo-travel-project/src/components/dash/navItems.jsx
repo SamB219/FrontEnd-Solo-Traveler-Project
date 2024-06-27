@@ -18,30 +18,35 @@ export const navListItems = (
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
+
     <ListItemButton component={Link} to="/profile">
       <ListItemIcon>
         <AccountCircleIcon />
       </ListItemIcon>
       <ListItemText primary="Profile" />
     </ListItemButton>
+    
     <ListItemButton component={Link} to="/friends">
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="Friends" />
     </ListItemButton>
-    <ListItemButton component={Link} to="/inbox">
+    
+    <ListItemButton component={Link} to="/message/inbox">
       <ListItemIcon>
         <InboxIcon />
       </ListItemIcon>
       <ListItemText primary="Inbox" />
     </ListItemButton>
+    
     <ListItemButton component={Link} to={"/user/:userId/likes"}>
       <ListItemIcon>
         <FavoriteIcon />
       </ListItemIcon>
       <ListItemText primary="My Likes" />
     </ListItemButton>
+    
     <ListItemButton component={Link} to="/settings">
       <ListItemIcon>
         <SettingsIcon />
