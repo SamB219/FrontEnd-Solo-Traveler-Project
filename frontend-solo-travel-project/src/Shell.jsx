@@ -1,11 +1,25 @@
 import { Route, Routes, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import React from "react";
 import "./App.css";
+
 import Login from "./components/auth/Login";
 import Dashboard from "./components/dash/Dashboard";
 import Signup from "./components/auth/Signup";
-import { useEffect, useState } from "react";
+import InboxDisplay from "./components/inbox/Inbox";
 import Profile from "./components/profile/Profile";
+import MyLikes from "./components/likes/MyLikes";
+import PasswordReset from "./components/passwordReset/PasswordReset";
+import Messaging from "./components/messaging/Messaging";
+import Filter from "./components/dash/Filter";
+import AddPost from "./components/posts/AddPost";
+import { navListItems } from "./components/dash/navItems";
+//Leaflet Import
+import SimpleMap from "./components/maps/SimpleMap";
+import PostIndex from "./components/posts/PostIndex";
+// import { InboxDisplay } from './components'
+
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -23,19 +37,11 @@ import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import AddPost from "./components/posts/AddPost";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router-dom";
 
-import Filter from "./components/dash/Filter";
-import { navListItems } from "./components/dash/navItems";
-//Leaflet Import
-import SimpleMap from "./components/maps/SimpleMap";
 // import { Button } from "@mui/material";
-import PostIndex from "./components/posts/PostIndex";
 import { baseURL } from "./environment";
-import MyLikes from "./components/likes/MyLikes";
-import PasswordReset from "./components/passwordReset/PasswordReset";
+import Inbox from "@mui/icons-material/Inbox";
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
@@ -215,6 +221,8 @@ function Shell() {
             <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
             <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
             <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
+            <Route path="/friends" element={<Messaging />} />
+            <Route path="/message/inbox" element={<InboxDisplay token={sessionToken}/>} />
           </Routes>
         </Box>
       </ThemeProvider>
