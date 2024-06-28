@@ -25,6 +25,7 @@ const defaultTheme = createTheme();
 export default function SignUp({ updateToken, setUserId }) {
   const navigate = useNavigate();
 
+  const [userNameAlert, setUserNameAlert] = useState(false);
   const [emailAlert, setEmailAlert] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -80,12 +81,20 @@ export default function SignUp({ updateToken, setUserId }) {
     try {
       const response = await fetch(url, requestOption);
       const data = await response.json();
+
+      if (response.status === 400) {
+        setUserNameAlert(data.userNameExists);
+        setEmailAlert(data.emailExists);
+        return;
+      } 
+
       if (data.message === "Success!") {
         updateToken(data.token);
         setUserId(data.userId); // added user id
         navigate("/dashboard");
       } else {
-        setEmailAlert(true);
+        setUserNameAlert(data.message.includes(userName));
+        setEmailAlert(data.message.includes(email));
       }
     } catch (err) {
       console.error(err.message);
@@ -226,6 +235,9 @@ export default function SignUp({ updateToken, setUserId }) {
               <Grid sx={{pt: 5}}>
                 {emailAlert &&
                   <Alert severity="error" fullWidth>Email already taken!</Alert>
+                }
+                {userNameAlert &&
+                  <Alert severity="error" fullWidth>Username already taken!</Alert>
                 }
               </Grid>
           </Box>
