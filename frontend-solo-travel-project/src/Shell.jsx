@@ -38,14 +38,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
+import NotificationModal from "./components/notifications/NotificationModal";
 
 // import { Button } from "@mui/material";
 import { baseURL } from "./environment";
 
-import MyLikes from "./components/likes/MyLikes";
-import PasswordReset from "./components/passwordReset/PasswordReset";
-import NotificationModal from "./components/notifications/NotificationModal";
-import Inbox from "@mui/icons-material/Inbox";
+
+
+// import Inbox from "@mui/icons-material/Inbox";
 
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
