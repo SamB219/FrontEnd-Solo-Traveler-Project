@@ -16,6 +16,7 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from "@mui/material/InputAdornment";
+import { Alert } from "@mui/material";
 import { baseURL } from "../../environment";
 import { useNavigate } from "react-router-dom";
 
@@ -24,6 +25,7 @@ const defaultTheme = createTheme();
 export default function SignUp({ updateToken, setUserId }) {
   const navigate = useNavigate();
 
+  const [emailAlert, setEmailAlert] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -83,7 +85,7 @@ export default function SignUp({ updateToken, setUserId }) {
         setUserId(data.userId); // added user id
         navigate("/dashboard");
       } else {
-        alert(data.message);
+        setEmailAlert(true);
       }
     } catch (err) {
       console.error(err.message);
@@ -221,6 +223,11 @@ export default function SignUp({ updateToken, setUserId }) {
                 </Link>
               </Grid>
             </Grid>
+              <Grid sx={{pt: 5}}>
+                {emailAlert &&
+                  <Alert severity="error" fullWidth>Email already taken!</Alert>
+                }
+              </Grid>
           </Box>
         </Box>
       </Container>

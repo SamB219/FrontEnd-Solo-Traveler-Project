@@ -17,7 +17,7 @@ function Profile(props) {
 
     const { firstName, lastName, age, bio, country, travelPreferences, interests,
         getProfile, updateProfile } = useProfile()
-    // TODO make first and last name change as well
+        
     const [changedAge, setChangedAge] = useState(age)
     const [changedBio, setChangedBio] = useState(bio)
     const [changedCountry, setChangedCountry] = useState(country)
