@@ -1,6 +1,8 @@
-//MUI Imports
 import * as React from "react";
+import { useState, useEffect } from "react";
 import { createTheme } from "@mui/material/styles";
+import { baseURL } from "../../environment/index";
+//MUI Imports
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
@@ -11,6 +13,7 @@ import Paper from "@mui/material/Paper";
 import AddPost from "../posts/AddPost";
 import PostIndex from "../posts/PostIndex";
 import Filter from "./Filter";
+import Pin from "../maps/Pin";
 
 //Leaflet Import
 import SimpleMap from "../maps/SimpleMap";
@@ -20,7 +23,47 @@ const drawerWidth = 240; // Adjust this value to change width of navbar popout
 //Currently does nothing because theme is default
 const defaultTheme = createTheme();
 
-export default function Dashboard(props) {
+export default function Dashboard({ token, userId }) {
+  const [posts, setPosts] = useState([]);
+  const [pinElement, setPin] = useState();
+  /*  let pinElement = ""; */
+
+  const fetchPosts = async () => {
+    const url = `${baseURL}/post/all`; //ENDPOINT HERE
+
+    const options = {
+      method: "GET",
+      headers: new Headers({
+        Authorization: token,
+      }),
+    };
+
+    try {
+      const res = await fetch(url, options);
+      if (!res.ok) {
+        throw new Error("Failed to fetch posts");
+      }
+      const data = await res.json();
+      setPosts(data.result);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  function renderPins() {
+    setPin(<Pin posts={posts} />);
+  }
+
+  //EXECUTES FETCH ON PAGE RELOAD
+  useEffect(() => {
+    if (token) {
+      fetchPosts();
+    }
+    if (posts) {
+      renderPins();
+    }
+  }, [token, posts]);
+
   return (
     <>
       <Box
@@ -38,8 +81,9 @@ export default function Dashboard(props) {
         <Toolbar />
         <Container maxWidth="true" sx={{ mt: 4, mb: 0 }}>
           <Grid container spacing={2} position={"relative"}>
-            <SimpleMap />
-            {/*  FILTER DISPLAY GRID ---> Absolutely positioned child element of map*/}
+            {/* {fetch ? <SimpleMap posts={posts} /> : null} */}
+            <SimpleMap posts={posts} pinElement={pinElement} />
+            {/*  FILTER DISPLAY GRID ---> Absolutely positioned child element of container*/}
             <Grid item xs={12} position={"absolute"}>
               <Filter />
             </Grid>
@@ -50,10 +94,15 @@ export default function Dashboard(props) {
         <Container maxWidth="false" sx={{ mt: 3, mb: 4 }}>
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
-              <AddPost token={props.token} />
+              <AddPost token={token} />
             </Paper>
             <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-              <PostIndex token={props.token} userId={props.userId}/>
+              <PostIndex
+                token={token}
+                userId={userId}
+                posts={posts}
+                setPosts={setPosts}
+              />
             </Paper>
           </Grid>
         </Container>
