@@ -23,7 +23,7 @@ const drawerWidth = 240; // Adjust this value to change width of navbar popout
 //Currently does nothing because theme is default
 const defaultTheme = createTheme();
 
-export default function Dashboard({ token, userId }) {
+export default function Dashboard({ token, userId, username }) {
   const [posts, setPosts] = useState([]);
   const [pinElement, setPin] = useState();
   /*  let pinElement = ""; */
@@ -94,7 +94,7 @@ export default function Dashboard({ token, userId }) {
         <Container maxWidth="false" sx={{ mt: 3, mb: 4 }}>
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
-              <AddPost token={token} />
+              <AddPost token={token} username={username}/>
             </Paper>
             <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
               <PostIndex

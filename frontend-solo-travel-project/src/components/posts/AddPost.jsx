@@ -54,6 +54,7 @@ export default function BasicModal(props) {
     const location = selectedLocation;
     const eventDate = date;
     const image = selectedImageBase64;
+    const username = props.username;
 
     let bodyObj = JSON.stringify({
       title,
@@ -62,6 +63,7 @@ export default function BasicModal(props) {
       location,
       eventDate,
       image,
+      username,
     });
 
     const url = `${baseURL}/post/new`;
