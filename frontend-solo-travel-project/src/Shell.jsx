@@ -100,7 +100,7 @@ function Shell() {
   const [open, setOpen] = React.useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionToken, setSessionToken] = useState("");
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(""); 
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -116,9 +116,9 @@ function Shell() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+    localStorage.removeItem("userId"); 
     setSessionToken("");
-    setUserId("");
+    setUserId(""); 
     navigate("/");
   };
 
@@ -165,7 +165,7 @@ function Shell() {
       <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: "flex " }}>
           <CssBaseline />
-          {sessionToken && (
+          { sessionToken && (
             <>
               <AppBar position="absolute" open={open}>
                 <Toolbar
@@ -233,7 +233,7 @@ function Shell() {
             <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
             <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
             <Route path="/friends" element={<Messaging />} />
-            <Route path="/message/inbox" element={<InboxDisplay token={sessionToken} />} />
+            <Route path="/message/inbox" element={<InboxDisplay token={sessionToken}/>} />
           </Routes>
         </Box>
       </ThemeProvider>
