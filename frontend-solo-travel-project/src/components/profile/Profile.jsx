@@ -6,8 +6,6 @@ import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import React, { useState, useEffect } from 'react'
 import useProfile from '../hooks/useProfile';
-import "react-chat-elements/dist/main.css";
-import { MessageBox } from "react-chat-elements";
 
 function Profile(props) {
 
