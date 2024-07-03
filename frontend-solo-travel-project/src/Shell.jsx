@@ -44,6 +44,7 @@ import NotificationModal from "./components/notifications/NotificationModal";
 // import { Button } from "@mui/material";
 import { baseURL } from "./environment";
 import MainInbox from "./components/inbox/MainInbox";
+import Friends from "./components/friends/Friends";
 
 
 
@@ -234,7 +235,7 @@ function Shell() {
             <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
             <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
             <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
-            <Route path="/friends" element={<Messaging />} />
+            <Route path="/friends" element={<Friends />} />
             <Route path="/message/inbox" element={<MainInbox token={sessionToken}/>}/>
           </Routes>
         </Box>
