@@ -69,7 +69,8 @@ export default function PostCard({ post, userId, token }) {
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            {post.username.charAt(0).toUpperCase()}
+            {/* Changed the Avatar to display "U" if user is undefined */}
+            {post.username ? post.username.charAt(0).toUpperCase() : "U"} 
           </Avatar>
         }
         action={
