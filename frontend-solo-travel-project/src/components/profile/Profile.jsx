@@ -6,8 +6,6 @@ import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import React, { useState, useEffect } from 'react'
 import useProfile from '../hooks/useProfile';
-import "react-chat-elements/dist/main.css";
-import { MessageBox } from "react-chat-elements";
 
 function Profile(props) {
 
@@ -62,29 +60,9 @@ function Profile(props) {
                             <Typography component="h1" variant="h5">
                                 First name: {firstName}
                             </Typography>
-                            {isEditMode && (
-                                <TextField
-                                    margin="normal"
-                                    fullWidth
-                                    id="firstName"
-                                    defaultValue={firstName}
-                                    name="First Name"
-                                    readOnly
-                                />
-                            )}
-                            <Typography component="h1" variant="h5" {...!isEditMode && { sx: { mt: 5, mb: 5 } }}>
+                            <Typography component="h1" variant="h5" sx={{ mt: 5, mb: 5 }}>
                                 Last name: {lastName}
                             </Typography>
-                            {isEditMode && (
-                                <TextField
-                                    margin="normal"
-                                    fullWidth
-                                    id="lastName"
-                                    defaultValue={lastName}
-                                    name="Last Name"
-                                    readOnly
-                                />
-                            )}
                             <Typography component="h1" variant="h5">
                                 Age: {age}
                             </Typography>

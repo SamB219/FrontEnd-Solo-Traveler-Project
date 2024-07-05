@@ -7,7 +7,8 @@ import "./App.css";
 import Login from "./components/auth/Login";
 import Dashboard from "./components/dash/Dashboard";
 import Signup from "./components/auth/Signup";
-import InboxDisplay from "./components/inbox/Inbox";
+import ChatBox from "./components/inbox/ChatBox";
+import MessageSidebar from "./components/inbox/MessageSidebar";
 import Profile from "./components/profile/Profile";
 import MyLikes from "./components/likes/MyLikes";
 import PasswordReset from "./components/passwordReset/PasswordReset";
@@ -42,6 +43,8 @@ import NotificationModal from "./components/notifications/NotificationModal";
 
 // import { Button } from "@mui/material";
 import { baseURL } from "./environment";
+import MainInbox from "./components/inbox/MainInbox";
+import Friends from "./components/friends/Friends";
 
 
 
@@ -232,8 +235,8 @@ function Shell() {
             <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
             <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
             <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
-            <Route path="/friends" element={<Messaging />} />
-            <Route path="/message/inbox" element={<InboxDisplay token={sessionToken}/>} />
+            <Route path="/friends" element={<Friends />} />
+            <Route path="/message/inbox" element={<MainInbox token={sessionToken}/>}/>
           </Routes>
         </Box>
       </ThemeProvider>
