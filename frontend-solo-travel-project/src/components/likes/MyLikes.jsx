@@ -61,7 +61,7 @@ const MyLikes = ({ userId, token }) => {
                         </Grid>
                     ))
                 ) : (
-                    <div style={{ marginLeft: '15px', fontSize: '22px', textAlign: 'center' }}>No liked posts</div>
+                    <div style={{ marginLeft: '15px', fontSize: '22px', textAlign: 'center' }}>No Interested Events</div>
                 )}
             </Grid>
         </Box>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import StarIcon from '@mui/icons-material/Star';
+import Button from '@mui/material/Button';
 import { baseURL } from "../../environment/index";
 
 const LikeFunction = ({ postId, userId, token, updateLikeCount, likeCount }) => {
@@ -77,14 +78,22 @@ const LikeFunction = ({ postId, userId, token, updateLikeCount, likeCount }) => 
 
     return (
         <div style={{ display: "flex", alignItems: "center" }}>
-            <button
+            <Button
                 onClick={toggleLike}
-                style={{ background: "none", border: "none", cursor: "pointer" }}
+                variant="contained"
                 disabled={loading}
+                startIcon={<StarIcon sx={{ color: liked ? "#b8860b" : "gray" }} />} 
+                style={{ 
+                    backgroundColor: liked ? "#e0e0e0" : "#f0f0f0", 
+                    color: "black",
+                    textTransform: "none", 
+                    border: liked ? "1px solid #b8860b" : "1px solid #f0f0f0", 
+                    borderRadius: "4px", 
+                }}
             >
-                <FavoriteIcon sx={{ color: liked ? "red" : "gray" }} />
-            </button>
-            <span>{likeCount}</span>
+                Interested
+            </Button>
+            <span style={{ marginLeft: 8 }}>{likeCount}</span>
         </div>
     );
 };
