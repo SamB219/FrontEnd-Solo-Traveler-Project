@@ -29,7 +29,6 @@ import { navListItems } from './components/dash/navItems';
 import Divider from '@mui/material/Divider'; // Add this import
 import List from '@mui/material/List'; // Add this import
 
-
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -83,7 +82,7 @@ function Shell() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sessionToken, setSessionToken] = useState('');
     const [userId, setUserId] = useState('');
-    const [unreadCount, setUnreadCount] = useState(0); 
+    const [unreadCount, setUnreadCount] = useState(0);
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -133,7 +132,7 @@ function Shell() {
     }, []);
 
     useEffect(() => {
-        fetchUnreadCount(); 
+        fetchUnreadCount();
     }, []);
 
     const fetchUnreadCount = async () => {
@@ -152,7 +151,7 @@ function Shell() {
             }
 
             const data = await response.json();
-            setUnreadCount(data.unreadCount); 
+            setUnreadCount(data.unreadCount);
         } catch (error) {
             console.error('Error fetching unread count:', error);
         }
