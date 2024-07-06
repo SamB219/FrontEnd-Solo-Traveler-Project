@@ -235,7 +235,7 @@ function Shell() {
             <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
             <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
             <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
-            <Route path="/friends" element={<Friends />} />
+            <Route path="/friends" element={<Friends userId={userId} token={sessionToken}/>} />
             <Route path="/message/inbox" element={<MainInbox token={sessionToken}/>}/>
           </Routes>
         </Box>

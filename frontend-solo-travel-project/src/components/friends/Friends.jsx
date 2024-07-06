@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Grid, TextField, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography, Paper, Avatar, List, ListItem, ListItemText } from '@mui/material';
+import { baseURL } from "../../environment/index"
+import useFriends from '../hooks/useFriends';
 
-function Friends() {
-    const [friends, setFriends] = useState([]);
+function Friends({ token, userId }) {
 
-    const fetchFriends = async () => {
-        // Replace this with your actual API call
-        const response = await fetch('/api/friends');
-        const data = await response.json();
-        setFriends(data);
-    };
-
-    useEffect(() => {
-        fetchFriends();
-    }, []);
+    const { friends, fetchFriends, addFriend, deleteFriend } = useFriends();
 
     return (
         <Grid container>
             <Grid item xs={8} md={6} lg={10}>
                 <Box mt={12} ml={4} mr={4} display="flex" alignItems="center">
-                    <TextField 
+                    <TextField
                         fullWidth
                         name="friend-search"
                         label="Search your friends..."
@@ -36,13 +28,16 @@ function Friends() {
                 </Box>
                 <Box mt={4} ml={4} mr={4}>
                     <Typography variant="h6">Your Friends</Typography>
-                    <List>
-                        {friends.map(friend => (
-                            <ListItem key={friend.id}>
-                                <ListItemText primary={friend.name} />
-                            </ListItem>
-                        ))}
-                    </List>
+                    <Paper>
+                        <List>
+                            {friends.map(friend => (
+                                <ListItem key={friend._id}>
+                                    <Avatar sx={{ mr: 2 }}>{friend.firstName.charAt(0)}</Avatar>
+                                    <ListItemText primary={`${friend.firstName} ${friend.lastName}`} secondary={friend.userName} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Paper>
                 </Box>
             </Grid>
         </Grid>

@@ -51,7 +51,7 @@ function PasswordReset() {
     const [passwordResetSuccess, setPasswordResetSuccess] = useState(false);
     const [passwordResetError, setPasswordResetError] = useState(false);
 
-
+    const navigate = useNavigate();
     const handleClose = () => setOpenModal(false);
 
     useEffect(() => {
@@ -142,6 +142,12 @@ function PasswordReset() {
         }
     }
 
+    useEffect(() => {
+        const token = localStorage.getItem("token")
+        if (token) {
+            navigate("/dashboard")
+        }
+    }, [])
 
     return (
         <ThemeProvider theme={defaultTheme}>
