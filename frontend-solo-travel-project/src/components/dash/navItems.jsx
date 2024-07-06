@@ -8,7 +8,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import InboxIcon from "@mui/icons-material/Inbox";
 import SettingsIcon from "@mui/icons-material/Settings";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import StarIcon from '@mui/icons-material/Star';
 
 export const navListItems = (
   <>
@@ -42,9 +42,9 @@ export const navListItems = (
     
     <ListItemButton component={Link} to={"/user/:userId/likes"}>
       <ListItemIcon>
-        <FavoriteIcon />
+        <StarIcon />
       </ListItemIcon>
-      <ListItemText primary="My Likes" />
+      <ListItemText primary="Interested" />
     </ListItemButton>
     
     <ListItemButton component={Link} to="/settings">
