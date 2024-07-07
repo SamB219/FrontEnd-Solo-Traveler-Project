@@ -33,7 +33,6 @@ const NotificationIcon = ({ onClick }) => {
         }
     };
 
-    // Conditionally render the icon based on unreadCount
     const renderIcon = () => {
         if (unreadCount > 0) {
             return (

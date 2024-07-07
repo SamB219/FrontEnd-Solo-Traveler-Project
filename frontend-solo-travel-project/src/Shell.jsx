@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive'; // Add this import
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import LogoutIcon from '@mui/icons-material/Logout';
 import NotificationModal from './components/notifications/NotificationModal';
 import { baseURL } from './environment';
@@ -26,8 +26,8 @@ import Friends from './components/friends/Friends';
 import PasswordReset from './components/passwordReset/PasswordReset';
 import MainInbox from './components/inbox/MainInbox';
 import { navListItems } from './components/dash/navItems';
-import Divider from '@mui/material/Divider'; // Add this import
-import List from '@mui/material/List'; // Add this import
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
 
 const drawerWidth = 240;
 
@@ -78,7 +78,7 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 function Shell() {
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sessionToken, setSessionToken] = useState('');
     const [userId, setUserId] = useState('');
@@ -129,16 +129,19 @@ function Shell() {
         } else {
             setUserId('');
         }
-    }, []);
+        fetchUnreadCount(); 
 
-    useEffect(() => {
-        fetchUnreadCount();
+        // Poll for unread notifications every 5 seconds-- wasn't sure how long to make the interval
+        const intervalId = setInterval(fetchUnreadCount, 5000);
+
+        // Clear interval on component unmount
+        return () => clearInterval(intervalId);
     }, []);
 
     const fetchUnreadCount = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${baseURL}/notifications/unread`, {
+            const response = await fetch(`${baseURL}/notification/unread`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -175,7 +178,7 @@ function Shell() {
                             <AppBar position="absolute" open={open}>
                                 <Toolbar
                                     sx={{
-                                        pr: '24px', 
+                                        pr: '24px',
                                     }}
                                 >
                                     <IconButton
@@ -200,7 +203,7 @@ function Shell() {
                                         {getHeaderText()}
                                     </Typography>
                                     <IconButton color="inherit" onClick={toggleModal}>
-                                        <Badge badgeContent={unreadCount} color="secondary">
+                                        <Badge badgeContent={unreadCount} color="error">
                                             {unreadCount > 0 ? <NotificationsActiveIcon /> : <NotificationsIcon />}
                                         </Badge>
                                     </IconButton>

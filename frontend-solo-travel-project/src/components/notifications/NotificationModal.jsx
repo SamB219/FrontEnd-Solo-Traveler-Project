@@ -62,7 +62,7 @@ const NotificationModal = ({ isOpen, onClose, fetchUnreadCount }) => {
         }
     };
 
-    const handleClearAllNotifications = async () => {
+    const handleClearAllNotifications = () => {
         // Open confirmation dialog
         setConfirmationOpen(true);
     };
@@ -131,7 +131,6 @@ const NotificationModal = ({ isOpen, onClose, fetchUnreadCount }) => {
                 )}
             </div>
 
-            {/* Confirmation Dialog */}
             <Dialog
                 open={isConfirmationOpen}
                 onClose={handleCloseConfirmation}
