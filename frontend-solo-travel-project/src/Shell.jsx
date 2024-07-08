@@ -236,7 +236,7 @@ function Shell() {
                         <Route path="/password-reset" element={<PasswordReset />} />
                         <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
                         <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
-                        <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
+                        <Route path="/user/:userId/interested" element={<MyLikes token={sessionToken} userId={userId} />} />
                         <Route path="/friends" element={<Friends />} />
                         <Route path="/message/inbox" element={<MainInbox token={sessionToken} />} />
                     </Routes>
