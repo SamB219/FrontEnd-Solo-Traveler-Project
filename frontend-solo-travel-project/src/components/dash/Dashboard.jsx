@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 //Component Imports
 import AddPost from "../posts/AddPost";
 import PostIndex from "../posts/PostIndex";
-import Filter from "./Filter";
+import Filter from "./filter/Filter";
 import Pin from "../maps/Pin";
 
 //Leaflet Import
@@ -26,6 +26,7 @@ const defaultTheme = createTheme();
 export default function Dashboard({ token, userId }) {
   const [posts, setPosts] = useState([]);
   const [pinElement, setPin] = useState();
+
   /*  let pinElement = ""; */
 
   const fetchPosts = async () => {
@@ -85,7 +86,7 @@ export default function Dashboard({ token, userId }) {
             <SimpleMap posts={posts} pinElement={pinElement} />
             {/*  FILTER DISPLAY GRID ---> Absolutely positioned child element of container*/}
             <Grid item xs={12} position={"absolute"}>
-              <Filter />
+              <Filter setPosts={setPosts} token={token} />
             </Grid>
           </Grid>
         </Container>

@@ -46,7 +46,7 @@ export default function BasicModal(props) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log("pinged submit");
+   
     const data = new FormData(e.currentTarget);
     const title = data.get("title");
     const description = data.get("description");

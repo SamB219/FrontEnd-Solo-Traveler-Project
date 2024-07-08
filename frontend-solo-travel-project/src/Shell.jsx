@@ -12,12 +12,8 @@ import Profile from "./components/profile/Profile";
 import MyLikes from "./components/likes/MyLikes";
 import PasswordReset from "./components/passwordReset/PasswordReset";
 import Messaging from "./components/messaging/Messaging";
-import Filter from "./components/dash/Filter";
-import AddPost from "./components/posts/AddPost";
 import { navListItems } from "./components/dash/navItems";
-//Leaflet Import
-import SimpleMap from "./components/maps/SimpleMap";
-import PostIndex from "./components/posts/PostIndex";
+
 // import { InboxDisplay } from './components'
 
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
@@ -31,9 +27,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -43,10 +37,7 @@ import NotificationModal from "./components/notifications/NotificationModal";
 // import { Button } from "@mui/material";
 import { baseURL } from "./environment";
 
-
-
 // import Inbox from "@mui/icons-material/Inbox";
-
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
@@ -100,7 +91,7 @@ function Shell() {
   const [open, setOpen] = React.useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionToken, setSessionToken] = useState("");
-  const [userId, setUserId] = useState(""); 
+  const [userId, setUserId] = useState("");
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -116,9 +107,9 @@ function Shell() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("userId"); 
+    localStorage.removeItem("userId");
     setSessionToken("");
-    setUserId(""); 
+    setUserId("");
     navigate("/");
   };
 
@@ -126,7 +117,10 @@ function Shell() {
   const updateLocalToken = (newToken) => {
     localStorage.setItem("token", newToken);
     setSessionToken(newToken);
-    if (location.pathname === `${baseURL}` || location.pathname === `${baseURL}/signup`) {
+    if (
+      location.pathname === `${baseURL}` ||
+      location.pathname === `${baseURL}/signup`
+    ) {
       setSessionToken("");
     }
   };
@@ -152,10 +146,16 @@ function Shell() {
     }
   }, []);
 
-  const getHeaderText = () => { // Segments the URL and grabs the last word and assigns it to a variable we can use as a header
-    const pathSegments = location.pathname.split("/").filter((segment) => segment !== "");
+  const getHeaderText = () => {
+    // Segments the URL and grabs the last word and assigns it to a variable we can use as a header
+    const pathSegments = location.pathname
+      .split("/")
+      .filter((segment) => segment !== "");
     if (pathSegments.length > 0) {
-      return pathSegments[pathSegments.length - 1].charAt(0).toUpperCase() + pathSegments[pathSegments.length - 1].slice(1);
+      return (
+        pathSegments[pathSegments.length - 1].charAt(0).toUpperCase() +
+        pathSegments[pathSegments.length - 1].slice(1)
+      );
     }
     return "";
   };
@@ -165,7 +165,7 @@ function Shell() {
       <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: "flex " }}>
           <CssBaseline />
-          { sessionToken && (
+          {sessionToken && (
             <>
               <AppBar position="absolute" open={open}>
                 <Toolbar
@@ -223,17 +223,42 @@ function Shell() {
             </>
           )}
           <Routes>
-            <Route path="/" element={<Login updateToken={updateLocalToken} setUserId={updateLocalUserId} />} />
+            <Route
+              path="/"
+              element={
+                <Login
+                  updateToken={updateLocalToken}
+                  setUserId={updateLocalUserId}
+                />
+              }
+            />
             <Route
               path="/signup"
-              element={<Signup updateToken={updateLocalToken} setUserId={updateLocalUserId} />}
+              element={
+                <Signup
+                  updateToken={updateLocalToken}
+                  setUserId={updateLocalUserId}
+                />
+              }
             />
             <Route path="/password-reset" element={<PasswordReset />} />
-            <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
-            <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
-            <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
+            <Route
+              path="/dashboard"
+              element={<Dashboard token={sessionToken} userId={userId} />}
+            />
+            <Route
+              path="/profile"
+              element={<Profile token={sessionToken} userId={userId} />}
+            />
+            <Route
+              path="/user/:userId/likes"
+              element={<MyLikes token={sessionToken} userId={userId} />}
+            />
             <Route path="/friends" element={<Messaging />} />
-            <Route path="/message/inbox" element={<InboxDisplay token={sessionToken}/>} />
+            <Route
+              path="/message/inbox"
+              element={<InboxDisplay token={sessionToken} />}
+            />
           </Routes>
         </Box>
       </ThemeProvider>
