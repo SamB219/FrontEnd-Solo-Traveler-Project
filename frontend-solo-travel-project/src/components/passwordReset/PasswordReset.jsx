@@ -12,9 +12,11 @@ import Typography from "@mui/material/Typography";
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from '@mui/material/IconButton'
+import CheckIcon from '@mui/icons-material/Check'
+import ErrorIcon from '@mui/icons-material/Error'
 import InputAdornment from "@mui/material/InputAdornment";
 import CloseIcon from "@mui/icons-material/Close";
-import { Container, Modal } from "@mui/material";
+import { Container, Modal, Alert } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../environment";
@@ -44,8 +46,12 @@ function PasswordReset() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [confirmError, setConfirmError] = useState(false);
+    const [emailSent, setEmailSent] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [passwordResetSuccess, setPasswordResetSuccess] = useState(false);
+    const [passwordResetError, setPasswordResetError] = useState(false);
 
-
+    const navigate = useNavigate();
     const handleClose = () => setOpenModal(false);
 
     useEffect(() => {
@@ -75,18 +81,31 @@ function PasswordReset() {
     // state variable to open the modal
 
     const submitPasswordResetRequest = async () => {
-        const url = `${baseURL}/user/password-reset?` + new URLSearchParams({email: email}).toString()
-        console.log("sending to", url)
-        const res = await fetch(url, { 
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
+        setEmail("");
+        const url = `${baseURL}/user/password-reset?` + new URLSearchParams({ email: email }).toString();
+        console.log("sending to", url);
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const data = await res.json();
+            console.log("email to send to", email);
+            console.log(data);
+
+            if (res.ok) {
+                setEmailSent(true);
+                setTimeout(() => setEmailSent(false), 5000);
+            } else {
+                setEmailError(true);
+                setTimeout(() => setEmailError(false), 5000);
             }
-        });
-        const data = await res.json();
-        // send GET /user/password-reset?email=email@email.com
-        console.log("email to send to", email);
-        console.log(data)
+        } catch (error) {
+            setEmailError(true);
+            setTimeout(() => setEmailError(false), 5000);
+        }
     }
 
     const submitPasswordReset = async () => {
@@ -97,7 +116,7 @@ function PasswordReset() {
 
         // send POST /user/password-reset
         const url = `${baseURL}/user/password-reset`
-        
+
         // with email, token, newPassword in body (form data)
         const body = JSON.stringify({
             email: resetEmail,
@@ -114,8 +133,21 @@ function PasswordReset() {
         });
         const data = await res.json();
         console.log(res.status, res.statusText)
+
+        if (res.ok) {
+            setPasswordResetSuccess(true);
+            setTimeout(() => setOpenModal(false), 5000);
+        } else {
+            setPasswordResetError(true);
+        }
     }
 
+    useEffect(() => {
+        const token = localStorage.getItem("token")
+        if (token) {
+            navigate("/dashboard")
+        }
+    }, [])
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -148,6 +180,7 @@ function PasswordReset() {
                                 id="password-reset-input"
                                 label="Enter your email"
                                 autoFocus
+                                value={email}
                                 onChange={(e) => { setEmail(e.target.value) }}
                             />
                         </Grid>
@@ -166,6 +199,21 @@ function PasswordReset() {
                             Verify
                         </Button>
                     </Box>
+                    <Box>
+                        <Link href="/" variant="body2">
+                            Back to Login page
+                        </Link>
+                    </Box>
+                    {emailError && (
+                        <Alert icon={<ErrorIcon />} severity="error" sx={{ mt: 3, width: '100%' }}>
+                            That email does not exist in our database!
+                        </Alert>
+                    )}
+                    {emailSent && (
+                        <Alert icon={<CheckIcon />} severity="success" sx={{ mt: 3, width: '100%' }}>
+                            Email has been sent!
+                        </Alert>
+                    )}
                     <Modal
                         open={openModal}
                         onClose={handleClose}
@@ -189,8 +237,8 @@ function PasswordReset() {
                                 fullWidth
                                 id="new-password"
                                 label="Enter your new password"
-                                sx={{mt: 5, mb: 5}}
-                                onChange={(e) => { setPassword(e.target.value)}}
+                                sx={{ mt: 5, mb: 5 }}
+                                onChange={(e) => { setPassword(e.target.value) }}
                             />
                             <TextField
                                 error={confirmError}
@@ -199,9 +247,9 @@ function PasswordReset() {
                                 fullWidth
                                 id="confirm-password"
                                 label="Confirm your new password"
-                                sx={{ mb: 5}}
+                                sx={{ mb: 5 }}
                                 onChange={(e) => { setConfirmPassword(e.target.value) }}
-                                helperText= {confirmError ? "Passwords must match" : ""}
+                                helperText={confirmError ? "Passwords must match" : ""}
                             />
                             <Button
                                 fullWidth
@@ -211,6 +259,16 @@ function PasswordReset() {
                             >
                                 Submit
                             </Button>
+                            {passwordResetError && (
+                                <Alert icon={<ErrorIcon />} severity="error" sx={{ mt: 3, width: '100%' }}>
+                                    Could not reset password, try again.
+                                </Alert>
+                            )}
+                            {passwordResetSuccess && (
+                                <Alert icon={<CheckIcon />} severity="success" sx={{ mt: 3, width: '100%' }}>
+                                    Password has been reset!
+                                </Alert>
+                            )}
                         </Box>
                     </Modal>
                 </Box>

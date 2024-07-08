@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -25,6 +25,7 @@ const defaultTheme = createTheme();
 export default function SignUp({ updateToken, setUserId }) {
   const navigate = useNavigate();
 
+  const [userNameAlert, setUserNameAlert] = useState(false);
   const [emailAlert, setEmailAlert] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -80,17 +81,32 @@ export default function SignUp({ updateToken, setUserId }) {
     try {
       const response = await fetch(url, requestOption);
       const data = await response.json();
+
+      if (response.status === 400) {
+        setUserNameAlert(data.userNameExists);
+        setEmailAlert(data.emailExists);
+        return;
+      } 
+
       if (data.message === "Success!") {
         updateToken(data.token);
         setUserId(data.userId); // added user id
         navigate("/dashboard");
       } else {
-        setEmailAlert(true);
+        setUserNameAlert(data.message.includes(userName));
+        setEmailAlert(data.message.includes(email));
       }
     } catch (err) {
       console.error(err.message);
     }
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      navigate("/dashboard")
+    }
+  }, [])
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -226,6 +242,9 @@ export default function SignUp({ updateToken, setUserId }) {
               <Grid sx={{pt: 5}}>
                 {emailAlert &&
                   <Alert severity="error" fullWidth>Email already taken!</Alert>
+                }
+                {userNameAlert &&
+                  <Alert severity="error" fullWidth>Username already taken!</Alert>
                 }
               </Grid>
           </Box>

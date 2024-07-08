@@ -26,7 +26,7 @@ function formatDate(dateString) {
     hour: "numeric",
     minute: "numeric",
   };
-  return new Date(dateString).toLocaleDateString(undefined, options); // can add a timezone if we want later... will need to `npm install date-fns date-fns-tz`
+  return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
 const ExpandMore = styled((props) => {
@@ -59,8 +59,6 @@ export default function PostCard({ post, userId, token }) {
   return (
     <Card
       sx={{
-        /* display: "flex",
-        flexDirection: "column", */
         maxWidth: 345,
         minWidth: 345,
         minHeight: 500,
@@ -71,7 +69,8 @@ export default function PostCard({ post, userId, token }) {
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+            {/* Changed the Avatar to display "U" if user is undefined */}
+            {post.username ? post.username.charAt(0).toUpperCase() : "U"} 
           </Avatar>
         }
         action={
@@ -79,20 +78,21 @@ export default function PostCard({ post, userId, token }) {
             <MoreVertIcon />
           </IconButton>
         }
+        titleTypographyProps={{ variant: "h7" }}
         title={post.title}
-        subheader={formatDate(post.eventDate)}
+        subheader={`${post.username} • ${formatDate(post.eventDate)}`}
       />
       <CardMedia
         component="img"
         height="194"
         image={post.imgUrl}
-        alt="Paella dish"
+        alt="Post image"
       />
       <CardContent sx={{ height: 170 }}>
         <Typography variant="body2" color="text.secondary">
           {post.tags.map((tag) => (
             <Chip
-              key={tag} // Added key prop for list rendering
+              key={tag}
               label={tag}
               variant={"outlined"}
               color={"primary"}
@@ -106,7 +106,6 @@ export default function PostCard({ post, userId, token }) {
           </Typography>
         </Box>
       </CardContent>
-
       <CardActions disableSpacing>
         <LikeFunction
           postId={post._id}
@@ -130,7 +129,7 @@ export default function PostCard({ post, userId, token }) {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            Don't look down here
+            Additional content goes here.
           </Typography>
         </CardContent>
       </Collapse>

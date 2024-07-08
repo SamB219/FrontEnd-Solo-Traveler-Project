@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -65,6 +65,13 @@ export default function SignInSide({ updateToken, setUserId }) {
       console.error(error.message);
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      navigate("/dashboard")
+    }
+  }, [])
 
   return (
     <ThemeProvider theme={defaultTheme}>
