@@ -9,160 +9,83 @@ function MessageSidebar() {
                 <Search placeholder="Search..." />
                 <ConversationList>
                     <Conversation
+                        name="Lilly"
                         info="Yes i can do it for you"
                         lastSenderName="Lilly"
-                        name="Lilly"
                     >
                         <Avatar
-                            name="Lilly"
+                            alt="Lilly"
                             src="https://chatscope.io/storybook/react/assets/lilly-aj6lnGPk.svg"
                             status="available"
                         />
                     </Conversation>
-                    <Conversation>
+                    <Conversation
+                        name="Joe"
                         info="Yes i can do it for you"
                         lastSenderName="Joe"
-                        name="Joe"
-                    
+                    >
                         <Avatar
-                            name="Joe"
+                            alt="Joe"
                             src="https://chatscope.io/storybook/react/assets/joe-v8Vy3KOS.svg"
                             status="dnd"
                         />
                     </Conversation>
                     <Conversation
+                        name="Emily"
                         info="Yes i can do it for you"
                         lastSenderName="Emily"
-                        name="Emily"
                         unreadCnt={3}
                     >
                         <Avatar
-                            name="Emily"
+                            alt="Emily"
                             src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
                             status="available"
                         />
                     </Conversation>
                     <Conversation
+                        name="Kai"
                         info="Yes i can do it for you"
                         lastSenderName="Kai"
-                        name="Kai"
                         unreadDot
                     >
                         <Avatar
-                            name="Kai"
+                            alt="Kai"
                             src="https://chatscope.io/storybook/react/assets/kai-5wHRJGb2.svg"
                             status="unavailable"
                         />
                     </Conversation>
                     <Conversation
+                        name="Akane"
                         info="Yes i can do it for you"
                         lastSenderName="Akane"
-                        name="Akane"
                     >
                         <Avatar
-                            name="Akane"
+                            alt="Akane"
                             src="https://chatscope.io/storybook/react/assets/akane-MXhWvx63.svg"
                             status="eager"
                         />
                     </Conversation>
                     <Conversation
+                        name="Eliot"
                         info="Yes i can do it for you"
                         lastSenderName="Eliot"
-                        name="Eliot"
                     >
                         <Avatar
-                            name="Eliot"
+                            alt="Eliot"
                             src="https://chatscope.io/storybook/react/assets/eliot-JNkqSAth.svg"
                             status="away"
                         />
                     </Conversation>
                     <Conversation
-                        active
+                        name="Zoe"
                         info="Yes i can do it for you"
                         lastSenderName="Zoe"
-                        name="Zoe"
+                        active
                     >
                         <Avatar
-                            name="Zoe"
+                            alt="Zoe"
                             src="https://chatscope.io/storybook/react/assets/zoe-E7ZdmXF0.svg"
                             status="dnd"
-                        />
-                    </Conversation>
-                    <Conversation
-                        info="Yes i can do it for you"
-                        lastSenderName="Patrik"
-                        name="Patrik"
-                    >
-                        <Avatar
-                            name="Patrik"
-                            src="https://chatscope.io/storybook/react/assets/patrik-yC7svbAR.svg"
-                            status="invisible"
-                        />
-                    </Conversation>
-                    <Conversation
-                        info="Yes i can do it for you"
-                        lastSenderName="Patrik"
-                        name="Patrik"
-                    >
-                        <Avatar
-                            name="Patrik"
-                            src="https://chatscope.io/storybook/react/assets/patrik-yC7svbAR.svg"
-                            status="invisible"
-                        />
-                    </Conversation>
-                    <Conversation
-                        info="Yes i can do it for you"
-                        lastSenderName="Patrik"
-                        name="Patrik"
-                    >
-                        <Avatar
-                            name="Patrik"
-                            src="https://chatscope.io/storybook/react/assets/patrik-yC7svbAR.svg"
-                            status="invisible"
-                        />
-                    </Conversation>
-                    <Conversation
-                        info="Yes i can do it for you"
-                        lastSenderName="Patrik"
-                        name="Patrik"
-                    >
-                        <Avatar
-                            name="Patrik"
-                            src="https://chatscope.io/storybook/react/assets/patrik-yC7svbAR.svg"
-                            status="invisible"
-                        />
-                    </Conversation>
-                    <Conversation
-                        info="Yes i can do it for you"
-                        lastSenderName="Patrik"
-                        name="Patrik"
-                    >
-                        <Avatar
-                            name="Patrik"
-                            src="https://chatscope.io/storybook/react/assets/patrik-yC7svbAR.svg"
-                            status="invisible"
-                        />
-                    </Conversation>
-                    <Conversation
-                        info="Yes i can do it for you"
-                        lastSenderName="Patrik"
-                        name="Patrik"
-                    >
-                        <Avatar
-                            name="Patrik"
-                            src="https://chatscope.io/storybook/react/assets/patrik-yC7svbAR.svg"
-                            status="invisible"
-                        />
-                    </Conversation>
-                    <Conversation
-                        info="Yes i can do it for you"
-                        lastSenderName="Patrik"
-                        name="Patrik"
-                    >
-                        <Avatar
-                            name="Patrik"
-                            src="https://chatscope.io/storybook/react/assets/patrik-yC7svbAR.svg"
-                            status="invisible"
                         />
                     </Conversation>
                 </ConversationList>

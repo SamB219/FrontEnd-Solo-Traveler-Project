@@ -1,14 +1,53 @@
-import { Avatar, Box } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
-import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Sidebar, Search, ConversationList, Conversation, ConversationHeader, VoiceCallButton, VideoCallButton, InfoButton, TypingIndicator, MessageSeparator, ExpansionPanel } from '@chatscope/chat-ui-kit-react';
+import { Avatar, Box } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import {
+    MainContainer,
+    ChatContainer,
+    MessageList,
+    Message,
+    MessageInput,
+    Sidebar,
+    Search,
+    ConversationList,
+    Conversation,
+    ConversationHeader,
+    VoiceCallButton,
+    VideoCallButton,
+    InfoButton,
+    TypingIndicator,
+    MessageSeparator,
+    ExpansionPanel,
+} from "@chatscope/chat-ui-kit-react";
+import { baseURL } from "../../environment";
 
-
-function InboxDisplay({ roomId }) {
-    console.log('INBOX')
+function InboxDisplay({ roomId, token }) {
     const [messages, setMessages] = useState([]);
-    // const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+
+    async function sendMessage(userMessage) {
+        const body = userMessage;
+        let bodyObj = JSON.stringify({
+            body,
+        });
+
+        const url = `${baseURL}/message/new`;
+        let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Authorization", token);
+
+        const requestOption = {
+            headers,
+            body: bodyObj,
+            method: "POST",
+        };
+
+        try {
+            const response = await fetch(url, requestOption);
+            const data = await response.json();
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
 
     // useEffect(() => {
     //     const fetchMessages = async () => {
@@ -42,7 +81,7 @@ function InboxDisplay({ roomId }) {
             <MainContainer
                 responsive
                 style={{
-                    height: "100%"
+                    height: "100%",
                 }}
             >
                 <ChatContainer>
@@ -57,20 +96,22 @@ function InboxDisplay({ roomId }) {
                             userName="Zoe"
                         />
                         <ConversationHeader.Actions>
-                            <VoiceCallButton disabled/>
-                            <VideoCallButton disabled/>
+                            <VoiceCallButton disabled />
+                            <VideoCallButton disabled />
                             <InfoButton />
                         </ConversationHeader.Actions>
                     </ConversationHeader>
-                    <MessageList typingIndicator={<TypingIndicator content="Zoe is typing" />}>
+                    <MessageList
+                        typingIndicator={<TypingIndicator content="Zoe is typing" />}
+                    >
                         <MessageSeparator content="Saturday, 30 November 2019" />
                         <Message
                             model={{
-                                direction: 'incoming',
-                                message: 'Hello my friend',
-                                position: 'single',
-                                sender: 'Zoe',
-                                sentTime: '15 mins ago'
+                                direction: "incoming",
+                                message: "Hello my friend",
+                                position: "single",
+                                sender: "Zoe",
+                                sentTime: "15 mins ago",
                             }}
                         >
                             <Avatar
@@ -81,50 +122,50 @@ function InboxDisplay({ roomId }) {
                         <Message
                             avatarSpacer
                             model={{
-                                direction: 'outgoing',
-                                message: 'Hello my friend',
-                                position: 'single',
-                                sender: 'Patrik',
-                                sentTime: '15 mins ago'
+                                direction: "outgoing",
+                                message: "Hello my friend",
+                                position: "single",
+                                sender: "Patrik",
+                                sentTime: "15 mins ago",
                             }}
                         />
                         <Message
                             avatarSpacer
                             model={{
-                                direction: 'incoming',
-                                message: 'Hello my friend',
-                                position: 'first',
-                                sender: 'Zoe',
-                                sentTime: '15 mins ago'
+                                direction: "incoming",
+                                message: "Hello my friend",
+                                position: "first",
+                                sender: "Zoe",
+                                sentTime: "15 mins ago",
                             }}
                         />
                         <Message
                             avatarSpacer
                             model={{
-                                direction: 'incoming',
-                                message: 'Hello my friend',
-                                position: 'normal',
-                                sender: 'Zoe',
-                                sentTime: '15 mins ago'
+                                direction: "incoming",
+                                message: "Hello my friend",
+                                position: "normal",
+                                sender: "Zoe",
+                                sentTime: "15 mins ago",
                             }}
                         />
                         <Message
                             avatarSpacer
                             model={{
-                                direction: 'incoming',
-                                message: 'Hello my friend',
-                                position: 'normal',
-                                sender: 'Zoe',
-                                sentTime: '15 mins ago'
+                                direction: "incoming",
+                                message: "Hello my friend",
+                                position: "normal",
+                                sender: "Zoe",
+                                sentTime: "15 mins ago",
                             }}
                         />
                         <Message
                             model={{
-                                direction: 'incoming',
-                                message: 'Hello my friend',
-                                position: 'last',
-                                sender: 'Zoe',
-                                sentTime: '15 mins ago'
+                                direction: "incoming",
+                                message: "Hello my friend",
+                                position: "last",
+                                sender: "Zoe",
+                                sentTime: "15 mins ago",
                             }}
                         >
                             <Avatar
@@ -134,57 +175,57 @@ function InboxDisplay({ roomId }) {
                         </Message>
                         <Message
                             model={{
-                                direction: 'outgoing',
-                                message: 'Hello my friend',
-                                position: 'first',
-                                sender: 'Patrik',
-                                sentTime: '15 mins ago'
+                                direction: "outgoing",
+                                message: "Hello my friend",
+                                position: "first",
+                                sender: "Patrik",
+                                sentTime: "15 mins ago",
                             }}
                         />
                         <Message
                             model={{
-                                direction: 'outgoing',
-                                message: 'Hello my friend',
-                                position: 'normal',
-                                sender: 'Patrik',
-                                sentTime: '15 mins ago'
+                                direction: "outgoing",
+                                message: "Hello my friend",
+                                position: "normal",
+                                sender: "Patrik",
+                                sentTime: "15 mins ago",
                             }}
                         />
                         <Message
                             model={{
-                                direction: 'outgoing',
-                                message: 'Hello my friend',
-                                position: 'normal',
-                                sender: 'Patrik',
-                                sentTime: '15 mins ago'
+                                direction: "outgoing",
+                                message: "Hello my friend",
+                                position: "normal",
+                                sender: "Patrik",
+                                sentTime: "15 mins ago",
                             }}
                         />
                         <Message
                             model={{
-                                direction: 'outgoing',
-                                message: 'Hello my friend',
-                                position: 'last',
-                                sender: 'Patrik',
-                                sentTime: '15 mins ago'
+                                direction: "outgoing",
+                                message: "Hello my friend",
+                                position: "last",
+                                sender: "Patrik",
+                                sentTime: "15 mins ago",
                             }}
                         />
                         <Message
                             avatarSpacer
                             model={{
-                                direction: 'incoming',
-                                message: 'Hello my friend',
-                                position: 'first',
-                                sender: 'Zoe',
-                                sentTime: '15 mins ago'
+                                direction: "incoming",
+                                message: "Hello my friend",
+                                position: "first",
+                                sender: "Zoe",
+                                sentTime: "15 mins ago",
                             }}
                         />
                         <Message
                             model={{
-                                direction: 'incoming',
-                                message: 'Hello my friend',
-                                position: 'last',
-                                sender: 'Zoe',
-                                sentTime: '15 mins ago'
+                                direction: "incoming",
+                                message: "Hello my friend",
+                                position: "last",
+                                sender: "Zoe",
+                                sentTime: "15 mins ago",
                             }}
                         >
                             <Avatar
@@ -193,7 +234,7 @@ function InboxDisplay({ roomId }) {
                             />
                         </Message>
                     </MessageList>
-                    <MessageInput placeholder="Type message here" />
+                    <MessageInput placeholder="Type message here" onSend={sendMessage} />
                 </ChatContainer>
             </MainContainer>
         </>

@@ -129,14 +129,17 @@ function Shell() {
         } else {
             setUserId('');
         }
-        fetchUnreadCount(); 
-
-        // Poll for unread notifications every 5 seconds-- wasn't sure how long to make the interval
-        const intervalId = setInterval(fetchUnreadCount, 5000);
-
-        // Clear interval on component unmount
-        return () => clearInterval(intervalId);
     }, []);
+
+    useEffect(() => {
+        if (sessionToken) {
+            fetchUnreadCount();
+            // Poll for unread notifications every 5 seconds
+            const intervalId = setInterval(fetchUnreadCount, 5000);
+            // Clear interval on component unmount
+            return () => clearInterval(intervalId);
+        }
+    }, [sessionToken]);
 
     const fetchUnreadCount = async () => {
         try {
@@ -232,11 +235,11 @@ function Shell() {
                     )}
                     <Routes>
                         <Route path="/" element={<Login updateToken={updateLocalToken} setUserId={updateLocalUserId} />} />
-                        <Route path="/signup" element={<Signup updateToken={updateLocalToken} setUserId={updateLocalUserId} />} />
+                        <Route path="/signup" element={<Signup updateToken={updateLocalToken} setUserId={updateLocalUserId}/>} />
                         <Route path="/password-reset" element={<PasswordReset />} />
                         <Route path="/dashboard" element={<Dashboard token={sessionToken} userId={userId} />} />
                         <Route path="/profile" element={<Profile token={sessionToken} userId={userId} />} />
-                        <Route path="/user/:userId/likes" element={<MyLikes token={sessionToken} userId={userId} />} />
+                        <Route path="/user/:userId/Interested" element={<MyLikes token={sessionToken} userId={userId} />} />
                         <Route path="/friends" element={<Friends />} />
                         <Route path="/message/inbox" element={<MainInbox token={sessionToken} />} />
                     </Routes>
