@@ -21,13 +21,14 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { baseURL } from "../../environment";
 
-function InboxDisplay({ roomId, token }) {
+function InboxDisplay({ roomId, token, userName }) {
   const [messages, setMessages] = useState([]);
 
   async function sendMessage(userMessage) {
     const body = userMessage;
     let bodyObj = JSON.stringify({
       body,
+      userName,
     });
 
     const url = `${baseURL}/message/new`;
