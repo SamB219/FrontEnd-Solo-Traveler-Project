@@ -263,6 +263,7 @@ function Shell() {
                 <Signup
                   updateToken={updateLocalToken}
                   setUserId={updateLocalUserId}
+                  setUsername={updateLocalUsername}
                 />
               }
             />

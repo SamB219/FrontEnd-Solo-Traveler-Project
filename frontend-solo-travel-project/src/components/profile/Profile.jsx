@@ -13,10 +13,11 @@ function Profile(props) {
     // If props or props.token is null, set to empty string
     const token = (props && props.token) ?? "";
 
-    const { firstName, lastName, age, bio, country, travelPreferences, interests,
+    const { firstName, lastName, age, userName, bio, country, travelPreferences, interests,
         getProfile, updateProfile } = useProfile()
         
     const [changedAge, setChangedAge] = useState(age)
+    const [changedUserName, setChangedUserName] = useState(userName)
     const [changedBio, setChangedBio] = useState(bio)
     const [changedCountry, setChangedCountry] = useState(country)
     const [changedTravelPreferences, setChangedTravelPreferences] = useState(travelPreferences)
@@ -24,7 +25,7 @@ function Profile(props) {
     const [isEditMode, setIsEditMode] = useState(false);
 
     const handleUpdateProfile = () => {
-        updateProfile(changedAge, changedBio, changedCountry, changedTravelPreferences, changedInterests)
+        updateProfile(changedAge, changedUserName, changedBio, changedCountry, changedTravelPreferences, changedInterests)
         window.location.reload();
     }
 
@@ -34,11 +35,12 @@ function Profile(props) {
 
     useEffect(() => {
         setChangedAge(age);
+        setChangedUserName(userName);
         setChangedBio(bio);
         setChangedCountry(country);
         setChangedTravelPreferences(travelPreferences);
         setChangedInterests(interests);
-    }, [age, bio, country, travelPreferences, interests])
+    }, [age, userName, bio, country, travelPreferences, interests])
 
     return (
         <>
@@ -62,6 +64,9 @@ function Profile(props) {
                             </Typography>
                             <Typography component="h1" variant="h5" sx={{ mt: 5, mb: 5 }}>
                                 Last name: {lastName}
+                            </Typography>
+                            <Typography component="h1" variant="h5" sx={{ mb: 5 }}>
+                                Username: {userName}
                             </Typography>
                             <Typography component="h1" variant="h5">
                                 Age: {age}

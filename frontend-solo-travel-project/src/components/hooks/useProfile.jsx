@@ -5,6 +5,7 @@ function useProfile() {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [age, setAge] = useState('')
+    const [userName, setUserName] = useState('')
     const [bio, setBio] = useState('')
     const [country, setCountry] = useState('')
     const [travelPreferences, setTravelPreferences] = useState('')
@@ -27,6 +28,7 @@ function useProfile() {
             setFirstName(data.firstName);
             setLastName(data.lastName);
             setAge(data.age);
+            setUserName(data.userName);
             setBio(data.bio);
             setCountry(data.country);
             setTravelPreferences(data.travelPreferences);
@@ -36,7 +38,7 @@ function useProfile() {
         }
 
     }
-    const updateProfile = async (age, bio, country, travelPreferences, interests) => {
+    const updateProfile = async (age, userName, bio, country, travelPreferences, interests) => {
         const token = localStorage.getItem("token")
         const url = `${baseURL}/user/profile`
 
@@ -44,6 +46,7 @@ function useProfile() {
             firstName: firstName,
             lastName: lastName,
             age: age,
+            userName: userName,
             bio: bio,
             country: country,
             travelPreferences: travelPreferences,
@@ -67,7 +70,7 @@ function useProfile() {
     }, [])
 
     return {
-        firstName, lastName, age, bio, country, travelPreferences, interests,
+        firstName, lastName, age, userName, bio, country, travelPreferences, interests,
         getProfile, updateProfile
     }
 }
