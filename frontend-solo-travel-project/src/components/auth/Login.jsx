@@ -9,9 +9,9 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import Visibility from '@mui/icons-material/Visibility'
+import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import IconButton from '@mui/material/IconButton'
+import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ import { baseURL } from "../../environment";
 
 const defaultTheme = createTheme();
 
-export default function SignInSide({ updateToken, setUserId }) {
+export default function SignInSide({ updateToken, setUserId, setUsername }) {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -57,9 +57,10 @@ export default function SignInSide({ updateToken, setUserId }) {
         console.log(data);
         updateToken(data.token);
         setUserId(data.userId); // added user id
+        setUsername(data.userName);
         navigate("/dashboard");
       } else {
-        alert('Incorrect Username or Password');
+        alert("Incorrect Username or Password");
       }
     } catch (error) {
       console.error(error.message);
@@ -67,11 +68,11 @@ export default function SignInSide({ updateToken, setUserId }) {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (token) {
-      navigate("/dashboard")
+      navigate("/dashboard");
     }
-  }, [])
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>

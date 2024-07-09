@@ -81,16 +81,16 @@ export default function SignUp({ updateToken, setUserId }) {
     try {
       const response = await fetch(url, requestOption);
       const data = await response.json();
-
+      
       if (response.status === 400) {
         setUserNameAlert(data.userNameExists);
         setEmailAlert(data.emailExists);
         return;
       } 
-
+      
       if (data.message === "Success!") {
         updateToken(data.token);
-        setUserId(data.userId); // added user id
+        setUserId(data.userId);
         navigate("/dashboard");
       } else {
         setUserNameAlert(data.message.includes(userName));
@@ -100,7 +100,7 @@ export default function SignUp({ updateToken, setUserId }) {
       console.error(err.message);
     }
   }
-
+  
   useEffect(() => {
     const token = localStorage.getItem("token")
     if (token) {
