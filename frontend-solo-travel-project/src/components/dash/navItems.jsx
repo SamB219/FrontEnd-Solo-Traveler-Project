@@ -40,7 +40,7 @@ export const navListItems = (
       <ListItemText primary="Inbox" />
     </ListItemButton>
     
-    <ListItemButton component={Link} to={"/user/:userId/interested"}>
+    <ListItemButton component={Link} to={"/user/:userId/Interested"}>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
