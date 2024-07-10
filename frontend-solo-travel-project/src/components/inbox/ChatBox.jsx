@@ -7,17 +7,17 @@ import {
     MessageList,
     Message,
     MessageInput,
-    Sidebar,
-    Search,
-    ConversationList,
-    Conversation,
+    // Sidebar,
+    // Search,
+    // ConversationList,
+    // Conversation,
     ConversationHeader,
     VoiceCallButton,
     VideoCallButton,
     InfoButton,
     TypingIndicator,
     MessageSeparator,
-    ExpansionPanel,
+    // ExpansionPanel,
 } from "@chatscope/chat-ui-kit-react";
 import { baseURL } from "../../environment";
 
