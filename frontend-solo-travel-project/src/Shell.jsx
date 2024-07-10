@@ -16,7 +16,7 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationModal from "./components/notifications/NotificationModal";
 import { baseURL } from "./environment";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom"; // Ensure correct import
 import Login from "./components/auth/Login";
 import Dashboard from "./components/dash/Dashboard";
 import Signup from "./components/auth/Signup";
@@ -83,6 +83,10 @@ function Shell() {
   const [sessionToken, setSessionToken] = useState("");
   const [userId, setUserId] = useState("");
   const [unreadCount, setUnreadCount] = useState(0);
+  const [username, setUsername] = useState(""); // Ensure setUsername is defined
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -91,9 +95,6 @@ function Shell() {
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -121,6 +122,7 @@ function Shell() {
 
   const updateLocalUsername = (newUsername) => {
     localStorage.setItem("userName", newUsername);
+    setUsername(newUsername);
   };
 
   useEffect(() => {
@@ -136,14 +138,21 @@ function Shell() {
     } else {
       setUserId("");
     }
-    fetchUnreadCount();
-
-    // Poll for unread notifications every 5 seconds-- wasn't sure how long to make the interval
-    const intervalId = setInterval(fetchUnreadCount, 5000);
-
-    // Clear interval on component unmount
-    return () => clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    if (
+      sessionToken &&
+      location.pathname !== "/" &&
+      location.pathname !== "/signup"
+    ) {
+      fetchUnreadCount();
+      // Poll for unread notifications every 5 seconds
+      const intervalId = setInterval(fetchUnreadCount, 5000);
+      // Clear interval on component unmount
+      return () => clearInterval(intervalId);
+    }
+  }, [sessionToken, location.pathname]);
 
   const fetchUnreadCount = async () => {
     try {

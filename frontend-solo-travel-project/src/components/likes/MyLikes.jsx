@@ -15,7 +15,7 @@ const MyLikes = ({ userId, token }) => {
                 return;
             }
 
-            const url = `${baseURL}/user/${userId}/likes`;
+            const url = `${baseURL}/user/${userId}/Interested`;
 
             const options = {
                 method: 'GET',
