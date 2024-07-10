@@ -16,7 +16,26 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import LikeFunction from "../likes/LikeFunction";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
-
+import { baseURL } from "../../environment";
+import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  Message,
+  MessageInput,
+  // Sidebar,
+  // Search,
+  // ConversationList,
+  // Conversation,
+  ConversationHeader,
+  VoiceCallButton,
+  VideoCallButton,
+  InfoButton,
+  TypingIndicator,
+  MessageSeparator,
+  // ExpansionPanel,
+} from "@chatscope/chat-ui-kit-react";
 // Format Date Function
 function formatDate(dateString) {
   const options = {
@@ -45,6 +64,68 @@ export default function PostCard({ post, userId, token }) {
   const [likeCount, setLikeCount] = React.useState(
     post.likes ? post.likes.length : 0
   );
+  const userName = localStorage.getItem("userName");
+
+  //Creates a chat room on message send,
+  async function sendMessage(userMessage) {
+    const body = userMessage;
+    const user = userName;
+
+    const room = [userName, post.username];
+
+    let bodyObj = JSON.stringify({
+      body,
+      user,
+      room,
+    });
+
+    const url = `${baseURL}/message/new`;
+    let headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", token);
+
+    const requestOption = {
+      headers,
+      body: bodyObj,
+      method: "POST",
+    };
+
+    try {
+      const response = await fetch(url, requestOption);
+      const data = await response.json();
+      createRoom();
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
+  async function createRoom() {
+    const name = "New Room";
+    const addedUsers = [userName, post.username];
+
+    let bodyObj = JSON.stringify({
+      name,
+      addedUsers,
+    });
+
+    const url = `${baseURL}/room/`;
+    let headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", token);
+
+    const requestOption = {
+      headers,
+      body: bodyObj,
+      method: "POST",
+    };
+
+    try {
+      const response = await fetch(url, requestOption);
+      const data = await response.json();
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -68,9 +149,9 @@ export default function PostCard({ post, userId, token }) {
     >
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "grey" }} aria-label="recipe">
             {/* Changed the Avatar to display "U" if user is undefined */}
-            {post.username ? post.username.charAt(0).toUpperCase() : "U"} 
+            {post.username ? post.username.charAt(0).toUpperCase() : "U"}
           </Avatar>
         }
         action={
@@ -128,9 +209,7 @@ export default function PostCard({ post, userId, token }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            Additional content goes here.
-          </Typography>
+          <MessageInput placeholder="Type message here" onSend={sendMessage} />
         </CardContent>
       </Collapse>
     </Card>

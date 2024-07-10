@@ -12,9 +12,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Visibility from '@mui/icons-material/Visibility'
+import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import IconButton from '@mui/material/IconButton'
+import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Alert } from "@mui/material";
 import { baseURL } from "../../environment";
@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
-export default function SignUp({ updateToken, setUserId }) {
+export default function SignUp({ updateToken, setUserId, setUsername }) {
   const navigate = useNavigate();
 
   const [userNameAlert, setUserNameAlert] = useState(false);
@@ -52,11 +52,11 @@ export default function SignUp({ updateToken, setUserId }) {
     const userName = data.get("userName");
     const email = data.get("email");
     const password = data.get("password");
-    const confirmPassword = data.get("confirm-password")
+    const confirmPassword = data.get("confirm-password");
 
     if (password !== confirmPassword) {
-      console.log('Passwords do not match')
-      alert('Passwords do not match!')
+      console.log("Passwords do not match");
+      alert("Passwords do not match!");
       return;
     }
 
@@ -81,16 +81,17 @@ export default function SignUp({ updateToken, setUserId }) {
     try {
       const response = await fetch(url, requestOption);
       const data = await response.json();
-      
+
       if (response.status === 400) {
         setUserNameAlert(data.userNameExists);
         setEmailAlert(data.emailExists);
         return;
-      } 
-      
+      }
+
       if (data.message === "Success!") {
         updateToken(data.token);
-        setUserId(data.userId);
+        setUserId(data.userId); // added user id
+        setUsername(data.userNametag);
         navigate("/dashboard");
       } else {
         setUserNameAlert(data.message.includes(userName));
@@ -100,13 +101,13 @@ export default function SignUp({ updateToken, setUserId }) {
       console.error(err.message);
     }
   }
-  
+
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (token) {
-      navigate("/dashboard")
+      navigate("/dashboard");
     }
-  }, [])
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -216,7 +217,11 @@ export default function SignUp({ updateToken, setUserId }) {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                          {showConfirmPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -239,14 +244,18 @@ export default function SignUp({ updateToken, setUserId }) {
                 </Link>
               </Grid>
             </Grid>
-              <Grid sx={{pt: 5}}>
-                {emailAlert &&
-                  <Alert severity="error" fullWidth>Email already taken!</Alert>
-                }
-                {userNameAlert &&
-                  <Alert severity="error" fullWidth>Username already taken!</Alert>
-                }
-              </Grid>
+            <Grid sx={{ pt: 5 }}>
+              {emailAlert && (
+                <Alert severity="error" fullWidth>
+                  Email already taken!
+                </Alert>
+              )}
+              {userNameAlert && (
+                <Alert severity="error" fullWidth>
+                  Username already taken!
+                </Alert>
+              )}
+            </Grid>
           </Box>
         </Box>
       </Container>
