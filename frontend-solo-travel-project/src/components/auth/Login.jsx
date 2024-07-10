@@ -57,7 +57,7 @@ export default function SignInSide({ updateToken, setUserId, setUsername }) {
         console.log(data);
         updateToken(data.token);
         setUserId(data.userId); // added user id
-        setUsername(data.userName);
+        setUsername(data.userNametag);
         navigate("/dashboard");
       } else {
         alert("Incorrect Username or Password");

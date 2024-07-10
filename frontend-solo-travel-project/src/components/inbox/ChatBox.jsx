@@ -26,9 +26,11 @@ function InboxDisplay({ roomId, token, userName }) {
 
   async function sendMessage(userMessage) {
     const body = userMessage;
+    const user = userName;
+
     let bodyObj = JSON.stringify({
       body,
-      userName,
+      user,
     });
 
     const url = `${baseURL}/message/new`;

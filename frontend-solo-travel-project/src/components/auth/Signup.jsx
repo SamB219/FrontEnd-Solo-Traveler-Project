@@ -91,7 +91,7 @@ export default function SignUp({ updateToken, setUserId, setUsername }) {
       if (data.message === "Success!") {
         updateToken(data.token);
         setUserId(data.userId); // added user id
-        setUsername(data.userName);
+        setUsername(data.userNametag);
         navigate("/dashboard");
       } else {
         setUserNameAlert(data.message.includes(userName));
