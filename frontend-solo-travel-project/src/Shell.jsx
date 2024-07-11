@@ -292,7 +292,7 @@ function Shell() {
                         <Route path="/friends" element={<Friends />} />
                         <Route
                             path="/message/inbox"
-                            element={<MainInbox token={sessionToken} />}
+                            element={<MainInbox token={sessionToken} userId={userId} />}
                         />
                     </Routes>
                 </Box>
