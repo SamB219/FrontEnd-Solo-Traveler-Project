@@ -1,35 +1,34 @@
-import { Avatar, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import MessageCard from "./MessageCard";
 import {
   MainContainer,
   ChatContainer,
   MessageList,
   Message,
   MessageInput,
-  // Sidebar,
-  // Search,
-  // ConversationList,
-  // Conversation,
   ConversationHeader,
-  VoiceCallButton,
-  VideoCallButton,
-  InfoButton,
-  TypingIndicator,
-  MessageSeparator,
-  // ExpansionPanel,
 } from "@chatscope/chat-ui-kit-react";
 import { baseURL } from "../../environment";
 
-function InboxDisplay({ roomId, token, userName, currentDm, messages }) {
+function InboxDisplay({
+  roomId,
+  token,
+  userName,
+  currentDm,
+  messages,
+  setMessages,
+  fetchMessages,
+}) {
   async function sendMessage(userMessage) {
     const body = userMessage;
     const user = userName;
+    const room = [userName, currentDm];
 
     let bodyObj = JSON.stringify({
       body,
       user,
+      room,
     });
 
     const url = `${baseURL}/message/new`;
@@ -46,38 +45,11 @@ function InboxDisplay({ roomId, token, userName, currentDm, messages }) {
     try {
       const response = await fetch(url, requestOption);
       const data = await response.json();
+      fetchMessages();
     } catch (err) {
       console.error(err.message);
     }
   }
-
-  console.log(messages[3]);
-  // useEffect(() => {
-  //     const fetchMessages = async () => {
-  //         try {
-  //             const response = await fetch(`/message/inbox`);
-  //             if (!response.ok) {
-  //                 throw new Error('Network response was not ok');
-  //             }
-  //             const data = await response.json();
-  //             setMessages(data.result);
-  //         } catch (error) {
-  //             setError(error.message);
-  //         } finally {
-  //             setLoading(false);
-  //         }
-  //     };
-
-  //     fetchMessages();
-  // }, [roomId]);
-
-  // if (loading) {
-  //     return <div>Loading...</div>;
-  // }
-
-  // if (error) {
-  //     return <div>Error: {error}</div>;
-  // }
 
   return (
     <>
@@ -102,15 +74,7 @@ function InboxDisplay({ roomId, token, userName, currentDm, messages }) {
           /*  <MessageSeparator content="Saturday, 30 November 2019" /> */
           >
             {messages.map((message) => (
-              <Message
-                model={{
-                  direction: "incoming",
-                  message: "test2",
-                  position: "single",
-                  sender: "Zoe",
-                  sentTime: "15 mins ago",
-                }}
-              ></Message>
+              <MessageCard message={message} userName={userName}></MessageCard>
             ))}
           </MessageList>
           <MessageInput placeholder="Type message here" onSend={sendMessage} />

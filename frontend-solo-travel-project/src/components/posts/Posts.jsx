@@ -100,7 +100,7 @@ export default function PostCard({ post, userId, token }) {
   }
 
   async function createRoom() {
-    const name = "New Room";
+    const name = `${userName} and ${post.username}'s room`;
     const addedUsers = [userName, post.username];
 
     let bodyObj = JSON.stringify({

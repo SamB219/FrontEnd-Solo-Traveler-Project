@@ -12,7 +12,7 @@ function MainInbox({ token }) {
 
   //FETCH ALL ROOMS(Not messages)
   const fetchRooms = async () => {
-    const url = `${baseURL}/room/all`; //ENDPOINT HERE
+    const url = `${baseURL}/room/${userName}`; //ENDPOINT HERE
     const options = {
       method: "GET",
       headers: new Headers({
@@ -34,7 +34,7 @@ function MainInbox({ token }) {
   };
   //FETCH ALL MESSAGES(only messages involving the user )
   const fetchMessages = async () => {
-    const url = `${baseURL}/message/${userName}`; //ENDPOINT HERE
+    const url = `${baseURL}/message/${userName}/${currentDm}`; //ENDPOINT HERE
     const options = {
       method: "GET",
       headers: new Headers({
@@ -49,7 +49,6 @@ function MainInbox({ token }) {
       }
       const data = await res.json();
       setMessages(data.result);
-      console.log(data.result);
     } catch (err) {
       console.error(err.message);
     }
@@ -70,7 +69,10 @@ function MainInbox({ token }) {
           rooms={rooms}
           userName={userName}
           messages={messages}
+          currentDm={currentDm}
           setCurrent={setCurrent}
+          setMessages={setMessages}
+          fetchMessages={fetchMessages}
         />
       </Box>
       <Box sx={{ flex: "3", height: "100%" }}>
@@ -79,6 +81,8 @@ function MainInbox({ token }) {
           userName={userName}
           currentDm={currentDm}
           messages={messages}
+          setMessages={setMessages}
+          fetchMessages={fetchMessages}
         />
       </Box>
     </Box>

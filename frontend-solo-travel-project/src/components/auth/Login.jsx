@@ -102,6 +102,7 @@ export default function SignInSide({ updateToken, setUserId, setUsername }) {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              zIndex: 1000,
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
