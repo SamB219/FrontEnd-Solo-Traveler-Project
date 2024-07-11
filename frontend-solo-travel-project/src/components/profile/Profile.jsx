@@ -67,6 +67,7 @@ function Profile(props) {
                                         margin="normal"
                                         fullWidth
                                         id="age"
+                                        label="What is your age?"
                                         name="Age"
                                         defaultValue={changedAge}
                                         onChange={(e) => { setChangedAge(e.target.value) }}
