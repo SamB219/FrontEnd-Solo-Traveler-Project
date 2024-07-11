@@ -71,6 +71,7 @@ function InboxDisplay({ roomId, token, userName, currentDm, messages, userId }) 
 
     try {
       const response = await fetch(url, requestOptions);
+
       if (!response.ok) {
         throw new Error("Failed to send friend request");
       }
@@ -124,9 +125,9 @@ function InboxDisplay({ roomId, token, userName, currentDm, messages, userId }) 
               userName={currentDm}
             />
             <ConversationHeader.Actions>
-            <IconButton onClick={() => {handleFriendRequest(currentDm)}}>
-              <PersonAddIcon />
-            </IconButton>
+              <IconButton onClick={() => { handleFriendRequest(currentDm) }}>
+                <PersonAddIcon />
+              </IconButton>
             </ConversationHeader.Actions>
           </ConversationHeader>
           <MessageList

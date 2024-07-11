@@ -35,7 +35,7 @@ function MainInbox({ token, userId }) {
   
   //FETCH ALL MESSAGES(only messages involving the user )
   const fetchMessages = async () => {
-    const url = `${baseURL}/message/${userName}`; //ENDPOINT HERE
+    const url = `${baseURL}/message/${userName}/${currentDm}` //ENDPOINT HERE
     const options = {
       method: "GET",
       headers: new Headers({
