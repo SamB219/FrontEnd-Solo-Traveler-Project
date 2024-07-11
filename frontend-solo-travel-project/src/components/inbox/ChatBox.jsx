@@ -1,35 +1,36 @@
-import { Avatar, Box, Button, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import MessageCard from "./MessageCard";
+import { Avatar, Box, Button, IconButton } from "@mui/material";
 import {
   MainContainer,
   ChatContainer,
   MessageList,
   Message,
   MessageInput,
-  // Sidebar,
-  // Search,
-  // ConversationList,
-  // Conversation,
   ConversationHeader,
-  VoiceCallButton,
-  VideoCallButton,
-  InfoButton,
-  TypingIndicator,
-  MessageSeparator,
-  // ExpansionPanel,
 } from "@chatscope/chat-ui-kit-react";
 import { baseURL } from "../../environment";
 
-function InboxDisplay({ roomId, token, userName, currentDm, messages, userId }) {
+function InboxDisplay({
+  roomId,
+  token,
+  userName,
+  currentDm,
+  messages,
+  userId,
+  setMessages,
+  fetchMessages,
+}) {
   async function sendMessage(userMessage) {
     const body = userMessage;
     const user = userName;
+    const room = [userName, currentDm];
 
     let bodyObj = JSON.stringify({
       body,
       user,
+      room,
     });
 
     const url = `${baseURL}/message/new`;
@@ -46,28 +47,28 @@ function InboxDisplay({ roomId, token, userName, currentDm, messages, userId }) 
     try {
       const response = await fetch(url, requestOption);
       const data = await response.json();
+      fetchMessages();
     } catch (err) {
       console.error(err.message);
     }
   }
 
   const handleFriendRequest = async (friend) => {
-
     const url = `${baseURL}/user/friends`;
-    console.log(url)
+    console.log(url);
     const headers = new Headers();
     headers.append("Authorization", token);
     headers.append("Content-Type", "application/json");
 
-    const body = { friendUserName: friend, userId: userId }
+    const body = { friendUserName: friend, userId: userId };
 
     const requestOptions = {
       headers,
       method: "POST",
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     };
 
-    console.log(body)
+    console.log(body);
 
     try {
       const response = await fetch(url, requestOptions);
@@ -124,9 +125,13 @@ function InboxDisplay({ roomId, token, userName, currentDm, messages, userId }) 
               userName={currentDm}
             />
             <ConversationHeader.Actions>
-            <IconButton onClick={() => {handleFriendRequest(currentDm)}}>
-              <PersonAddIcon />
-            </IconButton>
+              <IconButton
+                onClick={() => {
+                  handleFriendRequest(currentDm);
+                }}
+              >
+                <PersonAddIcon />
+              </IconButton>
             </ConversationHeader.Actions>
           </ConversationHeader>
           <MessageList
@@ -134,15 +139,7 @@ function InboxDisplay({ roomId, token, userName, currentDm, messages, userId }) 
           /*  <MessageSeparator content="Saturday, 30 November 2019" /> */
           >
             {messages.map((message) => (
-              <Message
-                model={{
-                  direction: "incoming",
-                  message: "test2",
-                  position: "single",
-                  sender: "Zoe",
-                  sentTime: "15 mins ago",
-                }}
-              ></Message>
+              <MessageCard message={message} userName={userName}></MessageCard>
             ))}
           </MessageList>
           <MessageInput placeholder="Type message here" onSend={sendMessage} />

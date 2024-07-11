@@ -7,7 +7,15 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { Box } from "@mui/material";
 
-function RoomCard({ room, userName, messages, setCurrent }) {
+function RoomCard({
+  room,
+  userName,
+  messages,
+  setCurrent,
+  fetchMessages,
+  setMessages,
+  currentDm,
+}) {
   let roomName = "";
   let newArray = [];
   const [lastMessage, setLast] = useState([]);
@@ -28,7 +36,18 @@ function RoomCard({ room, userName, messages, setCurrent }) {
 
   function handleClick() {
     setCurrent(roomName);
+    fetchMessages();
+    /* let newArray = messages;
+    let filteredArray = newArray.filter(checkRoom);
+    setMessages(filteredArray);
+    console.log(filteredArray); */
   }
+
+  /* function checkRoom(message) {
+    if (message.room.includes(roomName)) {
+      return message;
+    }
+  } */
   //Here I experimented with sorting the messages chronologically.
   //This may be unnecesary as they are already stored as such in MongoDB
   //Keeping it here in case I'm wrong
@@ -44,8 +63,8 @@ function RoomCard({ room, userName, messages, setCurrent }) {
     <>
       <Conversation
         name={roomName}
-        info={last[0] ? last[0].body : null}
-        lastSenderName={last[0] ? last[0].user : null}
+        /*  info={last[0] ? last[0].body : null}
+        lastSenderName={last[0] ? last[0].user : null} */
         unreadDot
         onClick={handleClick}
       />
