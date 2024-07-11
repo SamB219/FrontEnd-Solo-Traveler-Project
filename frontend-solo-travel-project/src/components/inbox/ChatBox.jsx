@@ -17,6 +17,7 @@ function InboxDisplay({
   userName,
   currentDm,
   messages,
+  userId,
   setMessages,
   fetchMessages,
 }) {
@@ -51,6 +52,63 @@ function InboxDisplay({
     }
   }
 
+  const handleFriendRequest = async (friend) => {
+    const url = `${baseURL}/user/friends`;
+    console.log(url);
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+
+    const body = { friendUserName: friend, userId: userId };
+
+    const requestOptions = {
+      headers,
+      method: "POST",
+      body: JSON.stringify(body),
+    };
+
+    console.log(body);
+
+    try {
+      const response = await fetch(url, requestOptions);
+      if (!response.ok) {
+        throw new Error("Failed to send friend request");
+      }
+
+      console.log("Friend request sent successfully.");
+    } catch (error) {
+      console.error("Error sending friend request:", error.message);
+    }
+  };
+
+  // console.log(messages[3]);
+  // useEffect(() => {
+  //     const fetchMessages = async () => {
+  //         try {
+  //             const response = await fetch(`/message/inbox`);
+  //             if (!response.ok) {
+  //                 throw new Error('Network response was not ok');
+  //             }
+  //             const data = await response.json();
+  //             setMessages(data.result);
+  //         } catch (error) {
+  //             setError(error.message);
+  //         } finally {
+  //             setLoading(false);
+  //         }
+  //     };
+
+  //     fetchMessages();
+  // }, [roomId]);
+
+  // if (loading) {
+  //     return <div>Loading...</div>;
+  // }
+
+  // if (error) {
+  //     return <div>Error: {error}</div>;
+  // }
+
   return (
     <>
       <MainContainer
@@ -66,7 +124,13 @@ function InboxDisplay({
               userName={currentDm}
             />
             <ConversationHeader.Actions>
-              <PersonAddIcon sx={{ height: 30, width: 30 }} />
+              <IconButton
+                onClick={() => {
+                  handleFriendRequest(currentDm);
+                }}
+              >
+                <PersonAddIcon />
+              </IconButton>
             </ConversationHeader.Actions>
           </ConversationHeader>
           <MessageList
@@ -85,133 +149,3 @@ function InboxDisplay({
 }
 
 export default InboxDisplay;
-
-{
-  /*
-
-      <Message
-              model={{
-                direction: "incoming",
-                message: "Hello my friend",
-                position: "single",
-                sender: "Zoe",
-                sentTime: "15 mins ago",
-              }}
-            ></Message>
-   <Message
-              avatarSpacer
-              model={{
-                direction: "outgoing",
-                message: "Hello my friend",
-                position: "single",
-                sender: "Patrik",
-                sentTime: "15 mins ago",
-              }}
-            />
-  
-  
-  <Message
-              avatarSpacer
-              model={{
-                direction: "incoming",
-                message: "Hello my friend",
-                position: "first",
-                sender: "Zoe",
-                sentTime: "15 mins ago",
-              }}
-            />
-            <Message
-              avatarSpacer
-              model={{
-                direction: "incoming",
-                message: "Hello my friend",
-                position: "normal",
-                sender: "Zoe",
-                sentTime: "15 mins ago",
-              }}
-            />
-            <Message
-              avatarSpacer
-              model={{
-                direction: "incoming",
-                message: "Hello my friend",
-                position: "normal",
-                sender: "Zoe",
-                sentTime: "15 mins ago",
-              }}
-            />
-            <Message
-              model={{
-                direction: "incoming",
-                message: "Hello my friend",
-                position: "last",
-                sender: "Zoe",
-                sentTime: "15 mins ago",
-              }}
-            >
-              <Avatar
-                name="Zoe"
-                src="https://chatscope.io/storybook/react/assets/zoe-E7ZdmXF0.svg"
-              />
-            </Message>
-            <Message
-              model={{
-                direction: "outgoing",
-                message: "Hello my friend",
-                position: "first",
-                sender: "Patrik",
-                sentTime: "15 mins ago",
-              }}
-            />
-            <Message
-              model={{
-                direction: "outgoing",
-                message: "Hello my friend",
-                position: "normal",
-                sender: "Patrik",
-                sentTime: "15 mins ago",
-              }}
-            />
-            <Message
-              model={{
-                direction: "outgoing",
-                message: "Hello my friend",
-                position: "normal",
-                sender: "Patrik",
-                sentTime: "15 mins ago",
-              }}
-            />
-            <Message
-              model={{
-                direction: "outgoing",
-                message: "Hello my friend",
-                position: "last",
-                sender: "Patrik",
-                sentTime: "15 mins ago",
-              }}
-            />
-            <Message
-              avatarSpacer
-              model={{
-                direction: "incoming",
-                message: "Hello my friend",
-                position: "first",
-                sender: "Zoe",
-                sentTime: "15 mins ago",
-              }}
-            />
-            <Message
-              model={{
-                direction: "incoming",
-                message: "Hello my friend",
-                position: "last",
-                sender: "Zoe",
-                sentTime: "15 mins ago",
-              }}
-            >
-              <Avatar
-                name="Zoe"
-                src="https://chatscope.io/storybook/react/assets/zoe-E7ZdmXF0.svg"
-              />
-            </Message> */
-}

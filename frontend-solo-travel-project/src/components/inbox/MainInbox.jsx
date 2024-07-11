@@ -4,7 +4,7 @@ import ChatBox from "./ChatBox";
 import { Box } from "@mui/material";
 import { baseURL } from "../../environment";
 
-function MainInbox({ token }) {
+function MainInbox({ token, userId }) {
   const userName = localStorage.getItem("userName");
   const [rooms, setRooms] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -32,6 +32,7 @@ function MainInbox({ token }) {
       console.error(err.message);
     }
   };
+  
   //FETCH ALL MESSAGES(only messages involving the user )
   const fetchMessages = async () => {
     const url = `${baseURL}/message/${userName}/${currentDm}`; //ENDPOINT HERE
@@ -78,6 +79,7 @@ function MainInbox({ token }) {
       <Box sx={{ flex: "3", height: "100%" }}>
         <ChatBox
           token={token}
+          userId={userId}
           userName={userName}
           currentDm={currentDm}
           messages={messages}

@@ -1,36 +1,85 @@
-import React, { useRef } from "react";
-import { MapContainer, TileLayer, ZoomControl, Marker } from "react-leaflet";
+import React, { useRef, useState } from "react";
+import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { FaGlobe } from "react-icons/fa"; 
 
 function SimpleMap({ pinElement }) {
   const mapRef = useRef(null);
-  const latitude = 25;
-  const longitude = -3.70379;
+  const latitude = 0;
+  const longitude = 0;
+  const [mapType, setMapType] = useState("standard"); 
+
+  // Custom tile layers
+  const tileLayers = {
+    standard: {
+      name: "Standard",
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      options: {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        tileSize: 256,
+      },
+    },
+    satellite: {
+      name: "Satellite",
+      url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      options: {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">ESRI',
+        tileSize: 256,
+      },
+    },
+  };
+
+  // Define maxBounds to restrict map view to the world area-- change as desired
+  const maxBounds = [
+    [-85, -180], // Southwest coordinates
+    [85, 180],   // Northeast coordinates 
+  ];
+
+  // Function to handle map type change
+  const toggleMapType = () => {
+    setMapType((prevType) => (prevType === "standard" ? "satellite" : "standard"));
+  };
 
   return (
-    <>
-      {/* Map needs Height and Width to display */}
+    <div style={{ position: "relative", height: "500px", width: "100vw", zIndex: "0" }}>
       <MapContainer
         center={[latitude, longitude]}
-        zoom={2}
+        zoom={2} 
         zoomControl={false}
         ref={mapRef}
-        style={{
-          height: "500px",
-          width: "100vw",
-          position: "relative",
-          zIndex: "0",
-        }}
+        style={{ height: "100%", width: "100%" }}
+        maxBounds={maxBounds} 
+        maxBoundsViscosity={1.0} 
+        doubleClickZoom={false} 
+        minZoom={2} 
+        maxZoom={18} 
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        {/* Single tile layer based on mapType */}
+        <TileLayer {...tileLayers[mapType]} />
+
+        {/* Render pins */}
         {pinElement}
+
         <ZoomControl position="bottomright" />
-        {/* Additional map layers or components can be added here */}
       </MapContainer>
-    </>
+
+      {/* Toggle map type button */}
+      <div
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          backgroundColor: "#fff",
+          padding: "5px",
+          borderRadius: "50%",
+          cursor: "pointer",
+          zIndex: 1000,
+        }}
+        onClick={toggleMapType}
+      >
+        <FaGlobe size={24} color="#007bff" />
+      </div>
+    </div>
   );
 }
 

@@ -16,13 +16,83 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../environment";
+import styled, { keyframes } from "styled-components";
+
+// import images
+import window from "../login-images/window.jpg";
+import sky from "../login-images/sky.jpg";
+import camel from "../login-images/camel.jpg";
+import stairs from "../login-images/stairs.jpg";
+import boat from "../login-images/boat.jpg";
+import car from "../login-images/car.jpg";
+import moscow from "../login-images/moscow.jpg";
+import green from "../login-images/green.jpg";
+import city from "../login-images/city.jpg";
 
 const defaultTheme = createTheme();
 
+const slideIn = keyframes`
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0); }
+`;
+
+const slideOut = keyframes`
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+`;
+
+const StyledImageContainer = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  animation: ${(props) => (props.fade ? slideIn : slideOut)} 1s forwards;
+  transform: translateX(0);
+  image-rendering: crisp-edges; 
+`;
+
+const StyledImage = styled.div`
+  background-image: url(${(props) => props.image});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0.9); 
+`;
+
 export default function SignInSide({ updateToken, setUserId, setUsername }) {
   const navigate = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  const imageUrls = [
+    window,
+    sky,
+    camel,
+    stairs,
+    boat,
+    car,
+    moscow,
+    green,
+    city,
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(false);
+
+      setTimeout(() => {
+        setCurrentImageIndex(
+          (prevIndex) => (prevIndex + 1) % imageUrls.length
+        );
+        setFade(true);
+      }, 1000);
+    }, 18000); 
+
+    return () => clearInterval(interval);
+  }, [imageUrls.length]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -56,7 +126,7 @@ export default function SignInSide({ updateToken, setUserId, setUsername }) {
       if (data.message === "Successful!") {
         console.log(data);
         updateToken(data.token);
-        setUserId(data.userId); // added user id
+        setUserId(data.userId); 
         setUsername(data.userNametag);
         navigate("/dashboard");
       } else {
@@ -72,7 +142,7 @@ export default function SignInSide({ updateToken, setUserId, setUsername }) {
     if (token) {
       navigate("/dashboard");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -84,16 +154,18 @@ export default function SignInSide({ updateToken, setUserId, setUsername }) {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://picsum.photos/seed/picsum/1600/1700)",
-            backgroundRepeat: "no-repeat",
+            position: "relative",
+            overflow: "hidden",
             backgroundColor: (t) =>
               t.palette.mode === "light"
                 ? t.palette.grey[50]
                 : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
           }}
-        />
+        >
+          <StyledImageContainer fade={fade}>
+            <StyledImage image={imageUrls[currentImageIndex]} />
+          </StyledImageContainer>
+        </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
