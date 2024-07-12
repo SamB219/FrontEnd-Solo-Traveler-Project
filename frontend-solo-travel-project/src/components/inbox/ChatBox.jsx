@@ -82,33 +82,6 @@ function InboxDisplay({
     }
   };
 
-  // console.log(messages[3]);
-  // useEffect(() => {
-  //     const fetchMessages = async () => {
-  //         try {
-  //             const response = await fetch(`/message/inbox`);
-  //             if (!response.ok) {
-  //                 throw new Error('Network response was not ok');
-  //             }
-  //             const data = await response.json();
-  //             setMessages(data.result);
-  //         } catch (error) {
-  //             setError(error.message);
-  //         } finally {
-  //             setLoading(false);
-  //         }
-  //     };
-
-  //     fetchMessages();
-  // }, [roomId]);
-
-  // if (loading) {
-  //     return <div>Loading...</div>;
-  // }
-
-  // if (error) {
-  //     return <div>Error: {error}</div>;
-  // }
 
   return (
     <>
