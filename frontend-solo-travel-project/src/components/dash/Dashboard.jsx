@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 //Component Imports
 import AddPost from "../posts/AddPost";
 import PostIndex from "../posts/PostIndex";
-import Filter from "./Filter";
+import Filter from "./filter/Filter";
 import Pin from "../maps/Pin";
 
 //Leaflet Import
@@ -26,6 +26,10 @@ const defaultTheme = createTheme();
 export default function Dashboard({ token, userId, username }) {
   const [posts, setPosts] = useState([]);
   const [pinElement, setPin] = useState();
+  const [filterActive, setFilterActive] = useState(false);
+  const [filterData, setFilterData] = useState([]);
+  const [filterLocation, setFilterLocation] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   /*  let pinElement = ""; */
 
   const fetchPosts = async () => {
@@ -50,14 +54,52 @@ export default function Dashboard({ token, userId, username }) {
     }
   };
 
+  const filterPosts = async () => {
+    const url = `${baseURL}/post/filter`; //ENDPOINT HERE
+    /*   const filterCoords = filterLocation; */
+    const xCoord = filterLocation[1];
+    const yCoord = filterLocation[0];
+
+    let bodyObj = JSON.stringify({
+      xCoord,
+      yCoord,
+    });
+
+    const options = {
+      headers: new Headers({
+        Authorization: token,
+        "Content-Type": "application/json",
+      }),
+      body: bodyObj,
+      method: "POST",
+    };
+
+    try {
+      const res = await fetch(url, options);
+      /*  if (!res.ok) {
+        throw new Error("Failed to fetch posts");
+      } */
+      const data = await res.json();
+      setFilterActive(true);
+      setPosts(data.result);
+      /*  setPosts(data.result); */
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
   function renderPins() {
     setPin(<Pin posts={posts} />);
   }
 
   //EXECUTES FETCH ON PAGE RELOAD
   useEffect(() => {
-    if (token) {
+    if (token && filterActive === false) {
       fetchPosts();
+    }
+    if (token && filterActive === true) {
+      filterPosts();
+      renderPins();
     }
     if (posts) {
       renderPins();
@@ -85,7 +127,17 @@ export default function Dashboard({ token, userId, username }) {
             <SimpleMap posts={posts} pinElement={pinElement} />
             {/*  FILTER DISPLAY GRID ---> Absolutely positioned child element of container*/}
             <Grid item xs={12} position={"absolute"}>
-              <Filter />
+              <Filter
+                setPosts={setPosts}
+                token={token}
+                setFilterActive={setFilterActive}
+                setFilterData={setFilterData}
+                filterPosts={filterPosts}
+                filterLocation={filterLocation}
+                setFilterLocation={setFilterLocation}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
+              />
             </Grid>
           </Grid>
         </Container>
