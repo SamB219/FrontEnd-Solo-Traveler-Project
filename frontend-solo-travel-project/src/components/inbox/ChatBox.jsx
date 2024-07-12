@@ -83,6 +83,7 @@ function InboxDisplay({
     }
   };
 
+
   let messageArray = [];
 
   allMessages.forEach((message) => {
@@ -90,6 +91,7 @@ function InboxDisplay({
       messageArray.push(message);
     }
   });
+
 
   return (
     <>
