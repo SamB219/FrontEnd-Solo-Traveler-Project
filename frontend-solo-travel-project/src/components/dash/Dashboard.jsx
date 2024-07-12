@@ -30,6 +30,11 @@ export default function Dashboard({ token, userId, username }) {
   const [filterData, setFilterData] = useState([]);
   const [filterLocation, setFilterLocation] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [fetchActive, setFetchActive] = useState(true);
+  const [lat, setLat] = useState(0);
+  const [long, setLong] = useState(0);
+  const [zoom, setZoom] = useState(2);
+  const [mapRef, setMap] = useState(null);
   /*  let pinElement = ""; */
 
   const fetchPosts = async () => {
@@ -49,6 +54,7 @@ export default function Dashboard({ token, userId, username }) {
       }
       const data = await res.json();
       setPosts(data.result);
+      console.log("normal");
     } catch (err) {
       console.error(err.message);
     }
@@ -59,6 +65,11 @@ export default function Dashboard({ token, userId, username }) {
     /*   const filterCoords = filterLocation; */
     const xCoord = filterLocation[1];
     const yCoord = filterLocation[0];
+
+    setLat(xCoord);
+    setLong(yCoord);
+
+    setZoom(5);
 
     let bodyObj = JSON.stringify({
       xCoord,
@@ -80,8 +91,11 @@ export default function Dashboard({ token, userId, username }) {
         throw new Error("Failed to fetch posts");
       } */
       const data = await res.json();
-      setFilterActive(true);
+      /*   setFilterActive(true); */
       setPosts(data.result);
+      console.log("filtering");
+      mapRef.setView([lat, long], zoom);
+
       /*  setPosts(data.result); */
     } catch (err) {
       console.error(err.message);
@@ -94,7 +108,7 @@ export default function Dashboard({ token, userId, username }) {
 
   //EXECUTES FETCH ON PAGE RELOAD
   useEffect(() => {
-    if (token && filterActive === false) {
+    if (token && filterActive === false && fetchActive === true) {
       fetchPosts();
     }
     if (token && filterActive === true) {
@@ -104,7 +118,7 @@ export default function Dashboard({ token, userId, username }) {
     if (posts) {
       renderPins();
     }
-  }, [token, posts]);
+  }, [token, posts, fetchActive]);
 
   return (
     <>
@@ -124,19 +138,29 @@ export default function Dashboard({ token, userId, username }) {
         <Container maxWidth="true" sx={{ mt: 4, mb: 0 }}>
           <Grid container spacing={2} position={"relative"}>
             {/* {fetch ? <SimpleMap posts={posts} /> : null} */}
-            <SimpleMap posts={posts} pinElement={pinElement} />
+            <SimpleMap
+              posts={posts}
+              pinElement={pinElement}
+              lat={lat}
+              long={long}
+              zoom={zoom}
+              setMap={setMap}
+            />
             {/*  FILTER DISPLAY GRID ---> Absolutely positioned child element of container*/}
             <Grid item xs={12} position={"absolute"}>
               <Filter
                 setPosts={setPosts}
                 token={token}
                 setFilterActive={setFilterActive}
+                filterActive={filterActive}
                 setFilterData={setFilterData}
                 filterPosts={filterPosts}
                 filterLocation={filterLocation}
                 setFilterLocation={setFilterLocation}
                 selectedTags={selectedTags}
                 setSelectedTags={setSelectedTags}
+                setFetchActive={setFetchActive}
+                fetchActive={fetchActive}
               />
             </Grid>
           </Grid>

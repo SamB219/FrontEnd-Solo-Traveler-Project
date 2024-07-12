@@ -5,6 +5,7 @@ import Paper from "@mui/material/Paper";
 import Search from "./Search";
 import { baseURL } from "../../../environment/index";
 import FilterTags from "./tagFilter/FilterTags";
+import Grid from "@mui/material/Grid";
 
 function Filter({
   setPosts,
@@ -16,7 +17,27 @@ function Filter({
   selectedTags,
   setFilterLocation,
   filterLocation,
+  setFetchActive,
+  filterActive,
+  fetchActive,
 }) {
+  function activateFilterLoop() {
+    setFetchActive(true);
+    setFilterActive(true);
+    setTimeout(swapFilter, 400);
+  }
+
+  function swapFilter() {
+    setFilterActive(false);
+    setFetchActive(false); //False until filter cleared
+    console.log("setimeout finished");
+  }
+
+  function clearFilter() {
+    setFilterActive(false);
+    setFetchActive(true);
+    window.location.reload();
+  }
   return (
     <>
       <Paper
@@ -40,15 +61,42 @@ function Filter({
           selectedTags={selectedTags}
           setSelectedTags={setSelectedTags}
         />
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ mt: 0, mb: 0, position: "relative", top: 50 }}
-          size="large"
-          onClick={filterPosts}
-        >
-          Find Me
-        </Button>
+        {fetchActive ? (
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 0, mb: 0, position: "absolute", top: 398, width: 250 }}
+            size="large"
+            onClick={activateFilterLoop}
+          >
+            Find Me
+          </Button>
+        ) : (
+          <Grid container columnSpacing={{ xs: 1 }}>
+            <Grid item xs={6}>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 0, mb: 0, position: "relative", top: 50 }}
+                size="large"
+                onClick={activateFilterLoop}
+              >
+                Find Me
+              </Button>
+            </Grid>
+            <Grid item xs={6}>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 0, mb: 0, position: "relative", top: 50 }}
+                size="large"
+                onClick={clearFilter}
+              >
+                Clear
+              </Button>
+            </Grid>
+          </Grid>
+        )}
       </Paper>
     </>
   );
