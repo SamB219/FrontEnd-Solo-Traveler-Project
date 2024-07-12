@@ -17,6 +17,7 @@ import Pin from "../maps/Pin";
 
 //Leaflet Import
 import SimpleMap from "../maps/SimpleMap";
+import SiteFooter from "../footer/Footer";
 
 const drawerWidth = 240; // Adjust this value to change width of navbar popout
 
@@ -76,10 +77,12 @@ export default function Dashboard({ token, userId, username }) {
           flexGrow: 1,
           height: "100vh",
           overflow: "auto",
+          display: "flex",
+          flexDirection: "column"
         }}
       >
         <Toolbar />
-        <Container maxWidth="true" sx={{ mt: 4, mb: 0 }}>
+        <Container maxWidth="true" sx={{ mt: 4, mb: 0, flexGrow: 1 }}>
           <Grid container spacing={2} position={"relative"}>
             {/* {fetch ? <SimpleMap posts={posts} /> : null} */}
             <SimpleMap posts={posts} pinElement={pinElement} />
@@ -109,6 +112,9 @@ export default function Dashboard({ token, userId, username }) {
             Test Footer
           </Grid>
         </Container>
+        <Box sx={{mt: 'auto', width: '100%'}}>
+          <SiteFooter />
+        </Box>
       </Box>
     </>
   );
