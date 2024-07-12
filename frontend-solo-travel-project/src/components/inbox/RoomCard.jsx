@@ -15,9 +15,11 @@ function RoomCard({
   fetchMessages,
   setMessages,
   currentDm,
+  allMessages,
 }) {
   let roomName = "";
   let newArray = [];
+  let secondNewArray = [];
   const [lastMessage, setLast] = useState([]);
 
   //Logic to test which username to display
@@ -34,9 +36,21 @@ function RoomCard({
     }
   });
 
+  allMessages.forEach((message) => {
+    if (message.room.includes(roomName)) {
+      secondNewArray.push(message);
+    }
+  });
+  let lastItem = secondNewArray.slice(-1)[0];
+
+  /*   console.log(`${allMessages}`);
+  console.log(`Room: ${roomName} Messages: ${secondNewArray}`); */
+
   function handleClick() {
+    /*  setMessages([]); */
     setCurrent(roomName);
-    fetchMessages();
+    /*  fetchMessages(); */
+
     /* let newArray = messages;
     let filteredArray = newArray.filter(checkRoom);
     setMessages(filteredArray);
@@ -63,9 +77,9 @@ function RoomCard({
     <>
       <Conversation
         name={roomName}
-        /*  info={last[0] ? last[0].body : null}
-        lastSenderName={last[0] ? last[0].user : null} */
-        unreadDot
+        info={lastItem ? lastItem.body : null}
+        lastSenderName={lastItem ? lastItem.user : null}
+        /*  unreadDot */
         onClick={handleClick}
       />
     </>

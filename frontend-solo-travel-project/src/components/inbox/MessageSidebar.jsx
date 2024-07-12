@@ -16,6 +16,7 @@ function MessageSidebar({
   fetchMessages,
   setMessages,
   currentDm,
+  allMessages,
 }) {
   return (
     <>
@@ -31,6 +32,7 @@ function MessageSidebar({
               fetchMessages={fetchMessages}
               setMessages={setMessages}
               currentDm={currentDm}
+              allMessages={allMessages}
             />
           ))}
         </ConversationList>

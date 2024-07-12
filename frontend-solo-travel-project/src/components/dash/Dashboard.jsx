@@ -91,10 +91,10 @@ export default function Dashboard({ token, userId, username }) {
         </Container>
 
         {/* POST DISPLAY GRID */}
-        <Container maxWidth="false" sx={{ mt: 3, mb: 4 }}>
+        <Container maxWidth="false" sx={{ mt: 3, mb: 4 }} direction="column">
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: "flex", justifyContent: "flex-end" }}>
-              <AddPost token={token} username={username}/>
+              <AddPost token={token} username={username} />
             </Paper>
             <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
               <PostIndex
@@ -104,6 +104,9 @@ export default function Dashboard({ token, userId, username }) {
                 setPosts={setPosts}
               />
             </Paper>
+          </Grid>
+          <Grid item xs={12} width={100}>
+            Test Footer
           </Grid>
         </Container>
       </Box>

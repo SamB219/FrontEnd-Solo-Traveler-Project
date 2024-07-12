@@ -216,7 +216,11 @@ export default function PostCard({ post, userId, token }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <MessageInput placeholder={`Send ${post.username} a message`} onSend={sendMessage} />
+          <MessageInput
+            placeholder={`Send ${post.username} a message`}
+            onSend={sendMessage}
+            attachButton={false}
+          />
         </CardContent>
       </Collapse>
     </Card>

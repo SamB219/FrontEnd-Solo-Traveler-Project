@@ -21,6 +21,7 @@ function InboxDisplay({
   userId,
   setMessages,
   fetchMessages,
+  allMessages,
 }) {
   async function sendMessage(userMessage) {
     const body = userMessage;
@@ -55,7 +56,7 @@ function InboxDisplay({
 
   const handleFriendRequest = async (friend) => {
     const url = `${baseURL}/user/friends`;
-    console.log(url);
+
     const headers = new Headers();
     headers.append("Authorization", token);
     headers.append("Content-Type", "application/json");
@@ -81,6 +82,15 @@ function InboxDisplay({
       console.error("Error sending friend request:", error.message);
     }
   };
+
+
+  let messageArray = [];
+
+  allMessages.forEach((message) => {
+    if (message.room.includes(currentDm)) {
+      messageArray.push(message);
+    }
+  });
 
 
   return (
@@ -111,11 +121,20 @@ function InboxDisplay({
           /*   typingIndicator={<TypingIndicator content="Zoe is typing" />} */
           /*  <MessageSeparator content="Saturday, 30 November 2019" /> */
           >
-            {messages.map((message) => (
-              <MessageCard message={message} userName={userName}></MessageCard>
-            ))}
+            {messageArray
+              ? messageArray.map((message) => (
+                  <MessageCard
+                    message={message}
+                    userName={userName}
+                  ></MessageCard>
+                ))
+              : null}
           </MessageList>
-          <MessageInput placeholder="Type message here" onSend={sendMessage} />
+          <MessageInput
+            placeholder="Type message here"
+            onSend={sendMessage}
+            attachButton={false}
+          />
         </ChatContainer>
       </MainContainer>
     </>
