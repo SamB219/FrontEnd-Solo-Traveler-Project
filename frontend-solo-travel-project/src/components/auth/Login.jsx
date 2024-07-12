@@ -20,7 +20,6 @@ import styled, { keyframes } from "styled-components";
 
 // import images
 import window from "../login-images/window.jpg";
-import sky from "../login-images/sky.jpg";
 import camel from "../login-images/camel.jpg";
 import stairs from "../login-images/stairs.jpg";
 import boat from "../login-images/boat.jpg";
@@ -69,7 +68,6 @@ export default function SignInSide({ updateToken, setUserId, setUsername }) {
 
   const imageUrls = [
     window,
-    sky,
     camel,
     stairs,
     boat,
@@ -89,7 +87,7 @@ export default function SignInSide({ updateToken, setUserId, setUsername }) {
         );
         setFade(true);
       }, 1000);
-    }, 18000); 
+    }, 9000); 
 
     return () => clearInterval(interval);
   }, [imageUrls.length]);
