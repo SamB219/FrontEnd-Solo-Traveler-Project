@@ -21,6 +21,7 @@ function InboxDisplay({
   userId,
   setMessages,
   fetchMessages,
+  allMessages,
 }) {
   async function sendMessage(userMessage) {
     const body = userMessage;
@@ -55,7 +56,7 @@ function InboxDisplay({
 
   const handleFriendRequest = async (friend) => {
     const url = `${baseURL}/user/friends`;
-    console.log(url);
+
     const headers = new Headers();
     headers.append("Authorization", token);
     headers.append("Content-Type", "application/json");
@@ -82,33 +83,13 @@ function InboxDisplay({
     }
   };
 
-  // console.log(messages[3]);
-  // useEffect(() => {
-  //     const fetchMessages = async () => {
-  //         try {
-  //             const response = await fetch(`/message/inbox`);
-  //             if (!response.ok) {
-  //                 throw new Error('Network response was not ok');
-  //             }
-  //             const data = await response.json();
-  //             setMessages(data.result);
-  //         } catch (error) {
-  //             setError(error.message);
-  //         } finally {
-  //             setLoading(false);
-  //         }
-  //     };
+  let messageArray = [];
 
-  //     fetchMessages();
-  // }, [roomId]);
-
-  // if (loading) {
-  //     return <div>Loading...</div>;
-  // }
-
-  // if (error) {
-  //     return <div>Error: {error}</div>;
-  // }
+  allMessages.forEach((message) => {
+    if (message.room.includes(currentDm)) {
+      messageArray.push(message);
+    }
+  });
 
   return (
     <>
@@ -138,11 +119,20 @@ function InboxDisplay({
           /*   typingIndicator={<TypingIndicator content="Zoe is typing" />} */
           /*  <MessageSeparator content="Saturday, 30 November 2019" /> */
           >
-            {messages.map((message) => (
-              <MessageCard message={message} userName={userName}></MessageCard>
-            ))}
+            {messageArray
+              ? messageArray.map((message) => (
+                  <MessageCard
+                    message={message}
+                    userName={userName}
+                  ></MessageCard>
+                ))
+              : null}
           </MessageList>
-          <MessageInput placeholder="Type message here" onSend={sendMessage} />
+          <MessageInput
+            placeholder="Type message here"
+            onSend={sendMessage}
+            attachButton={false}
+          />
         </ChatContainer>
       </MainContainer>
     </>
