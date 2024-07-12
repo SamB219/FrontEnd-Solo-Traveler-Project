@@ -109,7 +109,6 @@ export default function Dashboard({ token, userId, username }) {
             </Paper>
           </Grid>
           <Grid item xs={12} width={100}>
-            Test Footer
           </Grid>
         </Container>
         <Box sx={{mt: 'auto', width: '100%'}}>

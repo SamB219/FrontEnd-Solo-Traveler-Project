@@ -14,7 +14,7 @@ function SiteFooter() {
                         <a href="https://github.com/Nemo-LH">Lucas Henry</a>
                     </Typography>
                     <Typography sx={{ml: 5, mr: 5}}>
-                        <a href="https://github.com/SamB219">Sam Biomonte</a>
+                        <a href="https://github.com/SamB219">Sam Biamonte</a>
                     </Typography>
                     <Typography>
                         <a href="https://github.com/Claydough16">Clayton Nicholson</a>
