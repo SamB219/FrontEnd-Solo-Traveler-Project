@@ -73,6 +73,7 @@ function InboxDisplay({
 
     try {
       const response = await fetch(url, requestOptions);
+
       if (!response.ok) {
         throw new Error("Failed to send friend request");
       }

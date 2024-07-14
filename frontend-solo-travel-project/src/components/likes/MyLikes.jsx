@@ -3,6 +3,7 @@ import PostCard from '../posts/Posts';
 import { baseURL } from '../../environment/index';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import SiteFooter from '../footer/Footer';
 
 const MyLikes = ({ userId, token }) => {
     const [likedPosts, setLikedPosts] = useState([]);
@@ -65,6 +66,7 @@ const MyLikes = ({ userId, token }) => {
                 )}
             </Grid>
         </Box>
+
     );
 };
 
