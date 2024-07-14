@@ -55,7 +55,7 @@ export default function Dashboard({ token, userId, username }) {
       }
       const data = await res.json();
       setPosts(data.result);
-      console.log("normal");
+      /*   console.log("normal"); */
     } catch (err) {
       console.error(err.message);
     }
@@ -66,7 +66,9 @@ export default function Dashboard({ token, userId, username }) {
     /*   const filterCoords = filterLocation; */
     const xCoord = filterLocation[1];
     const yCoord = filterLocation[0];
+    const tags = selectedTags;
 
+    //Sets the zoom and location of leaflet map
     setLat(xCoord);
     setLong(yCoord);
 
@@ -75,6 +77,7 @@ export default function Dashboard({ token, userId, username }) {
     let bodyObj = JSON.stringify({
       xCoord,
       yCoord,
+      tags,
     });
 
     const options = {
@@ -95,6 +98,7 @@ export default function Dashboard({ token, userId, username }) {
       /*   setFilterActive(true); */
       setPosts(data.result);
       console.log("filtering");
+      console.log(posts);
       mapRef.setView([lat, long], zoom);
 
       /*  setPosts(data.result); */
@@ -134,7 +138,7 @@ export default function Dashboard({ token, userId, username }) {
           height: "100vh",
           overflow: "auto",
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
         }}
       >
         <Toolbar />
@@ -184,10 +188,9 @@ export default function Dashboard({ token, userId, username }) {
               />
             </Paper>
           </Grid>
-          <Grid item xs={12} width={100}>
-          </Grid>
+          <Grid item xs={12} width={100}></Grid>
         </Container>
-        <Box sx={{mt: 'auto', width: '100%'}}>
+        <Box sx={{ mt: "auto", width: "100%" }}>
           <SiteFooter />
         </Box>
       </Box>
