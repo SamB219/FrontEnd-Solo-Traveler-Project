@@ -87,7 +87,7 @@ export default function BasicModal(props) {
     }
   }
   return (
-    <div>
+    <>
       <Button
         onClick={handleOpen}
         variant="contained"
@@ -176,6 +176,6 @@ export default function BasicModal(props) {
           {/*    <ImageUpload /> */}
         </Box>
       </Modal>
-    </div>
+    </>
   );
 }
