@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -18,42 +18,29 @@ import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import { baseURL } from "../../environment";
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import {
-  MainContainer,
-  ChatContainer,
-  MessageList,
-  Message,
-  MessageInput,
-  // Sidebar,
-  // Search,
-  // ConversationList,
-  // Conversation,
-  ConversationHeader,
-  VoiceCallButton,
-  VideoCallButton,
-  InfoButton,
-  TypingIndicator,
-  MessageSeparator,
-  // ExpansionPanel,
-} from "@chatscope/chat-ui-kit-react";
+import { MessageInput } from "@chatscope/chat-ui-kit-react";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import Popover from "@mui/material/Popover";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 
 // concatenate the date for posts
 function formatDate(dateString) {
   const date = new Date(dateString);
 
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
-  const day = date.getDate().toString().padStart(2, '0');
-  const year = date.getFullYear().toString().slice(-2); 
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  const year = date.getFullYear().toString().slice(-2);
 
   let hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const ampm = hours >= 12 ? ' PM' : ' AM';
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? " PM" : " AM";
   hours = hours % 12;
-  hours = hours ? hours : 12; 
+  hours = hours ? hours : 12;
 
   return `${month}/${day}/${year} at ${hours}:${minutes}${ampm}`;
 }
-
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -67,11 +54,62 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function PostCard({ post, userId, token }) {
-  const [expanded, setExpanded] = React.useState(false);
-  const [likeCount, setLikeCount] = React.useState(
+  const [expanded, setExpanded] = useState(false);
+  const [likeCount, setLikeCount] = useState(
     post.likes ? post.likes.length : 0
   );
   const userName = localStorage.getItem("userName");
+
+  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClose = (value) => {
+    setOpen(false);
+  };
+
+  const handleModalClick = () => {
+    setOpen(true);
+  };
+
+  const handlePopoverClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpen1(true);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+    setOpen1(false);
+  };
+
+  const handleOptions = () => {
+    handlePopoverClose();
+    if (post.username === userName) {
+      handleModalClick();
+    }
+  };
+
+  async function handleDelete() {
+    const url = `${baseURL}/post/${post._id}`; //ENDPOINT HERE
+
+    const options = {
+      method: "DELETE",
+      headers: new Headers({
+        Authorization: token,
+      }),
+    };
+
+    try {
+      const res = await fetch(url, options);
+      if (!res.ok) {
+        throw new Error("Failed to delete post");
+      }
+      const data = await res.json();
+      console.log(data.message);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 
   //Creates a chat room on message send,
   async function sendMessage(userMessage) {
@@ -145,84 +183,129 @@ export default function PostCard({ post, userId, token }) {
   }, [post, userId]);
 
   return (
-    <Card
-      sx={{
-        maxWidth: 345,
-        minWidth: 345,
-        minHeight: 500,
-        backgroundColor: "#F5F5F5",
-      }}
-      variant="outlined"
-    >
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: "grey" }} aria-label="recipe">
-            {/* Changed the Avatar to display "U" if user is undefined */}
-            {post.username ? post.username.charAt(0).toUpperCase() : "U"}
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        titleTypographyProps={{ variant: "h7" }}
-        title={post.title}
-        subheader={`${post.username} • ${formatDate(post.eventDate)}`}
-      />
-      <CardMedia
-        component="img"
-        height="194"
-        image={post.imgUrl}
-        alt="Post image"
-      />
-      <CardContent sx={{ height: 170 }}>
-        <Typography variant="body2" color="text.secondary">
-          {post.tags.map((tag) => (
-            <Chip
-              key={tag}
-              label={tag}
-              variant={"outlined"}
-              color={"primary"}
-              sx={{ margin: 0.5, fontSize: 12 }}
-            />
-          ))}
-        </Typography>
-        <Box sx={{ p: 1 }}>
-          <Typography variant="body2" color="text.secondary">
-            {post.description}
-          </Typography>
-        </Box>
-      </CardContent>
-      <CardActions disableSpacing>
-        <LikeFunction
-          postId={post._id}
-          userId={userId}
-          token={token}
-          updateLikeCount={setLikeCount}
-          likeCount={likeCount}
-        />
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
+    <>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>
+          Are you sure you would like to delete this post?
+        </DialogTitle>
+        <Button
+          variant="contained"
+          color="error"
+          sx={{ mt: 1 }}
+          onClick={handleDelete}
         >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <MessageInput
-            placeholder={`Send ${post.username} a message`}
-            onSend={sendMessage}
-            attachButton={false}
-          />
+          {" "}
+          {post.username === userName ? "Delete" : "Report"}
+        </Button>
+      </Dialog>
+
+      <Popover
+        open={open1}
+        onClose={handlePopoverClose}
+        anchorEl={anchorEl}
+        sx={{ left: 20 }}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <Box sx={{ padding: 2 }}>
+          <Typography sx={{ mb: 0.5 }}> Options </Typography>
+          <Divider></Divider>
+          <Button
+            variant="contained"
+            color="error"
+            sx={{ mt: 1 }}
+            onClick={handleOptions}
+          >
+            {" "}
+            {post.username === userName ? "Delete" : "Report"}
+          </Button>
+        </Box>
+      </Popover>
+      <Card
+        sx={{
+          maxWidth: 345,
+          minWidth: 345,
+          minHeight: 500,
+          backgroundColor: "#F5F5F5",
+        }}
+        variant="outlined"
+      >
+        <CardHeader
+          avatar={
+            <Avatar sx={{ bgcolor: "grey" }} aria-label="recipe">
+              {/* Changed the Avatar to display "U" if user is undefined */}
+              {post.username ? post.username.charAt(0).toUpperCase() : "U"}
+            </Avatar>
+          }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon onClick={handlePopoverClick} />
+            </IconButton>
+          }
+          titleTypographyProps={{ variant: "h7" }}
+          title={post.title}
+          subheader={`${post.username} • ${formatDate(post.eventDate)}`}
+        />
+        <CardMedia
+          component="img"
+          height="194"
+          image={post.imgUrl}
+          alt="Post image"
+        />
+        <CardContent sx={{ height: 170 }}>
+          <Typography variant="body2" color="text.secondary">
+            {post.tags.map((tag) => (
+              <Chip
+                key={tag}
+                label={tag}
+                variant={"outlined"}
+                color={"primary"}
+                sx={{ margin: 0.5, fontSize: 12 }}
+              />
+            ))}
+          </Typography>
+          <Box sx={{ p: 1 }}>
+            <Typography variant="body2" color="text.secondary">
+              {post.description}
+            </Typography>
+          </Box>
         </CardContent>
-      </Collapse>
-    </Card>
+        <CardActions disableSpacing>
+          <LikeFunction
+            postId={post._id}
+            userId={userId}
+            token={token}
+            updateLikeCount={setLikeCount}
+            likeCount={likeCount}
+          />
+          <IconButton aria-label="share">
+            <ShareIcon />
+          </IconButton>
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <MessageInput
+              placeholder={`Send ${post.username} a message`}
+              onSend={sendMessage}
+              attachButton={false}
+            />
+          </CardContent>
+        </Collapse>
+      </Card>
+    </>
   );
 }

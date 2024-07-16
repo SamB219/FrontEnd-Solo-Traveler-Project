@@ -1,19 +1,12 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import { baseURL } from "../../environment/index";
+import { useState } from "react";
+import Box from "@mui/material/Box";
 import Posts from "./Posts";
 import Grid from "@mui/material/Grid";
+import Modal from "@mui/material/Modal";
 
 function PostIndex({ userId, token, setPinLocations, pinLocations, posts }) {
-  /*   const [posts, setPosts] = useState([]); */
   let key = 0;
-
-  //CURRENTLY RUNS ON EVERY RENDER
-  /* useEffect(() => {
-    if (props.token) {
-      fetchPosts();
-    }
-  }); */
 
   return (
     <>
