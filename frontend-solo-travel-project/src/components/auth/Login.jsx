@@ -17,6 +17,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../environment";
 import styled, { keyframes } from "styled-components";
+import LoginIcon from '@mui/icons-material/Login';
 
 // import images
 import window from "../login-images/window.jpg";
@@ -175,8 +176,8 @@ export default function SignInSide({ updateToken, setUserId, setUsername }) {
               zIndex: 1000,
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-              <LockOutlinedIcon />
+            <Avatar sx={{ bgcolor: "primary.main" }}>
+              <LoginIcon sx={{mr: 0.5}}/>
             </Avatar>
             <Typography component="h1" variant="h5">
               Sign in
