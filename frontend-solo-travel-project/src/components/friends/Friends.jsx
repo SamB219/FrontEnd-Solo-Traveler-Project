@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Grid, TextField, Typography, Paper, Avatar, List, ListItem, ListItemText, IconButton } from '@mui/material';
-import { baseURL } from "../../environment/index"
 import useFriends from '../hooks/useFriends';
 import SiteFooter from '../footer/Footer';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 function Friends({ token, userId }) {
-
     const { friends, fetchFriends, addFriend, deleteFriend } = useFriends();
+    const [searchInput, setSearchInput] = useState("");
+    const [filteredFriends, setFilteredFriends] = useState(friends);
 
     useEffect(() => {
         if (token) {
             fetchFriends();
         }
-    }, [token, friends]);
+    }, [token, fetchFriends]);
+
+    useEffect(() => {
+        setFilteredFriends(
+            friends.filter(friend =>
+                `${friend.firstName} ${friend.lastName}`.toLowerCase().includes(searchInput.toLowerCase()) ||
+                friend.userName.toLowerCase().includes(searchInput.toLowerCase())
+            )
+        );
+    }, [searchInput, friends]);
+
+    const handleSearchInputChange = (e) => {
+        setSearchInput(e.target.value);
+    };
 
     return (
         <Grid container>
@@ -24,21 +37,15 @@ function Friends({ token, userId }) {
                         name="friend-search"
                         label="Search your friends..."
                         id="friendSearch"
+                        value={searchInput}
+                        onChange={handleSearchInputChange}
                     />
-                    <Box ml={1} display="flex" alignItems="center">
-                        <Button variant="contained" color="primary" sx={{ height: '56px' }}>
-                            Filter
-                        </Button>
-                        <Button variant="contained" sx={{ ml: 1, height: '56px', backgroundColor: 'white', color: 'primary.main', '&:hover': { backgroundColor: 'lightgray' } }}>
-                            Clear Filters
-                        </Button>
-                    </Box>
                 </Box>
                 <Box mt={4} ml={4} mr={4}>
                     <Typography variant="h6">Your Friends</Typography>
                     <Paper>
                         <List>
-                            {friends.map(friend => (
+                            {filteredFriends.map(friend => (
                                 <ListItem key={friend._id}>
                                     <Avatar sx={{ mr: 2 }}>{friend.firstName.charAt(0)}</Avatar>
                                     <ListItemText primary={`${friend.firstName} ${friend.lastName}`} secondary={friend.userName} />

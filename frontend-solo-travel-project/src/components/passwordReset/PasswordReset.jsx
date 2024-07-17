@@ -4,17 +4,13 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockResetIcon from '@mui/icons-material/LockReset';
 import Typography from "@mui/material/Typography";
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from '@mui/material/IconButton'
 import CheckIcon from '@mui/icons-material/Check'
 import ErrorIcon from '@mui/icons-material/Error'
-import InputAdornment from "@mui/material/InputAdornment";
 import CloseIcon from "@mui/icons-material/Close";
 import { Container, Modal, Alert } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -50,6 +46,7 @@ function PasswordReset() {
     const [emailError, setEmailError] = useState(false);
     const [passwordResetSuccess, setPasswordResetSuccess] = useState(false);
     const [passwordResetError, setPasswordResetError] = useState(false);
+    const [previewLink, setPreviewLink] = useState("false");
 
     const navigate = useNavigate();
     const handleClose = () => setOpenModal(false);
@@ -83,7 +80,7 @@ function PasswordReset() {
     const submitPasswordResetRequest = async () => {
         setEmail("");
         const url = `${baseURL}/user/password-reset?` + new URLSearchParams({ email: email }).toString();
-        console.log("sending to", url);
+        // console.log("sending to", url);
         try {
             const res = await fetch(url, {
                 method: "GET",
@@ -92,10 +89,12 @@ function PasswordReset() {
                 }
             });
             const data = await res.json();
-            console.log("email to send to", email);
-            console.log(data);
+            // console.log("email to send to", email);
+            console.log(data.previewURL);
+            const previewLink = data.previewURL;
 
             if (res.ok) {
+                setPreviewLink(previewLink);
                 setEmailSent(true);
                 setTimeout(() => setEmailSent(false), 5000);
             } else {
@@ -108,9 +107,10 @@ function PasswordReset() {
         }
     }
 
+
     const submitPasswordReset = async () => {
         if (password !== confirmPassword || password == "") {
-            window.alert("Passwords must match bro")
+            window.alert("Passwords must match!")
             return
         }
 
@@ -211,7 +211,8 @@ function PasswordReset() {
                     )}
                     {emailSent && (
                         <Alert icon={<CheckIcon />} severity="success" sx={{ mt: 3, width: '100%' }}>
-                            Email has been sent!
+                            Email found! Please click the link below <a href={previewLink}>{previewLink}</a>
+
                         </Alert>
                     )}
                     <Modal
