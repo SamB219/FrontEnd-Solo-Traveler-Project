@@ -138,162 +138,172 @@ function Profile(props) {
           <Grid container spacing={2}>
             <Grid item xs={12} spacing={1}>
               <Grid container maxWidth={1100}>
-                <Grid item xs={6}>
-                  <Card sx={{ maxWidth: 500, mb: 5 }}>
-                    <CardHeader
-                      avatar={
-                        <Avatar
-                          sx={{ bgcolor: "grey", height: 75, width: 75 }}
-                          aria-label="recipe"
-                        >
-                          {userName.charAt(0).toUpperCase()}
-                        </Avatar>
-                      }
-                      title={
-                        age ? (
-                          <Typography component="h1" variant="h5">
-                            {" "}
-                            {firstName} {lastName}, {age}
-                          </Typography>
-                        ) : (
-                          <Typography component="h1" variant="h5">
-                            {" "}
-                            {firstName} {lastName}
-                          </Typography>
-                        )
-                      }
-                      subheader={
-                        <Typography
-                          component="h1"
-                          variant="subtitle1"
-                          fontSize={18}
-                        >
-                          {country ? (
-                            <Typography>
+                {!isEditMode && (
+
+                  <Grid item xs={6}>
+                    <Card sx={{ maxWidth: 500, mb: 5 }}>
+                      <CardHeader
+                        avatar={
+                          <Avatar
+                            sx={{ bgcolor: "grey", height: 75, width: 75 }}
+                            aria-label="recipe"
+                          >
+                            {userName.charAt(0).toUpperCase()}
+                          </Avatar>
+                        }
+                        title={
+                          age ? (
+                            <Typography component="h1" variant="h5">
                               {" "}
-                              {userName}, {country}
+                              {firstName} {lastName}, {age}
                             </Typography>
                           ) : (
-                            <Typography> {userName}</Typography>
-                          )}
-                        </Typography>
-                      }
-                    ></CardHeader>
-                    <Divider />
-                    <CardContent>
-                      {bio || travelPreferences || interests ? (
-                        <Box>
-                          {bio ? (
-                            <Box>
-                              <Chip
-                                variant="outlined"
-                                color="primary"
-                                label={
-                                  <Typography component="h1" variant="h6">
-                                    About Me
-                                  </Typography>
-                                }
-                              ></Chip>
-                              <Typography sx={{ padding: 1, mb: 2 }}>
-                                {bio}
-                              </Typography>
-                            </Box>
-                          ) : null}
-                          {travelPreferences ? (
-                            <Box>
-                              <Chip
-                                variant="outlined"
-                                color="primary"
-                                label={
-                                  <Typography component="h1" variant="h6">
-                                    Travel Preferences
-                                  </Typography>
-                                }
-                              ></Chip>
-                              <Typography sx={{ padding: 1, mb: 2 }}>
-                                {travelPreferences}
-                              </Typography>
-                            </Box>
-                          ) : null}
-                          {interests ? (
-                            <Box>
-                              <Chip
-                                variant="outlined"
-                                color="primary"
-                                label={
-                                  <Typography component="h1" variant="h6">
-                                    Interests
-                                  </Typography>
-                                }
-                              ></Chip>
-
-                              <Typography sx={{ padding: 1 }}>
-                                {interests}
-                              </Typography>
-                            </Box>
-                          ) : null}
-                        </Box>
-                      ) : (
-                        <Box>
-                          <Chip
-                            variant="outlined"
-                            color="primary"
-                            label={
-                              <Typography component="h1" variant="h6">
-                                Tell us about yourself
-                              </Typography>
-                            }
-                          ></Chip>
-                          <Typography sx={{ padding: 1 }}>
-                            Your insights go here
-                          </Typography>
-                        </Box>
-                      )}
-                    </CardContent>
-                    {/*  <Divider /> */}
-                    <CardActions>
-                      {isEditMode ? null : (
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                            width: 468,
-                          }}
-                        >
-                          <Button
-                            type="button"
-                            sx={{ mt: 0, mb: 1 }}
-                            onClick={handleEditClick}
+                            <Typography component="h1" variant="h5">
+                              {" "}
+                              {firstName} {lastName}
+                            </Typography>
+                          )
+                        }
+                        subheader={
+                          <Typography
+                            component="h1"
+                            variant="subtitle1"
+                            fontSize={18}
                           >
-                            Edit Profile
-                          </Button>
-                        </Box>
-                      )}
-                    </CardActions>
-                  </Card>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography component={"h1"} variant="h4">
-                    {" "}
-                    Albums
-                  </Typography>
-                  <ImageList
-                    sx={{ width: 550, height: 750 }}
-                    cols={3}
-                    rowHeight={190}
-                  >
-                    {itemData.map((item) => (
-                      <ImageListItem key={item.img}>
-                        <img
-                          srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                          src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                          alt={item.title}
-                          loading="lazy"
-                        />
-                      </ImageListItem>
-                    ))}
-                  </ImageList>
-                </Grid>
+                            {country ? (
+                              <Typography>
+                                {" "}
+                                {userName}, {country}
+                              </Typography>
+                            ) : (
+                              <Typography> {userName}</Typography>
+                            )}
+                          </Typography>
+                        }
+                      ></CardHeader>
+                      <Divider />
+                      <CardContent>
+                        {bio || travelPreferences || interests ? (
+                          <Box>
+                            {bio ? (
+                              <Box>
+                                <Chip
+                                  variant="outlined"
+                                  color="primary"
+                                  label={
+                                    <Typography component="h1" variant="h6">
+                                      About Me
+                                    </Typography>
+                                  }
+                                ></Chip>
+                                <Typography sx={{ padding: 1, mb: 2 }}>
+                                  {bio}
+                                </Typography>
+                              </Box>
+                            ) : null}
+                            {travelPreferences ? (
+                              <Box>
+                                <Chip
+                                  variant="outlined"
+                                  color="primary"
+                                  label={
+                                    <Typography component="h1" variant="h6">
+                                      Travel Preferences
+                                    </Typography>
+                                  }
+                                ></Chip>
+                                <Typography sx={{ padding: 1, mb: 2 }}>
+                                  {travelPreferences}
+                                </Typography>
+                              </Box>
+                            ) : null}
+                            {interests ? (
+                              <Box>
+                                <Chip
+                                  variant="outlined"
+                                  color="primary"
+                                  label={
+                                    <Typography component="h1" variant="h6">
+                                      Interests
+                                    </Typography>
+                                  }
+                                ></Chip>
+
+                                <Typography sx={{ padding: 1 }}>
+                                  {interests}
+                                </Typography>
+                              </Box>
+                            ) : null}
+                          </Box>
+                        ) : (
+                          <Box>
+                            <Chip
+                              variant="outlined"
+                              color="primary"
+                              label={
+                                <Typography component="h1" variant="h6">
+                                  Tell us about yourself
+                                </Typography>
+                              }
+                            ></Chip>
+                            <Typography sx={{ padding: 1 }}>
+                              Your insights go here
+                            </Typography>
+                          </Box>
+                        )}
+                      </CardContent>
+
+                      {/*  <Divider /> */}
+
+                      <CardActions>
+                        {!isEditMode && (
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "flex-end",
+                              width: 468,
+                            }}
+                          >
+                            <Button
+                              type="button"
+                              sx={{ mt: 0, mb: 1 }}
+                              onClick={handleEditClick}
+                            >
+                              Edit Profile
+                            </Button>
+                          </Box>
+                        )}
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                )}
+
+                {/*  <Divider /> */}
+
+                {!isEditMode && (
+                  <Grid item xs={6}>
+                    <Typography component={"h1"} variant="h4">
+                      {" "}
+                      Albums
+                    </Typography>
+                    <ImageList
+                      sx={{ width: 550, height: 750 }}
+                      cols={3}
+                      rowHeight={190}
+                    >
+                      {itemData.map((item) => (
+                        <ImageListItem key={item.img}>
+                          <img
+                            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                            alt={item.title}
+                            loading="lazy"
+                          />
+                        </ImageListItem>
+                      ))}
+                    </ImageList>
+                  </Grid>
+                )}
               </Grid>
               {isEditMode && (
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
