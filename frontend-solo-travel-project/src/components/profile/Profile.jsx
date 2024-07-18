@@ -136,10 +136,9 @@ function Profile(props) {
         <Toolbar />
         <Container maxWidth="false" sx={{ mt: 3, mb: 4 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} spacing={1}>
+            <Grid item xs={24} spacing={1}>
               <Grid container maxWidth={1100}>
                 {!isEditMode && (
-
                   <Grid item xs={6}>
                     <Card sx={{ maxWidth: 500, mb: 5 }}>
                       <CardHeader

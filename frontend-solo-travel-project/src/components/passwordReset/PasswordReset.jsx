@@ -90,13 +90,13 @@ function PasswordReset() {
             });
             const data = await res.json();
             // console.log("email to send to", email);
-            console.log(data.previewURL);
+            // console.log(data.previewURL);
             const previewLink = data.previewURL;
 
             if (res.ok) {
                 setPreviewLink(previewLink);
                 setEmailSent(true);
-                setTimeout(() => setEmailSent(false), 5000);
+                setTimeout(() => setEmailSent(false), 20000);
             } else {
                 setEmailError(true);
                 setTimeout(() => setEmailError(false), 5000);
@@ -132,7 +132,7 @@ function PasswordReset() {
             }
         });
         const data = await res.json();
-        console.log(res.status, res.statusText)
+        // console.log(res.status, res.statusText)
 
         if (res.ok) {
             setPasswordResetSuccess(true);

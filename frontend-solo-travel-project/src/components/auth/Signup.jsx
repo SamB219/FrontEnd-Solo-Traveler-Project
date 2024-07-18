@@ -6,7 +6,6 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -17,6 +16,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { Alert } from "@mui/material";
 import { baseURL } from "../../environment";
 import { useNavigate } from "react-router-dom";
+import PersonIcon from '@mui/icons-material/Person';
 
 const defaultTheme = createTheme();
 
@@ -157,7 +157,7 @@ export default function SignUp({ updateToken, setUserId, setUsername }) {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
+            <PersonIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
