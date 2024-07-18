@@ -24,6 +24,7 @@ import Dialog from "@mui/material/Dialog";
 import Popover from "@mui/material/Popover";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
 
 // concatenate the date for posts
 function formatDate(dateString) {
@@ -110,6 +111,39 @@ export default function PostCard({ post, userId, token }) {
       console.error(err.message);
     }
   }
+
+  const addFriend = async () => {
+    /*   const token = localStorage.getItem("token"); */
+    const userId = localStorage.getItem("userId");
+    const friend = post.username;
+    console.log(friend, userId);
+
+    const url = `${baseURL}/user/friends`;
+
+    const headers = new Headers();
+    headers.append("Authorization", token);
+    headers.append("Content-Type", "application/json");
+
+    const body = { friendUserName: friend, userId: userId };
+
+    const requestOptions = {
+      headers,
+      method: "POST",
+      body: JSON.stringify(body),
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+
+      if (!response.ok) {
+        throw new Error("Failed to send friend request");
+      }
+
+      console.log("Friend request sent successfully.");
+    } catch (error) {
+      console.error("Error sending friend request:", error.message);
+    }
+  };
 
   //Creates a chat room on message send,
   async function sendMessage(userMessage) {
@@ -216,15 +250,39 @@ export default function PostCard({ post, userId, token }) {
         <Box sx={{ padding: 2 }}>
           <Typography sx={{ mb: 0.5 }}> Options </Typography>
           <Divider></Divider>
-          <Button
-            variant="contained"
-            color="error"
-            sx={{ mt: 1 }}
-            onClick={handleOptions}
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
           >
-            {" "}
-            {post.username === userName ? "Delete" : "Report"}
-          </Button>
+            <Grid item>
+              {" "}
+              <Button
+                variant="contained"
+                color="success"
+                sx={{ mt: 1 }}
+                onClick={addFriend}
+              >
+                <Box sx={{ width: 90 }}>Add Friend</Box>
+              </Button>
+            </Grid>
+            <Grid item>
+              {" "}
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ mt: 1 }}
+                onClick={handleOptions}
+              >
+                {" "}
+                <Box sx={{ width: 90 }}>
+                  {" "}
+                  {post.username === userName ? "Delete" : "Report"}
+                </Box>
+              </Button>
+            </Grid>
+          </Grid>
         </Box>
       </Popover>
       <Card
@@ -284,9 +342,9 @@ export default function PostCard({ post, userId, token }) {
             updateLikeCount={setLikeCount}
             likeCount={likeCount}
           />
-          <IconButton aria-label="share">
+          {/*           <IconButton aria-label="share">
             <ShareIcon />
-          </IconButton>
+          </IconButton> */}
           <ExpandMore
             expand={expanded}
             onClick={handleExpandClick}
