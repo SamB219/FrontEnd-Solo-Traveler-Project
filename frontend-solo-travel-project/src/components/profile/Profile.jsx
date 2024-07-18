@@ -22,6 +22,9 @@ import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
+import PostIndex from "../posts/PostIndex";
+import Posts from "../posts/Posts";
+import Dashboard from "../dash/Dashboard";
 
 function Profile(props) {
   const token = (props && props.token) ?? "";
@@ -69,6 +72,7 @@ function Profile(props) {
     setChangedTravelPreferences(travelPreferences);
     setChangedInterests(interests);
   }, [age, bio, country, travelPreferences, interests]);
+
   const itemData = [
     {
       img: " https://images.unsplash.com/photo-1720807359320-9ee1c7344e55",
@@ -137,10 +141,10 @@ function Profile(props) {
         <Container maxWidth="false" sx={{ mt: 3, mb: 4 }}>
           <Grid container spacing={2}>
             <Grid item xs={24} spacing={1}>
-              <Grid container maxWidth={1100}>
+              <Grid container maxWidth={1800} display={"flex"} justifyContent={"space-between"}>
                 {!isEditMode && (
-                  <Grid item xs={6}>
-                    <Card sx={{ maxWidth: 500, mb: 5 }}>
+                  <Grid item xs={4}>
+                    <Card sx={{ maxWidth: 500, minHeight: 810, mb: 5 }}>
                       <CardHeader
                         avatar={
                           <Avatar
@@ -280,27 +284,59 @@ function Profile(props) {
                 {/*  <Divider /> */}
 
                 {!isEditMode && (
-                  <Grid item xs={6}>
-                    <Typography component={"h1"} variant="h4">
-                      {" "}
-                      Albums
-                    </Typography>
-                    <ImageList
-                      sx={{ width: 550, height: 750 }}
-                      cols={3}
-                      rowHeight={190}
-                    >
-                      {itemData.map((item) => (
-                        <ImageListItem key={item.img}>
-                          <img
-                            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                            alt={item.title}
-                            loading="lazy"
-                          />
-                        </ImageListItem>
-                      ))}
-                    </ImageList>
+                  <Grid item xs={4} display={"flex"}>
+                    <Paper sx={{ width: 500, maxHeight: 810 }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "auto",
+                          padding: 2,
+                        }}
+                      >
+                        <Typography component={"h1"} variant="h4" sx={{ justifyContent: "center" }}>
+                          Albums
+                        </Typography>
+                      </Box>
+                      <Divider />
+                      <ImageList
+                        sx={{ width: 500, height: 700 }}
+                        cols={2}
+                        rowHeight={190}
+                      >
+                        {itemData.map((item) => (
+                          <ImageListItem key={item.img}>
+                            <img
+                              srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                              src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                              alt={item.title}
+                              loading="lazy"
+                            />
+                          </ImageListItem>
+                        ))}
+                      </ImageList>
+                    </Paper>
+                  </Grid>
+                )}
+                {!isEditMode && (
+                  <Grid item xs={4} display={"flex"}>
+                    <Paper sx={{ width: 500, maxHeight: 810 }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          height: "auto",
+                          padding: 2,
+                        }}
+                      >
+                        <Typography component={"h1"} variant="h4" sx={{ justifyContent: "center" }}>
+                          Posts
+                        </Typography>
+                      </Box>
+                      <Divider />
+                    </Paper>
                   </Grid>
                 )}
               </Grid>

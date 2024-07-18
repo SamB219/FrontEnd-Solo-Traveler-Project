@@ -138,7 +138,7 @@ export default function PostCard({ post, userId, token }) {
       if (!response.ok) {
         throw new Error("Failed to send friend request");
       }
-
+      setOpen1(false)
       console.log("Friend request sent successfully.");
     } catch (error) {
       console.error("Error sending friend request:", error.message);
