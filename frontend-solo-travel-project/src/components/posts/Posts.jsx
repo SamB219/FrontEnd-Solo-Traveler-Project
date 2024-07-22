@@ -54,7 +54,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function PostCard({ post, userId, token }) {
+export default function Posts({ post, userId, token }) {
   const [expanded, setExpanded] = useState(false);
   const [likeCount, setLikeCount] = useState(
     post.likes ? post.likes.length : 0
@@ -91,7 +91,7 @@ export default function PostCard({ post, userId, token }) {
   };
 
   async function handleDelete() {
-    const url = `${baseURL}/post/${post._id}`; //ENDPOINT HERE
+    const url = `${baseURL}/post/${post._id}`;
 
     const options = {
       method: "DELETE",

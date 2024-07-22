@@ -25,8 +25,11 @@ import ImageListItem from "@mui/material/ImageListItem";
 import PostIndex from "../posts/PostIndex";
 import Posts from "../posts/Posts";
 import Dashboard from "../dash/Dashboard";
+import { baseURL } from "../../environment";
 
 function Profile(props) {
+  const [posts, setPosts] = useState([]);
+
   const token = (props && props.token) ?? "";
 
   const {
@@ -72,6 +75,33 @@ function Profile(props) {
     setChangedTravelPreferences(travelPreferences);
     setChangedInterests(interests);
   }, [age, bio, country, travelPreferences, interests]);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [])
+
+  const fetchPosts = async () => {
+    const url = `${baseURL}/post/all`; //ENDPOINT HERE
+
+    const options = {
+      method: "GET",
+      headers: new Headers({
+        Authorization: token,
+      }),
+    };
+
+    try {
+      const res = await fetch(url, options);
+      if (!res.ok) {
+        throw new Error("Failed to fetch posts");
+      }
+      const data = await res.json();
+      setPosts(data.result);
+      /*   console.log("normal"); */
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   const itemData = [
     {
@@ -320,7 +350,7 @@ function Profile(props) {
                   </Grid>
                 )}
                 {!isEditMode && (
-                  <Grid item xs={4} display={"flex"}>
+                  <Grid item xs={4} display={"flex"} >
                     <Paper sx={{ width: 500, maxHeight: 810 }}>
                       <Box
                         sx={{
@@ -336,6 +366,30 @@ function Profile(props) {
                         </Typography>
                       </Box>
                       <Divider />
+                      <ImageList
+                        sx={{ width: 500, height: "175%" }}
+                        cols={1}
+                        rowHeight={390}
+                      >
+                        <Grid container
+                          rowSpacing={1}
+                          justifyContent={"center"}
+                          sx={{
+                            maxHeight: "50%",
+                            overflow: "auto"
+                          }}
+                        >
+                          {posts.map((post) => (
+                            <>
+                              {post["username"] == userName &&
+                                <Grid item sx={12}>
+                                  <Posts post={post} userId={props.userId} token={token} />
+                                </Grid>
+                              }
+                            </>
+                          ))}
+                        </Grid>
+                      </ImageList>
                     </Paper>
                   </Grid>
                 )}
@@ -466,7 +520,7 @@ function Profile(props) {
             </Grid>
           </Grid>
         </Container>
-      </Box>
+      </Box >
     </>
   );
 }
